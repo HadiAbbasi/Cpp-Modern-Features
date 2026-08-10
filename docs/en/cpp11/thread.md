@@ -111,4 +111,30 @@ int main()
     std::cout << res1 << ' ' << res2 << '\n';
 }
 ```
+But what about errors? What if a task throws an exception? If a task throws an exception and doesn’t catch it itself std::terminate() is called. That typically means that the program finishes. We usually try rather hard to avoid that. A std::future can transmit an exception to the parent/calling thread; that’s one reason to like futures. Otherwise, return some sort of error code.
+
+When a thread goes out of scope the program is terminate()d unless its task has completed. That’s obviously to be avoided.
+
+There is no way to request a thread to terminate (i.e. request that it exit as a soon as possible and as gracefully as possible) or to force a thread to terminate (i.e. kill it). We are left with the options of
+
+designing our own cooperative “interruption mechanism” (with a piece of shared data that a caller thread can set for a called thread to check, and quickly and gracefully exit when it is set),
+“going native” by using thread::native_handle() to gain access to the operating system’s notion of a thread,
+kill the process `(std::quick_exit())`
+kill the program `(std::terminate())`
+
+## VDetaching threads
+![deatach](./assets/detach_thread.png)
+
+> `void thread.detach();`
+> -  The function marks the thread identified by thread as detached. When a detached thread terminates, its resources are automatically released back to the system without the need for another thread to join with the terminated thread
+
+
+## Example – Counter
+
+### Task:
+- Create global integer variable counter
+- Create 4 threads and each thread:
+- 10000000-times increment the counter
+- Print the resulting value of the counter after all the threads are done!
+
 
