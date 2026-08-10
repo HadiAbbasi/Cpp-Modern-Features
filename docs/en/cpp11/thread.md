@@ -137,4 +137,61 @@ kill the program `(std::terminate())`
 - 10000000-times increment the counter
 - Print the resulting value of the counter after all the threads are done!
 
+```cpp
+#include<iostream>
+#include<thread>
+#include<vector>
+using namespace std;
+int  counter=0;
 
+void counterThread(){
+    for(inti =0;i<10000000;++i){
+        counter++;
+    }
+    return;
+}
+int  main(){
+    vector<thread> threads;
+    for(int  i=0;i<4;++i){
+        threads.push_back(thread(counterThread()))
+    }
+    for(int i=0;i<4;++i){
+        threads[i].joint()
+    }
+    cout << counter <<endl;
+    return 0;
+}
+```
+##  risks of multi-threaded programming
+- Let's assume that a well-known bank company has asked you to implement  multi-threaded code to perform bank transactions.
+- You start with the modest goal of allowing deposits.
+- Clients deposit money and the amount gets credited to their accounts.
+- As a result of having multiple threads running concurrently the following can happen
+
+|step  | Thread 0 | Thread 1 | Account balance |
+|---|---|---|---:|
+| 1 | Client requests a deposit | Client requests a deposit | 0 CZK |
+| 2 | Check current balance = 0 CZK | Check current balance = 0 CZK | 0 CZK |
+| 3 | Ask for deposit 1000 CZK | Ask for deposit 2000 CZK | 0 CZK |
+| 4 | Compute new balance = 1000 CZK | Compute new balance = 2000 CZK | 0 CZK |
+| 5 | Write new balance to account 1000 CZK | Write new balance to account 2000 CZK | 2000 CZK |
+
+>The problem is that many operations “take time” and can be  “interrupted” by other threads attempting to modify the same data.
+>- This is called a race condition: the final result depends on the precise order in which the instructions are executed.
+>- Unless Thread 0 completes its update before Thread 1 (or vice versa) we get an incorrect result.
+>- This issue is addressed using mutexes (mutual exclusion).
+>- They ensure that certain common pieces of data are accessed and modified by a single thread
+
+
+[Learn Mutex](./mutex.md)
+
+
+## 🤝 Contributors
+
+<div align="center">
+
+| GitHub | LinkedIn | Email | Site | Telegram |
+|--------|----------|-------|------|----------|
+| [mbr](https://github.com/mbr1376) | [mbr](https://www.linkedin.com/in/mbr1376/) | [mbr](m.roodsarabi76@gmail.com) | | [mbr](@ad1mi2n) |
+
+</div>
