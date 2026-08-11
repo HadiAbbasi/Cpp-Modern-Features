@@ -17,6 +17,7 @@
 | [nullptr](./nullptr.md) |
 | [lambda](./lambda.md) | 
 | [std::move](./std_move.md) |
+| [mutex](./mutex.md) |
 
 </div>
 
