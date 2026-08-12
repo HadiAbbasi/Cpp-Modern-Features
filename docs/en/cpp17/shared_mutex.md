@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./shared_mutex.md) | [🇮🇷 فارسی](../../fa/cpp17/shared_mutex.md)
+
+</div>
+
+---
 # `std::shared_mutex` in C++17
 
 ## Table of Contents

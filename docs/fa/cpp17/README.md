@@ -15,6 +15,9 @@
 |----------|
 | [std::pair](./pair.md) |
 | [std::tuple](./tuple.md) |
+| [std::shared_mutex](./shared_mutex.md) |
+| [std::apply](./apply.md) |
+| [std::variant](./variant.md) |
 
 </div>
 

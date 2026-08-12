@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./variant.md) | [🇮🇷 فارسی](../../fa/cpp17/variant.md)
+
+</div>
+
+---
 # `std::variant` in C++17
 
 ## Table of Contents

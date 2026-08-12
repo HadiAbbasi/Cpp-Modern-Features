@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./apply.md) | [🇮🇷 فارسی](../../fa/cpp17/apply.md)
+
+</div>
+
+---
 # `std::apply` in C++17
 
 ## Table of Contents
