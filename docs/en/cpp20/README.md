@@ -14,6 +14,7 @@
 | New Features | 
 |----------|
 | [consteval](./consteval.md) |
+| [constinit](./constinit.md) |
 
 </div>
 

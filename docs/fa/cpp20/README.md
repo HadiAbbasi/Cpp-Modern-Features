@@ -13,7 +13,8 @@
 
 | امکانات جدید | 
 |----------|
-| [std::consteval](./consteval.md) |
+| [consteval](./consteval.md) |
+| [constinit](./constinit.md) |
 
 </div>
 
