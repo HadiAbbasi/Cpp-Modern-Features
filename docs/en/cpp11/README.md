@@ -27,17 +27,8 @@
 ## 🤝 Contributors
 <div align="center">
 
-| GitHub            | LinkedIn                                    | Email           | Site                           | Telegram |
-| ----------------- | ------------------------------------------- | --------------- | ------------------------------ | -------- |
-| [HadiAbbasi]      | [Hadi Abbasi](https://www.linkedin.com/in/  | [Hadi Abbasi](  | [Hiens.org](https://hiens.org) | [Hadi Ab |
-| (https://git      | had i-abbasi-programmer/)                   | hadi.abbasi.pr  |                                |  basi](@ |
-| hub.com/Hadi      | [mbr](https://www.linkedin.com/in/mbr1376/  | ogrammer@gmail  |                                |  H adi_A |
-| Abbasi)           | )                                           | .com)           |                                |  bba si_ |
-| [mbr](https: / /  |                                             | [mbr](m.roodsa  |                                | Pr ogr a |
-| github.com / m b  |                                             | rabi76@gmail. c |                                | m mer)   |
-| r1376)            |                                             |  om)            |                                | [mbr](@a |
-|                   |                                             |                 |                                |  d1mi2n) |
-| [Ordikhani]( h t  | []()                                        | []()            | []()                           | []()     |
-| tps://gith ub .c  |                                             |                 |                                |          |
-| om/Ordik h ani)   |                                             |                 |                                |          |
+| GitHub | LinkedIn | Email | Site | Telegram |
+|--------|----------|-------|------|----------|
+| [HadiAbbasi](https://github.com/HadiAbbasi) | [Hadi Abbasi](https://www.linkedin.com/in/hadi-abbasi-programmer/) | [Hadi Abbasi](hadi.abbasi.programmer@gmail.com) | [Hiens.org](https://hiens.org) | [Hadi Abbasi](@Hadi_Abbasi_Programmer) |
+| [mbr](https://github.com/mbr1376) | [mbr](https://www.linkedin.com/in/mbr1376/) | [mbr](m.roodsarabi76@gmail.com) | | [mbr](@ad1mi2n) |
 </div>
