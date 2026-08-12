@@ -11,7 +11,7 @@
 
 <div align="center">
 
-| امکانات جدید               |
+| امکانات جدید                 |
 | -------------------------- |
 | [auto](./auto.md)          |
 | [nullptr](./nullptr.md)    |
@@ -19,6 +19,7 @@
 | [std::move](./std_move.md) |
 | [mutex](./mutex.md)        |
 | [override](./override.md)  |
+| [std::thread](./thread.md) |
 
 </div>
 

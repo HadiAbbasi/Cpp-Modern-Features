@@ -19,12 +19,14 @@
 | [std::move](./std_move.md) |
 | [mutex](./mutex.md)        |
 | [override](./override.md)  |
+| [std::thread](./thread.md) |
 
 </div>
 
 ---
 
 ## 🤝 Contributors
+
 <div align="center">
 
 | GitHub | LinkedIn | Email | Site | Telegram |
