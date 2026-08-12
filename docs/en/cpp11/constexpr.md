@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](../../en/cpp11/constexpr.md) | [🇮🇷 Persian](./constexpr.md)
+[🇺🇸 English](./constexpr.md) | [🇮🇷 Persian](../../fa/cpp11/constexpr.md)
 
 </div>
 
