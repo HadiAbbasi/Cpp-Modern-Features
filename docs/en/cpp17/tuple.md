@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./tuple.md) | [🇮🇷 فارسی](../../fa/cpp17/tuple.md)
+
+</div>
+
+---
 # `std::tuple` in C++17
 
 ## Table of Contents
@@ -538,3 +545,15 @@ g++ -std=c++17 -Wall -Wextra -pedantic main.cpp -o main
 - `std::tuple_size` and `std::tuple_element` for generic programming
 
 Nevertheless, when the data members have clear names and domain-specific meanings, a `struct` is often a more professional and readable choice.
+
+---
+
+## 🤝 Contributors
+
+<div align="center">
+
+| GitHub | LinkedIn | Email | Site | Telegram |
+|--------|----------|-------|------|----------|
+| [Ordikhani](https://github.com/Ordikhani) | []() | []() | []() | []() |
+
+</div>
