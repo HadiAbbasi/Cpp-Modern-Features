@@ -25,7 +25,6 @@
 ---
 
 ## 🤝 Contributors
-
 <div align="center">
 
 | GitHub          | LinkedIn                                   | Email          | Site                           | Telegram |
@@ -37,5 +36,4 @@
 | [mbr](https: /  |                                            | [mbr](m.roodsa |                                | Pr ogr a |
 | /github.com / m |                                            |  rabi76@gmail. |                                | m mer)   |
 |  br1376)        |                                            |  c om)         |                                | [mbr](@a |
-|                 |                                            |                |                                |  d1mi2n) |
 </div>

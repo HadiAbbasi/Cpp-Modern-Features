@@ -37,9 +37,4 @@
 | [mbr](https: /  |                                            | [mbr](m.roodsa |                                | Pr ogr a |
 | /github.com / m |                                            |  rabi76@gmail. |                                | m mer)   |
 |  br1376)        |                                            |  c om)         |                                | [mbr](@a |
-|                 |                                            |                |                                |  d1mi2n) |
-| [Ordikhani]( h  | []()                                       | []()           | []()                           | []()     |
-| ttps://gith ub  |                                            |                |                                |          |
-| .com/Ordik h an |                                            |                |                                |          |
-| i)              |                                            |                |                                |          |
 </div>
