@@ -1,7 +1,7 @@
----
-
 <div align="right">
-[🇺🇸 `English`](../../en/cpp11/override.md) | [🇮🇷 فارسی](./override.md)
+
+[🇺🇸 English](../../en/cpp11/override.md) | [🇮🇷 فارسی](./override.md)
+
 </div>
 
 ---

@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](./mutex.md) | [🇮🇷 فارسی](../../fa/cpp11/mutex.md)
+[🇺🇸 English](../../en/cpp11/mutex.md) | [🇮🇷 فارسی](./mutex.md)
 
 </div>
 
