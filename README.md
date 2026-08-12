@@ -13,7 +13,7 @@
 
 | C++ Version | Link to Documentation Page                                                                                  |
 | ----------- | ----------------------------------------------------------------------------------------------------------- |
-| C++98       | [![C++98](https://img.shields.io/badge/C%2B%2B-11-blue?style=for-the-badge) ](docs/en/cpp98/README.md)      |
+| C++98       | [![C++98](https://img.shields.io/badge/C%2B%2B-98-blue?style=for-the-badge) ](docs/en/cpp98/README.md)       |
 | C++11       | [![C++11](https://img.shields.io/badge/C%2B%2B-11-blue?style=for-the-badge) ](docs/en/cpp11/README.md)      |
 | C++14       | [![C++14](https://img.shields.io/badge/C%2B%2B-14-blue?style=for-the-badge) ](docs/en/cpp14/README.md)      |
 | C++17       | [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?style=for-the-badge) ](docs/en/cpp17/README.md)      |
