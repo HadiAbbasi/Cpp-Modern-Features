@@ -21,7 +21,10 @@
 | [override](./override.md)  |
 | [std::thread](./thread.md) |
 | [constexpr](./constexpr.md)|
-| [constexpr](./list-initialization.md)|
+| [list-initialization](./list-initialization.md)|
+| [std::unique_ptr](./unique_ptr.md)|
+| [shared_ptr](./shared_ptr.md)|
+| [weak_ptr](./weak_ptr.md)|
 
 </div>
 
