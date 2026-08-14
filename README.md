@@ -3,8 +3,8 @@
 [🇺🇸 English](README.md) | [🇮🇷 فارسی](README.fa.md)
 
 </div>
-
 ---
+
 # C++ Modern Features
 
 ## 📚 C++ Standards Documentation
@@ -28,8 +28,9 @@
 
 </div>
 
----
+Note: This article was prepared and edited using explanations and rewrites provided by ChatGPT (OpenAI) and Qwen (Alibaba).
 
+---
 ## 🤝 Contributors
 
 <div align="center">

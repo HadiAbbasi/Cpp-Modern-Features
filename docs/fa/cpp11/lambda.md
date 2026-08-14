@@ -1,4 +1,9 @@
+<div align="right">
+
 [🇺🇸 English](../../en/cpp11/lambda.md) | [🇮🇷 فارسی](./lambda.md)
+
+</div>
+---
 
 # عبارت Lambda
 
@@ -423,6 +428,7 @@ auto createLambda()
 
 Lambdaها یکی از قابلیت‌های مهم C++11 هستند و امروزه بخش جدایی‌ناپذیری از کدنویسی مدرن C++ به شمار می‌روند.
 
+---
 ## 🤝 مشارکت‌کنندگان
 
 | GitHub | LinkedIn | Email | Site | Telegram |

@@ -3,6 +3,7 @@
 [🇮🇷 فارسی](./list-initialization.md) | [English](../../en/cpp11/list-initialization.md)
 
 </div>
+---
 
 # `std::initializer_list` در C++
 
@@ -242,6 +243,7 @@ int main()
 - **مالک داده‌ها نیست:** خود `initializer_list` مالک آرایهٔ زیرین نیست؛ بنابراین ذخیره‌کردن آن به‌عنوان عضو کلاس یا بازگرداندن لیست محلی از تابع می‌تواند باعث ایجاد reference یا pointer نامعتبر شود.
 - **دسترسی با index ندارد:** خود `initializer_list` عملگر `operator[]` ندارد. با این حال، چون `begin()` یک pointer برمی‌گرداند، می‌توان با احتیاط از pointer arithmetic مانند `*(list.begin() + index)` استفاده کرد؛ البته بهتر است در صورت نیاز به دسترسی اندیسی، از `std::vector` یا `std::array` استفاده شود.
 
+---
 ## 🤝 مشارکت‌کنندگان
 
 <div align="center">

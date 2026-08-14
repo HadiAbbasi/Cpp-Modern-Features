@@ -3,52 +3,53 @@
 [🇺🇸 English](../../en/cpp11/weak_ptr.md) | [🇮🇷 فارسی](./weak_ptr.md)
 
 </div>
+---
 
 # `std::weak_ptr` در C++11 — راهنمای کامل و ساده برای درک مالکیت، چرخه‌های `shared_ptr` و جلوگیری از Memory Leak
 
 ## فهرست مطالب
 
-1. مقدمه
-2. قبل از `weak_ptr` چه مشکلی وجود داشت؟
-3. `shared_ptr` چگونه مالکیت را مدیریت می‌کند؟
-4. مشکل اصلی `shared_ptr`: چرخه مالکیت
-5. چرا Reference Counter نمی‌تواند به صفر برسد؟
-6. `weak_ptr` دقیقاً چیست؟
-7. تفاوت اساسی `shared_ptr` و `weak_ptr`
-8. آیا `weak_ptr` مالک شیء است؟
-9. `weak_ptr` چگونه چرخه مالکیت را می‌شکند؟
-10. ساختن یک `weak_ptr`
-11. قرار دادن `weak_ptr` در Setter
-12. گرفتن `weak_ptr` از Getter
-13. آیا Getter باید `weak_ptr` برگرداند؟
-14. چگونه از `weak_ptr` یک کپی بسازیم؟
-15. کپی و Move در `weak_ptr`
-16. `reset()` در `weak_ptr`
-17. بررسی خالی بودن `weak_ptr`
-18. `expired()` چیست؟
-19. تبدیل `weak_ptr` به `shared_ptr` با `lock()`
-20. چرا `lock()` مهم است؟
-21. دسترسی به شیء داخلی بعد از `lock()`
-22. دسترسی به اعضای شیء با `weak_ptr`
-23. آیا `weak_ptr` مستقیماً `operator->` دارد؟
-24. آیا `weak_ptr` یک Raw Pointer دارد؟
-25. خطر استفاده از Raw Pointer
-26. چگونه `weak_ptr` می‌تواند جلوی Memory Leak را بگیرد؟
-27. استفاده از `weak_ptr` در یک کلاس
-28. الگوی رایج Parent/Child
-29. الگوی Observer
-30. مثال کامل از چرخه خراب با `shared_ptr`
-31. اصلاح مثال با `weak_ptr`
-32. `use_count()` در `weak_ptr`
-33. تفاوت Strong Count و Weak Count
-34. Control Block چیست؟
-35. چرا وجود `weak_ptr` باعث زنده ماندن Object نمی‌شود؟
-36. تفاوت `weak_ptr` و `shared_ptr`
-37. تفاوت `weak_ptr` و `unique_ptr`
-38. چه زمانی باید از `weak_ptr` استفاده کنیم؟
-39. چه زمانی نباید از `weak_ptr` استفاده کنیم؟
-40. اشتباهات رایج
-41. جمع‌بندی
+1. [مقدمه](#مقدمه)
+2. [قبل از `weak_ptr` چه مشکلی وجود داشت؟](#قبل-از-weak_ptr-چه-مشکلی-وجود-داشت)
+3. [`shared_ptr` چگونه مالکیت را مدیریت می‌کند؟](#shared_ptr-چگونه-مالکیت-را-مدیریت-میکند)
+4. [مشکل اصلی `shared_ptr`: چرخه مالکیت](#مشکل-اصلی-shared_ptr-چرخه-مالکیت)
+5. [چرا Reference Counter نمی‌تواند به صفر برسد؟](#چرا-reference-counter-نمیتواند-به-صفر-برسد)
+6. [`weak_ptr` دقیقاً چیست؟](#weak_ptr-دقیقا-چیست)
+7. [تفاوت اساسی `shared_ptr` و `weak_ptr`](#تفاوت-اساسی-shared_ptr-و-weak_ptr)
+8. [آیا `weak_ptr` مالک شیء است؟](#آیا-weak_ptr-مالک-شیء-است)
+9. [`weak_ptr` چگونه چرخه مالکیت را می‌شکند؟](#weak_ptr-چگونه-چرخه-مالکیت-را-میشکند)
+10. [ساختن یک `weak_ptr`](#ساختن-یک-weak_ptr)
+11. [قرار دادن `weak_ptr` در Setter](#قرار-دادن-weak_ptr-در-setter)
+12. [گرفتن `weak_ptr` از Getter](#گرفتن-weak_ptr-از-getter)
+13. [آیا Getter باید `weak_ptr` برگرداند؟](#آیا-getter-باید-weak_ptr-برگرداند)
+14. [چگونه از `weak_ptr` یک کپی بسازیم؟](#چگونه-از-weak_ptr-یک-کپی-بسازیم)
+15. [کپی و Move در `weak_ptr`](#کپی-و-move-در-weak_ptr)
+16. [`reset()` در `weak_ptr`](#reset-در-weak_ptr)
+17. [بررسی خالی بودن `weak_ptr`](#بررسی-خالی-بودن-weak_ptr)
+18. [`expired()` چیست؟](#expired-چیست)
+19. [تبدیل `weak_ptr` به `shared_ptr` با `lock()`](#تبدیل-weak_ptr-به-shared_ptr-با-lock)
+20. [چرا `lock()` مهم است؟](#چرا-lock-مهم-است)
+21. [دسترسی به شیء داخلی بعد از `lock()`](#دسترسی-به-شیء-داخلی-بعد-از-lock)
+22. [دسترسی به اعضای شیء با `weak_ptr`](#دسترسی-به-اعضای-شیء-با-weak_ptr)
+23. [آیا `weak_ptr` مستقیماً `operator->` دارد؟](#آیا-weak_ptr-مستقیما-operator-دارد)
+24. [آیا `weak_ptr` یک Raw Pointer دارد؟](#آیا-weak_ptr-یک-raw-pointer-دارد)
+25. [خطر استفاده از Raw Pointer](#خطر-استفاده-از-raw-pointer)
+26. [چگونه `weak_ptr` می‌تواند جلوی Memory Leak را بگیرد؟](#چگونه-weak_ptr-میتواند-جلوی-memory-leak-را-بگیرد)
+27. [استفاده از `weak_ptr` در یک کلاس](#استفاده-از-weak_ptr-در-یک-کلاس)
+28. [الگوی رایج Parent/Child](#الگوی-رایج-parentchild)
+29. [الگوی Observer](#الگوی-observer)
+30. [مثال کامل از چرخه خراب با `shared_ptr`](#مثال-کامل-از-چرخه-خراب-با-shared_ptr)
+31. [اصلاح مثال با `weak_ptr`](#اصلاح-مثال-با-weak_ptr)
+32. [`use_count()` در `weak_ptr`](#use_count-در-weak_ptr)
+33. [تفاوت Strong Count و Weak Count](#تفاوت-strong-count-و-weak-count)
+34. [Control Block چیست؟](#control-block-چیست)
+35. [چرا وجود `weak_ptr` باعث زنده ماندن Object نمی‌شود؟](#چرا-وجود-weak_ptr-باعث-زنده-ماندن-object-نمیشود)
+36. [تفاوت `weak_ptr` و `shared_ptr`](#تفاوت-weak_ptr-و-shared_ptr)
+37. [تفاوت `weak_ptr` و `unique_ptr`](#تفاوت-weak_ptr-و-unique_ptr)
+38. [چه زمانی باید از `weak_ptr` استفاده کنیم؟](#چه-زمانی-باید-از-weak_ptr-استفاده-کنیم)
+39. [چه زمانی نباید از `weak_ptr` استفاده کنیم؟](#چه-زمانی-نباید-از-weak_ptr-استفاده-کنیم)
+40. [اشتباهات رایج](#اشتباهات-رایج)
+41. [جمع‌بندی](#جمع-بندی)
 
 ---
 
@@ -1924,7 +1925,6 @@ Non-owning observer of shared ownership
 > **`shared_ptr` می‌گوید «تا وقتی من هستم، Object باید زنده باشد»؛ `weak_ptr` می‌گوید «اگر Object هنوز زنده است، به من اجازه بده آن را ببینم، اما وجود من نباید مانع نابودی آن شود».**
 
 ---
-
 ## 🤝 مشارکت ها
 
 <div align="center">

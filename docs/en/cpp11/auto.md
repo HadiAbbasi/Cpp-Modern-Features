@@ -3,8 +3,8 @@
 [🇺🇸 English](./auto.md) | [🇮🇷 فارسی](../../fa/cpp11/auto.md)
 
 </div>
-
 ---
+
 # auto type
 
 > **Introduced in:** C++11
@@ -162,7 +162,6 @@ Avoid using `auto` when the deduced type is not obvious to the reader, as it may
 The `auto` keyword, introduced in C++11, significantly improves code readability by allowing the compiler to deduce variable types automatically. It is particularly useful when working with templates, iterators, lambda expressions, and complex type declarations, while introducing **no runtime overhead** because type deduction happens entirely at compile time.
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

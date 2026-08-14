@@ -3,7 +3,6 @@
 [🇺🇸 English](./std_move.md) | [🇮🇷 فارسی](../../fa/cpp11/std_move.md)
 
 </div>
-
 ---
 
 # Move Semantics, std::move, and the Concepts of lvalue and rvalue in C++
@@ -630,6 +629,7 @@ Many containers, such as `std::vector`, use move during reallocation only if the
 
 Note: This article has been prepared and edited using the explanations and rewriting done by ChatGPT (OpenAI) and Qwen (Alibaba).
 
+---
 ## 🤝 Contributers
 
 <div align="center">

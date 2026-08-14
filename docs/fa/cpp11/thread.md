@@ -3,6 +3,7 @@
 [🇺🇸 English](../../en/cpp11/thread.md) | [🇮🇷 فارسی](./thread.md)
 
 </div>
+---
 
 # Thread — نخ
 
@@ -337,6 +338,7 @@ Mutex تضمین می‌کند که بخش‌های مشخصی از داده‌�
 
 [Learn Mutex](./mutex.md)
 
+---
 ## 🤝 مشارکت‌کنندگان
 
 <div align="center">

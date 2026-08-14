@@ -3,8 +3,8 @@
 [🇺🇸 English](./consteval.md) | [🇮🇷 فارسی](../../fa/cpp20/consteval.md)
 
 </div>
-
 ---
+
 # A Simple Guide to constinit in C++: Controlling Initialization
 
 ## Table of Contents
@@ -909,9 +909,8 @@ constinit
 
 Therefore, when you have a global or `thread_local` variable whose **initialization must be performed as constant initialization, while the variable itself must remain mutable**, `constinit` is the feature specifically designed for that requirement.
 
-🤝
-
-## Contributors
+---
+## 🤝 Contributors
 
 <div align="center">
 

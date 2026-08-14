@@ -3,53 +3,61 @@
 [🇺🇸 English](./weak_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/weak_ptr.md)
 
 </div>
-
 ---
+
 # `std::weak_ptr` in C++11 — A Complete and Simple Guide to Ownership, `shared_ptr` Cycles, and Preventing Memory Leaks
 
 ## Table of Contents
 
-1. Introduction
-2. What problem existed before `weak_ptr`?
-3. How does `shared_ptr` manage ownership?
-4. The main problem with `shared_ptr`: Ownership Cycles
-5. Why can't the Reference Counter reach zero?
-6. What exactly is `weak_ptr`?
-7. The fundamental difference between `shared_ptr` and `weak_ptr`
-8. Does `weak_ptr` own the object?
-9. How does `weak_ptr` break ownership cycles?
-10. Creating a `weak_ptr`
-11. Putting a `weak_ptr` into a Setter
-12. Getting a `weak_ptr` from a Getter
-13. Should a Getter return `weak_ptr`?
-14. How to make a copy of a `weak_ptr`
-15. Copy and Move with `weak_ptr`
-16. `reset()` with `weak_ptr`
-17. Checking whether a `weak_ptr` is empty
-18. What is `expired()`?
-19. Converting `weak_ptr` to `shared_ptr` with `lock()`
-20. Why is `lock()` important?
-21. Accessing the underlying object after `lock()`
-22. Accessing object members through `weak_ptr`
-23. Does `weak_ptr` have `operator->`?
-24. Does `weak_ptr` provide a Raw Pointer?
-25. The dangers of using a Raw Pointer
-26. How can `weak_ptr` prevent a Memory Leak?
-27. Using `weak_ptr` inside a class
-28. The common Parent/Child pattern
-29. The Observer pattern
-30. A complete example of a broken cycle with `shared_ptr`
-31. Fixing the example with `weak_ptr`
-32. `use_count()` in `weak_ptr`
-33. Strong Count vs. Weak Count
-34. What is the Control Block?
-35. Why doesn't `weak_ptr` keep the object alive?
-36. `weak_ptr` vs. `shared_ptr`
-37. `weak_ptr` vs. `unique_ptr`
-38. When should we use `weak_ptr`?
-39. When should we not use `weak_ptr`?
-40. Common mistakes
-41. Final summary
+1. [Introduction](#introduction)
+2. [What problem existed before `weak_ptr`?](#what-problem-existed-before-weak_ptr)
+3. [How does `shared_ptr` manage ownership?](#how-does-shared_ptr-manage-ownership)
+4. [The main problem with `shared_ptr`: Ownership Cycles](#the-main-problem-with-shared_ptr-ownership-cycles)
+5. [Why can't the Reference Counter reach zero?](#why-cant-the-reference-counter-reach-zero)
+6. [What exactly is `weak_ptr`?](#what-exactly-is-weak_ptr)
+7. [The fundamental difference between `shared_ptr` and `weak_ptr`](#the-fundamental-difference-between-shared_ptr-and-weak_ptr)
+8. [Does `weak_ptr` own the object?](#does-weak_ptr-own-the-object)
+9. [How does `weak_ptr` break ownership cycles?](#how-does-weak_ptr-break-ownership-cycles)
+10. [Creating a `weak_ptr`](#creating-a-weak_ptr)
+11. [Putting a `weak_ptr` into a Setter](#putting-a-weak_ptr-into-a-setter)
+12. [Getting a `weak_ptr` from a Getter](#getting-a-weak_ptr-from-a-getter)
+13. [Should a Getter return `weak_ptr`?](#should-a-getter-return-weak_ptr)
+14. [How to make a copy of a `weak_ptr`](#how-to-make-a-copy-of-a-weak_ptr)
+15. [Copy and Move with `weak_ptr`](#copy-and-move-with-weak_ptr)
+16. [`reset()` with `weak_ptr`](#reset-with-weak_ptr)
+17. [Checking Whether a `weak_ptr` Is Empty](#checking-whether-a-weak_ptr-is-empty)
+18. [What is `expired()`?](#what-is-expired)
+19. [Converting `weak_ptr` to `shared_ptr` with `lock()`](#converting-weak_ptr-to-shared_ptr-with-lock)
+20. [Why is `lock()` important?](#why-is-lock-important)
+21. [Accessing the Underlying Object After `lock()`](#accessing-the-underlying-object-after-lock)
+22. [Accessing Object Members Through `weak_ptr`](#accessing-object-members-through-weak_ptr)
+23. [Does `weak_ptr` Have `operator->`?](#does-weak_ptr-have-operator)
+24. [Does `weak_ptr` Provide a Raw Pointer?](#does-weak_ptr-provide-a-raw-pointer)
+25. [The Dangers of Using a Raw Pointer](#the-dangers-of-using-a-raw-pointer)
+26. [How Can `weak_ptr` Prevent a Memory Leak?](#how-can-weak_ptr-prevent-a-memory-leak)
+27. [Using `weak_ptr` Inside a Class](#using-weak_ptr-inside-a-class)
+28. [The Common Parent/Child Pattern](#the-common-parentchild-pattern)
+29. [The Observer Pattern](#the-observer-pattern)
+30. [A Complete Example of a Broken Cycle with `shared_ptr`](#a-complete-example-of-a-broken-cycle-with-shared_ptr)
+31. [Fixing the Example with `weak_ptr`](#fixing-the-example-with-weak_ptr)
+32. [`use_count()` in `weak_ptr`](#use_count-in-weak_ptr)
+33. [Strong Count vs. Weak Count](#strong-count-vs-weak-count)
+34. [What Is the Control Block?](#what-is-the-control-block)
+35. [Why Doesn't `weak_ptr` Keep the Object Alive?](#why-doesnt-weak_ptr-keep-the-object-alive)
+36. [`weak_ptr` vs. `shared_ptr`](#weak_ptr-vs-shared_ptr)
+37. [`weak_ptr` vs. `unique_ptr`](#weak_ptr-vs-unique_ptr)
+38. [When Should We Use `weak_ptr`?](#when-should-we-use-weak_ptr)
+39. [When Should We Not Use `weak_ptr`?](#when-should-we-not-use-weak_ptr)
+40. [Common Mistakes](#common-mistakes)
+41. [A More Realistic Complete Example](#a-more-realistic-complete-example)
+42. [An Important Point About Getters](#an-important-point-about-getters)
+43. [Why Don't We Directly Convert `weak_ptr` to `shared_ptr`?](#why-dont-we-directly-convert-weak_ptr-to-shared_ptr)
+44. [How Can We Understand `lock()` in Very Simple Terms?](#how-can-we-understand-lock-in-very-simple-terms)
+45. [Can `weak_ptr` Itself Cause a Memory Leak?](#can-weak_ptr-itself-cause-a-memory-leak)
+46. [A Subtle Point About `use_count()`](#a-subtle-point-about-use_count)
+47. [`weak_ptr` in One Sentence](#weak_ptr-in-one-sentence)
+48. [Final Summary](#final-summary)
+49. [Final Conclusion](#final-conclusion)
 
 ---
 
@@ -1906,7 +1914,6 @@ If a programmer remembers only one sentence from this article, it should be this
 > **`shared_ptr` says, "As long as I exist, the object should remain alive." `weak_ptr` says, "If the object is still alive, let me see and use it, but my existence should never prevent the object from being destroyed."**
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

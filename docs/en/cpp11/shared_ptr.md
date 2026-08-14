@@ -3,7 +3,6 @@
 [🇺🇸 English](./shared_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/shared_ptr.md)
 
 </div>
-
 ---
 
 # Complete Guide to `std::shared_ptr` in C++11 — Shared Ownership, Reference Counting, and Memory Management
@@ -1410,7 +1409,6 @@ If the answer is yes, `shared_ptr` may be the right tool.
 If the answer is no, `unique_ptr`, a reference, or a non-owning raw pointer may provide a simpler and more precise design.
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

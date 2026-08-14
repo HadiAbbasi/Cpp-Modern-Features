@@ -1,8 +1,9 @@
 <div align="right">
 
-[   English](./list-initialization.md) | [🇮🇷 فارسی](../../fa/cpp11/list-initialization.md)
+[ English](./list-initialization.md) | [🇮🇷 فارسی](../../fa/cpp11/list-initialization.md)
 
 </div>
+---
 
 # std::initializer_list in C++
 >In C++, the std::initializer_list is a class template that allows us to initialize a lightweight object with a list of values. An initializer list is used to set values to variables, arrays, classes, functions, constructors of classes, and standard containers like vectors in a convenient way.
@@ -236,9 +237,9 @@ int main()
 - **Size cannot be changed:** The size of initializer_list is fixed at compile time. It does not have a dynamic nature as a standard container such as a vector. The size of the initializer cannot be changed once it has been created.
 - **Cannot access the elements randomly:** initializer_list supports only forward iteration. We cannot access the desired or random element using the index as standard containers.
  - **Immutable elements:** The elements within an initializer_list are immutable. Once the list is created, the values cannot be modified. Any attempt to modify the elements through the iterator or by any other means will result in a compilation error.
+
+---
 ## 🤝 Contributors
-
-
 
 <div align="center">
 

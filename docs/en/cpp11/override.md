@@ -3,8 +3,8 @@
 [🇺🇸 English](./override.md) | [🇮🇷 فارسی](../../fa/cpp11/override.md)
 
 </div>
-
 ---
+
 # The `override` Directive in `C++11` and Later
 
 Table of Contents
@@ -469,9 +469,8 @@ git push origin devs
 
 the last two words are there to ensure that if we are on a branch other than `devs`, it gives an error, `Override` behaves similarly: if we make a mistake while overriding and rewriting a parent function, the compiler gives us an appropriate error!
 
-🤝
-
-## Contributions
+---
+## 🤝 Contributions
 
 <div align="center">
 

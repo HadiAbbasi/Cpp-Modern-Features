@@ -3,7 +3,7 @@
 [🇺🇸 English](./thread.md) | [🇮🇷 فارسی](../../fa/cpp11/thread.md)
 
 </div>
-
+---
 
 # thread 
 >**A thread is a representation of an execution/computation in a program. In C++11, as in much modern computing, a thread can – and usually does – share an address space with other threads. In this, it differs from a process, which generally does not directly share data with other processes. C++ has had a host of threads implementations for a variety of hardware and operating systems in the past, what’s new is a standard-library threads library.**
@@ -185,7 +185,7 @@ int  main(){
 
 [Learn Mutex](./mutex.md)
 
-
+---
 ## 🤝 Contributors
 
 <div align="center">

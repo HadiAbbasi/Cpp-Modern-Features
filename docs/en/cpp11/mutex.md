@@ -3,6 +3,7 @@
 [🇺🇸 English](./mutex.md) | [🇮🇷 فارسی](../../fa/cpp11/mutex.md)
 
 </div>
+---
 
 
 # Mutex 
@@ -323,6 +324,8 @@ int main()
     return 0;
 }
 ```
+
+--
 ## 🤝 Contributors
 
 <div align="center">

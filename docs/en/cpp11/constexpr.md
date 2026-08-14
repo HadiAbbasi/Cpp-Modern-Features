@@ -3,7 +3,6 @@
 [🇺🇸 English](./constexpr.md) | [🇮🇷 Persian](../../fa/cpp11/constexpr.md)
 
 </div>
-
 ---
 
 # Understanding `constexpr` in C++: From Basic Concepts to Advanced Applications
@@ -1193,6 +1192,7 @@ The most important point is that we should not think of `constexpr` merely as an
 
 `constexpr` is a language feature for expressing that a value, function, or operation **can participate in constant evaluation**, and this capability is fundamental to many techniques in modern C++, including template metaprogramming, `static_assert`, compile-time data generation, and the design of compile-time APIs.
 
+---
 ## 🤝 Contributions
 
 <div align="center">

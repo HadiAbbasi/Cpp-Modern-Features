@@ -3,8 +3,8 @@
 [🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../fa/cpp20/README.md)
 
 </div>
-
 ---
+
 # C++ 20 Features
 
 ## 📚 C++20 Standards Documentation
@@ -19,7 +19,6 @@
 </div>
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

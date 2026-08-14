@@ -3,7 +3,6 @@
 [🇺🇸 English](./consteval.md) | [🇮🇷 فارسی](../../fa/cpp20/consteval.md)
 
 </div>
-
 ---
 
 # A Simple Guide to `consteval` in C++
@@ -651,9 +650,8 @@ Therefore, `consteval` is **not a tool for making a value immutable**.
 
 It is a tool for **forcing computation to happen at compile time**.
 
-🤝
-
-## Contributors
+---
+## 🤝 Contributors
 
 <div align="center">
 

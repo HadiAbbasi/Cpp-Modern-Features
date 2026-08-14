@@ -3,7 +3,6 @@
 [🇺🇸 English](./unique_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/unique_ptr.md)
 
 </div>
-
 ---
 
 # Complete Guide to `std::unique_ptr` in C++11 — Unique Ownership and Smart Memory Management
@@ -1193,7 +1192,6 @@ The key benefit of `unique_ptr` is therefore not simply that we do not have to w
 Its real benefit is that **ownership and lifetime are expressed explicitly, safely, and automatically in the structure of the program.**
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

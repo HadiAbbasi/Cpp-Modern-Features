@@ -3,8 +3,8 @@
 [🇺🇸 English](./shared_mutex.md) | [🇮🇷 فارسی](../../fa/cpp17/shared_mutex.md)
 
 </div>
-
 ---
+
 # `std::shared_mutex` in C++17
 
 ## Table of Contents
@@ -154,7 +154,6 @@ int main() {
 `std::shared_mutex` is a powerful tool for optimizing high-read concurrency in C++. By correctly utilizing `std::shared_lock` and `std::unique_lock`, you can significantly improve the throughput of your multi-threaded applications.
 
 ---
-
 ## 🤝 Contributors
 
 | GitHub | LinkedIn | Email | Site | Telegram |
