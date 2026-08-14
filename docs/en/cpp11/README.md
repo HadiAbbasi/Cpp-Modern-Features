@@ -21,6 +21,7 @@
 | [override](./override.md)  |
 | [std::thread](./thread.md) |
 | [constexpr](./constexpr.md)|
+| [constexpr](./list-initialization.md)|
 
 </div>
 
