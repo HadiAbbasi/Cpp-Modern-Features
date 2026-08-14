@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](../../en/cpp11/unique_ptr.md) | [🇮🇷 فارسی](./unique_ptr.md)
+[🇺🇸 English](../../en/cpp11/shared_ptr.md) | [🇮🇷 فارسی](./shared_ptr.md)
 
 </div>
 
