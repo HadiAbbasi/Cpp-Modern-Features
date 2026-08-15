@@ -28,7 +28,7 @@
 
 </div>
 
-Note: This article was prepared and edited using explanations and rewrites provided by ChatGPT (OpenAI) and Qwen (Alibaba).
+Note: Some parts of this article was prepared and edited using explanations and rewrites provided by ChatGPT (OpenAI) and Qwen (Alibaba).
 
 ---
 ## 🤝 Contributors
