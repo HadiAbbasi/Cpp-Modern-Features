@@ -4,16 +4,15 @@
 
 </div>
 ---
-
+<div align="center">
+In the name of GOD
+  
 # C++ Modern Features
 
 ## 📚 C++ Standards Documentation
 
-<div align="center">
   <img src="assets/img1.png" alt="Image" />
-</div>
 
-<div align="center">
 
 | C++ Version | Link to Documentation Page                                                                                  |
 | ----------- | ----------------------------------------------------------------------------------------------------------- |
