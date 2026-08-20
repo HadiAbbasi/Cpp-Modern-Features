@@ -25,7 +25,8 @@
 | [std::unique_ptr](./unique_ptr.md)|
 | [std::shared_ptr](./shared_ptr.md)|
 | [std::weak_ptr](./weak_ptr.md)|
-| [std::weak_ptr](./chrono.md)|
+| [chorno](./chrono.md)|
+| [async](./async.md)|
 
 </div>
 
