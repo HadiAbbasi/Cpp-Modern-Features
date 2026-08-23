@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp11/unique_ptr.md) | [🇮🇷 فارسی](./unique_ptr.md)
 
