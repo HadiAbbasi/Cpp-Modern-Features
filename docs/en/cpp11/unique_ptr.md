@@ -1,98 +1,101 @@
 <div align="right">
 
-[🇺🇸 English](./unique_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/unique_ptr.md)
+[🇺🇸 English](../../en/cpp11/unique_ptr.md) | [🇮🇷 فارسی](./unique_ptr.md)
 
 </div>
----
 
-# Complete Guide to `std::unique_ptr` in C++11 — Unique Ownership and Smart Memory Management
+----
+
+# Complete Guide to `std::unique_ptr` in C++11: Unique Ownership and Smart Memory Management
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [What Was the Problem Before C++11?](#what-was-the-problem-before-c11)
-- [Exceptions Made the Problem More Serious](#exceptions-made-the-problem-more-serious)
-- [What Is the Solution?](#what-is-the-solution)
-- [What Is unique_ptr?](#what-is-unique_ptr)
-- [Why Is It Called unique?](#why-is-it-called-unique)
-- [Transferring Ownership with move](#transferring-ownership-with-move)
-- [Why Can We Move a unique_ptr but Not Copy It?](#why-can-we-move-a-unique_ptr-but-not-copy-it)
-- [What Is reset()?](#what-is-reset)
-- [reset() with a New Object](#reset-with-a-new-object)
-- [Can a unique_ptr Be Empty?](#can-a-unique_ptr-be-empty)
-- [Using unique_ptr in a Setter](#using-unique_ptr-in-a-setter)
-- [Why Can Passing unique_ptr by Value Be a Good Design?](#why-can-passing-unique_ptr-by-value-be-a-good-design)
-- [How Should a Getter for unique_ptr Be Designed?](#how-should-a-getter-for-unique_ptr-be-designed)
-- [What If We Only Want to Give Access to the Object?](#what-if-we-only-want-to-give-access-to-the-object)
-- [A Better Getter When the Object Always Exists](#a-better-getter-when-the-object-always-exists)
-- [A Read-Only Getter](#a-read-only-getter)
-- [Is Returning a Raw Pointer from a Getter Dangerous?](#is-returning-a-raw-pointer-from-a-getter-dangerous)
-- [Can get() Cause a Memory Leak?](#can-get-cause-a-memory-leak)
-- [How Can release() Cause a Memory Leak?](#how-can-release-cause-a-memory-leak)
-- [Do Not Confuse get() and release()](#do-not-confuse-get-and-release)
-- [Passing unique_ptr to a Function](#passing-unique_ptr-to-a-function)
-- [What If the Function Only Wants to Use the Object?](#what-if-the-function-only-wants-to-use-the-object)
-- [Using unique_ptr as a Class Member](#using-unique_ptr-as-a-class-member)
-- [unique_ptr and the Destructor](#unique_ptr-and-the-destructor)
-- [Transferring Ownership Between Classes](#transferring-ownership-between-classes)
-- [Can We Return a unique_ptr from a Getter?](#can-we-return-a-unique_ptr-from-a-getter)
-- [Choosing the Right Getter](#choosing-the-right-getter)
-- [Why Should We Usually Avoid Exposing the unique_ptr Itself?](#why-should-we-usually-avoid-exposing-the-unique_ptr-itself)
-- [unique_ptr and const](#unique_ptr-and-const)
-- [unique_ptr and Polymorphism](#unique_ptr-and-polymorphism)
-- [unique_ptr for Arrays](#unique_ptr-for-arrays)
-- [Does unique_ptr Consume a Lot of Memory?](#does-unique_ptr-consume-a-lot-of-memory)
-- [What Is a Custom Deleter?](#what-is-a-custom-deleter)
-- [An Important Note About make_unique](#an-important-note-about-make_unique)
-- [A Common Mistake: Creating Multiple unique_ptr Objects from One Raw Pointer](#a-common-mistake-creating-multiple-unique_ptr-objects-from-one-raw-pointer)
-- [A Common Mistake: Deleting the Result of get()](#a-common-mistake-deleting-the-result-of-get)
-- [A Common Mistake: Keeping a Raw Pointer for Too Long](#a-common-mistake-keeping-a-raw-pointer-for-too-long)
-- [When Should We Use unique_ptr?](#when-should-we-use-unique_ptr)
-- [unique_ptr vs shared_ptr](#unique_ptr-vs-shared_ptr)
-- [An Important Rule for Modern C++ Design](#an-important-rule-for-modern-c-design)
-- [A Complete Example](#a-complete-example)
-- [Final Summary](#final-summary)
-- [Contributors](#contributors)
+- [Introduction](#Introduction)
+- [What Was the Problem Before C++11?](#مشکل-قبل-از-c11-چه-بود)
+- [Exceptions Made the Problem Worse](#isثناها-مشکل-را-جدیتر-میکردند)
+- [What Is the Solution?](#راهحل-چیست)
+- [What Is unique_ptr?](#unique_ptr-چیست)
+- [Why Is It Called unique?](#چرا-نام-آن-unique-is)
+- [Transferring Ownership with move](#انتقال-مالکیت-با-move)
+- [Why Do We Have move but Not copy?](#چرا-copy-نداریم-ولی-move-داریم)
+- [What Is reset?](#reset-چیست)
+- [reset with a New Object](#reset-با-یک-شیء-جدید)
+- [Can We Empty a unique_ptr?](#آیا-میتوانیم-uniqueptr-را-خالی-کنیم)
+- [Using unique_ptr in a Setter](#isفاده-از-uniqueptr-در-setter)
+- [Why Can Taking unique_ptr by Value Be a Good Design?](#چرا-گرفتن-uniqueptr-با-Value-میتواند-طراحی-خوبی-باشد)
+- [How Should a getter for unique_ptr Be Designed?](#getter-برای-uniqueptr-چگونه-باید-باشد)
+- [What If We Only Want to Access the Object?](#اگر-فقط-میخواهیم-به-شیء-دسترسی-بدهیم-چه-کنیم)
+- [A Better getter for an Object That Always Exists](#getter-بهتر-برای-شیئی-که-همیشه-وجود-دارد)
+- [getter for Read-Only Access](#getter-برای-دسترسی-فقط-خواندنی)
+- [Is Returning a raw pointer from a getter Dangerous?](#آیا-برگرداندن-raw-pointer-از-getter-خطرناک-is)
+- [Does get Cause a Memory Leak?](#آیا-get-باعث-memory-leak-میشود)
+- [How Can release Cause a Memory Leak?](#release-چگونه-میتواند-باعث-memory-leak-شود)
+- [Do Not Confuse get and release](#get-و-release-را-با-هم-اشتباه-نگیریم)
+- [Passing unique_ptr to a Function](#انتقال-uniqueptr-به-یک-تابع)
+- [What If the Function Only Wants to Use the Object?](#اگر-تابع-فقط-میخواهد-از-شیء-isفاده-کند-چه-کنیم)
+- [Using unique_ptr in a Class](#isفاده-از-uniqueptr-در-یک-کلاس)
+- [unique_ptr and destructor](#uniqueptr-و-destructor)
+- [Transferring Ownership Between Classes](#انتقال-مالکیت-بین-کلاسها)
+- [Can unique_ptr Be Returned from a getter?](#آیا-میتوان-uniqueptr-را-از-getter-برگرداند)
+- [Choosing the Right getter Based on the Requirement](#getter-مناسب-بر-اساس-نیاز)
+- [Why Is It Better Not to Expose unique_ptr from a Class?](#چرا-بهتر-is-uniqueptr-را-از-کلاس-بیرون-ندهیم)
+- [unique_ptr and const](#uniqueptr-و-const)
+- [unique_ptr and polymorphism](#uniqueptr-و-polymorphism)
+- [unique_ptr for Arrays](#uniqueptr-برای-آرایه)
+- [Does unique_ptr Itself Consume a Lot of Memory?](#آیا-uniqueptr-itself-حافظه-زیادی-مصرف-میکند)
+- [What Is a custom deleter?](#custom-deleter-چیست)
+- [One Very Important Point: make_unique](#یک-نکته-بسیار-مهم-make_unique)
+- [A Common Mistake: Creating Multiple unique_ptrs from One raw Pointer](#یک-اشتباه-رایج-ساختن-چند-uniqueptr-از-یک-raw-pointer)
+- [Common Mistake: Deleting the Result of get](#اشتباه-رایج-delete-کردن-نتیجه-get)
+- [Common Mistake: Keeping a raw Pointer for Too Long](#اشتباه-رایج-نگه-داشتن-raw-pointer-برای-مدت-طولانی)
+- [When Should We Use unique_ptr?](#چه-زمانی-از-uniqueptr-isفاده-کنیم)
+- [Difference Between unique_ptr and shared_ptr](#تفاوت-uniqueptr-و-sharedptr)
+- [An Important Rule in Modern C++ Design](#قانون-مهم-در-طراحی-مدرن-c)
+- [A Complete Example](#یک-نمونه-کامل)
+- [Final Summary](#جمعبندی-نهایی)
+- [Contributions](#مشارکت-ها)
+
+---
 
 ## Introduction
 
-The concept of `std::unique_ptr` is one of the most important tools for memory management in modern C++. It was introduced with the C++11 standard.
+The `std::unique_ptr` smart pointer is one of the most important memory-management tools in modern C++, introduced with the C++11 standard.
 
-The term `unique_ptr` is designed for situations where a dynamically allocated object has exactly **one clear owner**.
+`unique_ptr` is designed for situations where an object in dynamic memory has **exactly one owner**.
 
-The core idea is simple: as long as a `unique_ptr` is alive, it owns the object it points to. When the `unique_ptr` is destroyed, the owned object is automatically released as well.
+The core behavior of this smart pointer is simple: as long as the `unique_ptr` is alive, it owns the target object. When the `unique_ptr` is destroyed, it automatically releases and destroys the object it owns.
 
 ---
 
 ## What Was the Problem Before C++11?
 
-The concept of manual memory management in older versions of C++ was commonly based on `new` and `delete`.
+Memory management in older C++ code was commonly done using `new` and `delete`.
 
-The following is a simple example:
+عبارت زیر نمونهٔ ساده‌ای از این روش is:
 
 ```cpp
 MyClass* ptr = new MyClass();
 
-// Use ptr
+// use ptr
 
 delete ptr;
 ```
 
-The main problem with this approach is that the programmer is fully responsible for releasing the allocated memory.
+The main problem with this approach is that the programmer is fully responsible for releasing the memory.
 
-The following code causes a memory leak if `delete` is forgotten:
+عبارت زیر اگر فراموش شود، باعث نشت حافظه می‌شود:
 
 ```cpp
 MyClass* ptr = new MyClass();
 
-// Use ptr
+// use ptr
 
-// delete ptr; forgotten
+// delete ptr; has been forgotten
 ```
 
-Another problem occurs when a function has multiple exit paths.
+Another problem arises when a function has multiple exit paths.
 
-Consider the following example:
+عبارت زیر را در نظر بگیرید:
 
 ```cpp
 void process()
@@ -108,30 +111,30 @@ void process()
 }
 ```
 
-The problem here is that if `someCondition()` returns `true`, the function exits before reaching `delete`.
+The problem in this example is that if `someCondition()` returns `true`, the function exits before reaching `delete`.
 
-As a result, the dynamically allocated memory is never released.
+As a result, the memory allocated with `new` is not released, causing a memory leak.
 
 ---
 
-# Exceptions Made the Problem More Serious
+## Exceptions Made the Problem Worse
 
-Another important concept is exception handling.
+Another important problem is the presence of exceptions.
 
-Consider the following code:
+عبارت زیر را ببینید:
 
 ```cpp
 void process()
 {
     MyClass* ptr = new MyClass();
 
-    doSomething(); // May throw an exception
+    doSomething(); // may throw an exception
 
     delete ptr;
 }
 ```
 
-The problem is that if `doSomething()` throws an exception, normal execution stops and `delete ptr` may never be executed.
+The problem is that if `doSomething()` throws an exception, normal function execution is interrupted and `delete ptr` may never be executed.
 
 The result can be a memory leak.
 
@@ -141,23 +144,23 @@ The result can be a memory leak.
 
 RAII is one of the most important principles in C++.
 
-The term RAII stands for `Resource Acquisition Is Initialization`.
+RAII stands for `Resource Acquisition Is Initialization`.
 
-The basic idea of RAII is to associate ownership of a resource with the lifetime of an object.
+The idea behind RAII is to tie resource ownership to the lifetime of an object.
 
-In simpler terms:
+Simply put:
 
-> When the object that owns a resource is created, it acquires the resource, and when the object is destroyed, it releases the resource.
+> When the object that owns a resource is created, it acquires the resource; when the object is destroyed, it releases the resource.
 
-The concept of `std::unique_ptr` is built around this principle.
+اشاره گر `std::unique_ptr` دقیقاً بر همین اساس کار می‌کند.
 
 ---
 
-# What Is unique_ptr?
+# اشاره گر What Is unique_ptr?
 
 `std::unique_ptr<T>` is a smart pointer that owns an object of type `T`.
 
-The following creates a `unique_ptr`:
+عبارت زیر یک `unique_ptr` ایجاد می‌کند:
 
 ```cpp
 #include <memory>
@@ -165,44 +168,40 @@ The following creates a `unique_ptr`:
 std::unique_ptr<MyClass> ptr(new MyClass());
 ```
 
-However, in C++14 and later, the recommended approach is to use `std::make_unique`:
+However, the recommended approach in C++14 and later is to use `std::make_unique`:
 
 ```cpp
 auto ptr = std::make_unique<MyClass>();
 ```
 
-The important concept is that the `unique_ptr` is responsible for deleting the object it owns.
+An important point is that `unique_ptr` is responsible for deleting the object itself.
 
-For example:
+عبارت زیر causes زمانی که `ptr` از scope خارج شود، شیء نیز آزاد شود:
 
 ```cpp
 void process()
 {
     auto ptr = std::make_unique<MyClass>();
 
-    // Use ptr
+    // use ptr
 }
 ```
 
-When `ptr` goes out of scope, the object is automatically released.
-
-There is no need to write `delete`.
+The point of this code is that we no longer need to write `delete` manually.
 
 ---
 
 # Why Is It Called unique?
 
-The word `unique` refers to unique ownership.
-
-The following code is not allowed:
+The word `unique` refers to unique ownership. The following is not allowed:
 
 ```cpp
 auto ptr1 = std::make_unique<MyClass>();
 
-auto ptr2 = ptr1; // Error
+auto ptr2 = ptr1; // خطا
 ```
 
-The reason is that if two `unique_ptr` objects owned the same object, it would be unclear which one should delete it.
+The reason is that if two `unique_ptr` objects owned the same object, it would be unclear which one should destroy it.
 
 ---
 
@@ -210,7 +209,7 @@ The reason is that if two `unique_ptr` objects owned the same object, it would b
 
 A `unique_ptr` cannot be copied, but it can be moved.
 
-The following transfers ownership from `ptr1` to `ptr2`:
+عبارت زیر مالکیت را از `ptr1` به `ptr2` منتقل می‌کند:
 
 ```cpp
 auto ptr1 = std::make_unique<MyClass>();
@@ -218,34 +217,34 @@ auto ptr1 = std::make_unique<MyClass>();
 auto ptr2 = std::move(ptr1);
 ```
 
-After this operation, `ptr2` owns the object.
+The important point is that after this operation, `ptr2` owns the object.
 
-The important point is that `ptr1` no longer owns the object and is typically empty, meaning it contains `nullptr`.
+`ptr1` is no longer the owner of the object and will normally contain `nullptr`.
 
-You can check its state as follows:
+عبارت زیر برای بررسی آن مناسب is:
 
 ```cpp
 if (ptr1 == nullptr)
 {
-    // ptr1 no longer owns an object
+    // ptr1 no longer owns the object
 }
 ```
 
 ---
 
-# Why Can We Move a unique_ptr but Not Copy It?
+# Why Do We Have move but Not copy?
 
-Copying means that after the operation, both objects should remain valid and independent.
+Copying means that after the copy, both objects remain independent and valid.
 
-The following therefore does not make sense for `unique_ptr`:
+عبارت زیر برای `unique_ptr` معنی درستی ندارد و باعث خطای کامپایلر می شود:
 
 ```cpp
 auto ptr2 = ptr1;
 ```
 
-Moving is different because ownership is transferred from one object to another.
+متد move متفاوت is؛ در move مالکیت از یک شیء به شیء دیگر منتقل می‌شود.
 
-The standard operation is:
+عبارت isاندارد آن چنین is:
 
 ```cpp
 auto ptr2 = std::move(ptr1);
@@ -253,44 +252,44 @@ auto ptr2 = std::move(ptr1);
 
 ---
 
-# What Is reset()?
+# متد What Is reset?
 
-The `reset()` function is used to change ownership or release the currently owned object.
+The `reset()` method is used to replace ownership or release the currently owned object.
 
-The following releases the current object:
+عبارت زیر شیء فعلی را آزاد می‌کند:
 
 ```cpp
 ptr.reset();
 ```
 
-If `ptr` owns an object, that object is deleted and `ptr` becomes empty.
+This operation means that if `ptr` owns an object, that object is destroyed and `ptr` becomes empty.
 
-You can check its state as follows:
+عبارت بررسی وضعیت آن چنین is:
 
 ```cpp
 if (!ptr)
 {
-    // ptr is empty
+    // ptr is empty 
 }
 ```
 
 ---
 
-# reset() with a New Object
+# عملیات reset with a New Object
 
-`reset()` can also make the `unique_ptr` take ownership of another object.
+`reset` can also make the `unique_ptr` take ownership of a new object.
 
-For example:
+عبارت نمونه چنین is:
 
 ```cpp
 ptr.reset(new MyClass());
 ```
 
-If `ptr` already owns another object, the old object is first released and then ownership of the new object is assigned to `ptr`.
+This code means that if `ptr` already owns another object, the old object is released first and then `ptr` takes ownership of the new object.
 
-For modern C++, however, `make_unique` is generally preferred for object creation.
+In modern C++, it is better to use `make_unique` whenever possible.
 
-The preferred initialization syntax is:
+عبارت مناسب‌تر برای ایجاد اولیه چنین is:
 
 ```cpp
 auto ptr = std::make_unique<MyClass>();
@@ -298,22 +297,22 @@ auto ptr = std::make_unique<MyClass>();
 
 ---
 
-# Can a unique_ptr Be Empty?
+# Can We Empty a unique_ptr?
 
-A `unique_ptr` can exist without owning an object.
+A `unique_ptr` can be empty and own no object at any time.
 
-The following creates an empty `unique_ptr`:
+عبارت زیر یک `unique_ptr` خالی ایجاد می‌کند:
 
 ```cpp
 std::unique_ptr<MyClass> ptr;
 ```
 
-You can check whether it is empty with:
+بررسی خالی بودن آن نیز ساده is:
 
 ```cpp
 if (!ptr)
 {
-    // ptr is empty
+    // ptr خالی است
 }
 ```
 
@@ -321,9 +320,9 @@ if (!ptr)
 
 # Using unique_ptr in a Setter
 
-A setter that receives a `unique_ptr` should be designed according to the ownership semantics.
+A setter that accepts a `unique_ptr` should be designed around ownership semantics.
 
-A common and clear approach is to receive the `unique_ptr` by value:
+A common and explicit way to express ownership transfer is to accept `std::unique_ptr&&`, but the preferred setter design here is to take the `unique_ptr` by value, as follows:
 
 ```cpp
 class Owner
@@ -339,7 +338,7 @@ public:
 };
 ```
 
-The idea is that the caller explicitly transfers ownership:
+This design means that the caller must explicitly transfer ownership:
 
 ```cpp
 auto obj = std::make_unique<MyClass>();
@@ -347,15 +346,17 @@ auto obj = std::make_unique<MyClass>();
 owner.setValue(std::move(obj));
 ```
 
-After this transfer, `owner` owns the object and `obj` no longer owns it.
+The important point is that after this transfer, `owner` owns the object and `obj` no longer does.
 
 ---
 
-# Why Can Passing unique_ptr by Value Be a Good Design?
+# Why Can Taking unique_ptr by Value Be a Good Design?
 
-Receiving a `unique_ptr` by value clearly communicates that the function is going to receive ownership of an object.
+Taking a `unique_ptr` by value in a setter has the advantage of clearly communicating that:
 
-For example:
+> the function receives ownership of an object.
+
+پس یک Setter درست به این شکل is:
 
 ```cpp
 void setValue(std::unique_ptr<MyClass> ptr)
@@ -364,23 +365,23 @@ void setValue(std::unique_ptr<MyClass> ptr)
 }
 ```
 
-The caller must explicitly use `std::move` when transferring ownership:
+Another benefit is that if the caller wants to transfer ownership, it must explicitly use `std::move`.
+
+بنابراین عبارت زیر کاملاً گویis:
 
 ```cpp
 owner.setValue(std::move(obj));
 ```
 
-This makes the ownership transfer explicit and easy to understand.
-
 ---
 
-# How Should a Getter for unique_ptr Be Designed?
+# عملیات How Should a getter for unique_ptr Be Designed?
 
-A getter is one of the most important parts of API design.
+A getter is an important part of class design.
 
-Just because a class internally contains a `unique_ptr` does not mean that the class should expose that `unique_ptr` directly.
+The important point is that we should not expose the `unique_ptr` itself simply because the class member happens to be a `unique_ptr`.
 
-The following is usually not a good design:
+عبارت زیر معمولاً انتخاب مناسبی is not:
 
 ```cpp
 std::unique_ptr<MyClass>& getValue()
@@ -389,23 +390,23 @@ std::unique_ptr<MyClass>& getValue()
 }
 ```
 
-The problem is that the caller can now manipulate the ownership of the class.
+The problem with this design is that the caller can modify the class's internal ownership.
 
-For example:
+For example, the following could happen:
 
 ```cpp
 owner.getValue().reset();
 ```
 
-The caller has now been given the ability to destroy the object owned by the class.
+This operation allows the caller to destroy the object owned by the class.
 
 ---
 
-# What If We Only Want to Give Access to the Object?
+# What If We Only Want to Access the Object?
 
-A better approach is usually to **keep ownership inside the class and expose only access to the object**.
+A better approach is to **keep ownership inside the class and expose access to the object only.**
 
-For a nullable object, a suitable getter is:
+عبارت زیر برای یک عضو nullable انتخاب مناسبی is:
 
 ```cpp
 MyClass* getValue()
@@ -414,9 +415,9 @@ MyClass* getValue()
 }
 ```
 
-The `get()` function returns a raw pointer to the object without transferring ownership.
+`get()` can return the raw pointer to the object, but it does not transfer ownership.
 
-The caller can use it like this:
+عملکرد caller می‌تواند چنین باشد:
 
 ```cpp
 MyClass* ptr = owner.getValue();
@@ -427,15 +428,13 @@ if (ptr)
 }
 ```
 
-The important point is that the caller does not own `ptr` and must not delete it.
+مهم این is که caller مالک `ptr` is not و نباید آن را با `delete` آزاد کند.
 
 ---
 
-# A Better Getter When the Object Always Exists
+# متد A Better getter for an Object That Always Exists
 
-If the class guarantees that the object always exists, returning a reference can be a better design.
-
-For example:
+If the class guarantees that the object always exists, returning a reference can be a better design. For example:
 
 ```cpp
 MyClass& getValue()
@@ -444,7 +443,7 @@ MyClass& getValue()
 }
 ```
 
-The caller can then use it as follows:
+مفهوم isفاده از آن نیز ساده is:
 
 ```cpp
 owner.getValue().doSomething();
@@ -452,15 +451,15 @@ owner.getValue().doSomething();
 
 The advantage is that the caller does not have to deal with `nullptr`.
 
-The important requirement is that `value` must actually be valid whenever the getter is called.
+The important requirement is that `value` must really always be valid.
 
 ---
 
-# A Read-Only Getter
+# متد getter for Read-Only Access
 
-If the caller should not be able to modify the internal object, `const` is useful.
+If we do not want the caller to modify the internal object, `const` is an appropriate choice.
 
-For example:
+عبارت نمونه چنین is:
 
 ```cpp
 const MyClass& getValue() const
@@ -469,17 +468,15 @@ const MyClass& getValue() const
 }
 ```
 
-This design allows the caller to read the object but prevents modification through the returned reference.
+This design allows the caller to read the object but not modify it.
 
 ---
 
-# Is Returning a Raw Pointer from a Getter Dangerous?
+# Is Returning a raw pointer from a getter Dangerous?
 
-A raw pointer itself is not necessarily a problem.
+A raw pointer is not inherently a problem.
 
-The problem occurs when the caller incorrectly assumes that the raw pointer represents ownership.
-
-The following is dangerous:
+The problem occurs when the caller assumes that the raw pointer owns the object. عبارت خطرناک زیر نباید انجام شود:
 
 ```cpp
 MyClass* ptr = owner.getValue();
@@ -487,63 +484,69 @@ MyClass* ptr = owner.getValue();
 delete ptr;
 ```
 
-The problem is that `ptr` does not own the object. The `unique_ptr` still owns it.
+Here, `ptr` does not own the object, while the `unique_ptr` still considers itself the owner.
 
-As a result, the `unique_ptr` may later attempt to delete an object that has already been deleted.
-
-This can lead to a double delete and undefined behavior.
+The result can be a `double delete`—deleting the heap object twice—and therefore undefined behavior.
 
 ---
 
-# Can get() Cause a Memory Leak?
+# خطر مهم‌تر raw pointer؛ dangling pointer
 
-The `get()` function itself does not cause a memory leak.
+Another danger occurs when we keep a raw pointer after the original owner has destroyed the object. عبارت نمونه:
 
-The following simply creates a non-owning raw pointer:
+```cpp
+MyClass* ptr = owner.getValue();
+
+owner.reset();
+
+ptr->doSomething(); // خطرناک
+```
+
+After `reset`, the object has most likely been destroyed, and `ptr` now points to memory that is no longer associated with that object. Such a pointer is called a `dangling pointer`.
+
+---
+
+# Does get Cause a Memory Leak?
+
+The important point is that `get()` itself does not cause a memory leak. It only gives the caller a non-owning raw pointer:
 
 ```cpp
 MyClass* ptr = value.get();
 ```
 
-A memory leak usually occurs when ownership is incorrectly separated from the `unique_ptr`.
-
-The important function here is `release()`:
+A memory leak usually occurs when ownership is improperly detached from the `unique_ptr`.
 
 ```cpp
 MyClass* ptr = value.release();
 ```
 
-`release()` is completely different from `get()`.
+`release()` and `get()` are fundamentally different. `get()` means:
 
-`get()` means:
-
-> Give me the address, but keep ownership.
+> Give me only the address; keep ownership.
 
 `release()` means:
 
-> Give up ownership and give me the raw pointer.
+> Release ownership and give me the raw pointer.
 
 ---
 
-# How Can release() Cause a Memory Leak?
+# متد How Can release Cause a Memory Leak?
 
-After calling `release()`, the `unique_ptr` no longer owns the object.
-
-The following code is therefore dangerous:
+After `release()`, the `unique_ptr` no longer owns the object. Therefore, the following is dangerous:
 
 ```cpp
 auto ptr = std::make_unique<MyClass>();
 
 MyClass* raw = ptr.release();
 
-// Use raw
+// Raw now
 
-// delete raw was forgotten
+// delete raw has been forgotten
 ```
 
-Because the `unique_ptr` is no longer the owner and `delete raw` was not performed, the allocated object leaks.
+In this example, the `unique_ptr` no longer owns the object and `delete raw` was never called, so the memory leaks.
 
-If `release()` is absolutely necessary, ownership must be transferred to another owner:
+If you must use `release()`, you must clearly establish the new ownership responsibility:
 
 ```cpp
 MyClass* raw = ptr.release();
@@ -551,35 +554,35 @@ MyClass* raw = ptr.release();
 delete raw;
 ```
 
-In practice, `release()` should generally only be used when ownership really needs to be transferred to an older API or another system that expects a raw owning pointer.
+An important recommendation is to use `release()` only when you genuinely need to transfer ownership to a legacy API or another system.
 
 ---
 
-# Do Not Confuse get() and release()
+# متدهای Do Not Confuse get and release
 
-The difference between these two functions is extremely important.
+The difference between these two functions is very important.
 
-| Function    |                 Transfers ownership? | Returns raw pointer? |
-| ----------- | -----------------------------------: | -------------------: |
-| `get()`     |                                   No |                  Yes |
-| `release()` | Yes, ownership leaves the unique_ptr |                  Yes |
-| `reset()`   |          Releases the current object |                   No |
+| تابع        |           مالکیت منتقل می‌شود؟ | raw pointer برمی‌گرداند؟ |
+| ----------- | -----------------------------: | -----------------------: |
+| `get()`     |                            No |                      Yes |
+| `release()` | Yes، از unique_ptr خارج می‌شود |                      Yes |
+| `reset()`   |        مالکیت قبلی آزاد می‌شود |                      No |
 
-The short version is:
+خلاصه شرح این موارد:
 
 ```cpp
-ptr.get();      // Access only
-ptr.release();  // Release ownership
-ptr.reset();    // Delete the current object
+ptr.get();      // فقط مشاهده
+ptr.release();  // رها کردن مالکیت
+ptr.reset();    // حذف شیء فعلی
 ```
 
 ---
 
 # Passing unique_ptr to a Function
 
-If a function needs to take ownership of an object, we can pass the `unique_ptr` to it.
+If a function needs to take ownership of an object, we move the `unique_ptr` into it.
 
-For example:
+عبارت نمونه:
 
 ```cpp
 void process(std::unique_ptr<MyClass> obj)
@@ -588,7 +591,7 @@ void process(std::unique_ptr<MyClass> obj)
 }
 ```
 
-The caller can transfer ownership like this:
+فراخوانی آن چنین is:
 
 ```cpp
 auto obj = std::make_unique<MyClass>();
@@ -596,15 +599,15 @@ auto obj = std::make_unique<MyClass>();
 process(std::move(obj));
 ```
 
-After the call, the function owns the object.
+After this call, the function owns the object.
 
 ---
 
 # What If the Function Only Wants to Use the Object?
 
-If a function does not need ownership, it usually should not receive a `unique_ptr`.
+If a function does not take ownership, it is usually better not to pass a `unique_ptr` to it at all.
 
-For an object that must exist, a reference is often more appropriate:
+عبارت مناسب برای شیئی که باید وجود داشته باشد:
 
 ```cpp
 void process(const MyClass& obj)
@@ -613,13 +616,13 @@ void process(const MyClass& obj)
 }
 ```
 
-A `unique_ptr` can be passed like this:
+فراخوانی آن با `unique_ptr` نیز ساده is:
 
 ```cpp
 process(*obj);
 ```
 
-If the object is optional, a non-owning raw pointer can be used:
+اگر وجود شیء اختیاری is، می‌توان raw pointer غیرمالک دریافت کرد:
 
 ```cpp
 void process(const MyClass* obj)
@@ -631,15 +634,15 @@ void process(const MyClass* obj)
 }
 ```
 
-The key idea is that the function's interface should clearly communicate whether it receives ownership or merely accesses an existing object.
+This design makes the function API explicit about whether it takes ownership or merely uses the object.
 
 ---
 
-# Using unique_ptr as a Class Member
+# Using unique_ptr in a Class
 
-One of the most common uses of `unique_ptr` is to store it as a private class member.
+One of the most common uses of `unique_ptr` is storing it as a private class member.
 
-For example:
+عبارت نمونه:
 
 ```cpp
 class Car
@@ -655,17 +658,17 @@ public:
 };
 ```
 
-This means that `Car` owns the `Engine`.
+In this example, `Car` owns the `Engine`.
 
-When a `Car` object is destroyed, the `Engine` is automatically released as well.
+When a `Car` is destroyed, the `Engine` is also released automatically.
 
 ---
 
-# unique_ptr and the Destructor
+# ارتباط unique_ptr and destructor
 
-One major advantage of this design is that we usually do not need to write a custom destructor.
+One important advantage of this design is that we usually do not need a custom destructor.
 
-For example:
+عبارت زیر کافی is:
 
 ```cpp
 class Car
@@ -675,9 +678,9 @@ private:
 };
 ```
 
-When `Car` is destroyed, the destructor of `unique_ptr` automatically releases the `Engine`.
+When `Car` is destroyed, the `unique_ptr` destructor runs and releases the `Engine`.
 
-The ownership relationship can be visualized like this:
+عبارت این اصل را نشان می‌دهد:
 
 ```text
 Car
@@ -685,18 +688,18 @@ Car
       └── Engine
 ```
 
-The ownership is explicit and easy to understand.
+مالکیت در این ساختار کاملاً مشخص is.
 
 ---
 
 # Transferring Ownership Between Classes
 
-One useful feature of `unique_ptr` is that ownership can be transferred between objects.
+One advantage of `unique_ptr` is that ownership can be transferred between objects.
 
-For example:
+عبارت نمونه:
 
 ```cpp
-class Factory
+class A
 {
 public:
     std::unique_ptr<MyClass> create()
@@ -706,21 +709,21 @@ public:
 };
 ```
 
-The caller can receive ownership:
+The caller can take ownership of the result:
 
 ```cpp
-std::unique_ptr<MyClass> obj = factory.create();
+std::unique_ptr<MyClass> obj = a.create();
 ```
 
-The ownership relationship is explicit and no manual `delete` is required.
+Here, ownership transfer is explicit and no manual `delete` is required.
 
 ---
 
-# Can We Return a unique_ptr from a Getter?
+# Can unique_ptr Be Returned from a getter?
 
-Yes, but we must understand that doing so generally means **transferring ownership**.
+Yes, but note that this normally means **transferring ownership**.
 
-For example:
+عبارت نمونه:
 
 ```cpp
 std::unique_ptr<MyClass> takeValue()
@@ -729,101 +732,103 @@ std::unique_ptr<MyClass> takeValue()
 }
 ```
 
-The name `takeValue` is intentionally chosen because it communicates that the caller takes ownership.
+The name `takeValue` is intentionally chosen to indicate that the caller receives ownership.
 
-The caller can use it like this:
+عبارت isفاده چنین is:
 
 ```cpp
 auto obj = owner.takeValue();
 ```
 
-After this operation, the class no longer owns the object.
+After this operation, the class is no longer the owner of the object.
 
 ---
 
-# Choosing the Right Getter
+# متد Choosing the Right getter Based on the Requirement
 
-A simple rule for designing accessors is:
+We can use a simple rule for designing getters:
 
 ```text
-Read-only access:
+فقط خواندن:
 const T&
 
-Read/write access without ownership transfer:
+خواندن و تغییر بدون انتقال مالکیت:
 T&
 
-Optional access:
+دسترسی اختیاری:
 T*
 
-Optional read-only access:
+دسترسی اختیاری و فقط خواندنی:
 const T*
 
-Ownership transfer:
+انتقال مالکیت:
 std::unique_ptr<T>
 
-Direct access to the unique_ptr itself:
+unique_ptr دسترسی مستقیم به خود:
 std::unique_ptr<T>&
 ```
 
-The final choice should be based on the API's ownership contract, not merely on the type of the internal member.
+The final choice should be based on the API contract, not merely on the type of the internal member.
 
 ---
 
-# Why Should We Usually Avoid Exposing the unique_ptr Itself?
+# Why Is It Better Not to Expose unique_ptr from a Class?
 
 If a class owns a resource, it is generally better to keep ownership inside that class.
 
-The following exposes too much of the class's internal memory-management design:
+عبارت نامناسب چنین چیزی is:
 
 ```cpp
 std::unique_ptr<MyClass>& getValue();
 ```
 
-A better design might be:
+This API exposes the class's internal memory-management details to its users.
+
+عبارت طراحی بهتر این is:
 
 ```cpp
 MyClass* getValue();
 ```
 
-Or, when the object is guaranteed to exist:
+یا اگر nullable is not:
 
 ```cpp
 MyClass& getValue();
 ```
 
-The class can then communicate:
+در این حالت کلاس می‌گوید:
 
-> I own this object, but I allow you to use it.
+> من the owner of the object هستم، اما اجازه می‌دهم از آن isفاده کنی.
 
 ---
 
-# unique_ptr and const
+# همراهی unique_ptr and const
 
-`const` can be applied at different levels.
+کلمه کلیدی `const` را می‌توان در چند سطح مختلف isفاده کرد.
 
-The following means that the pointed-to object is const:
+عبارت زیر یعنی خود شیء قابل تغییر is not:
 
 ```cpp
 std::unique_ptr<const MyClass> ptr;
 ```
 
-The following is different:
+عبارت زیر با مورد بالا متفاوت is:
 
 ```cpp
 const std::unique_ptr<MyClass> ptr;
 ```
 
-Here, the `unique_ptr` itself is const, while the `MyClass` object can still be modified.
+در حالت دوم خود `unique_ptr` قابل تغییر یا انتقال is not، اما شیء `MyClass` می‌تواند قابل تغییر باشد.
 
-This distinction is important and should not be overlooked.
+This distinction is an important C++ concept and the two should not be confused.
 
 ---
 
-# unique_ptr and Polymorphism
+# همراهی unique_ptr and polymorphism
 
-`unique_ptr` is also very useful for managing polymorphic objects.
+`unique_ptr` is also well suited for storing polymorphic objects.
 
-Consider:
+عبارت نمونه:
 
 ```cpp
 class Base
@@ -837,66 +842,62 @@ class Derived : public Base
 };
 ```
 
-We can now write:
+حالا می‌توانیم بنویسیم:
 
 ```cpp
 std::unique_ptr<Base> obj =
     std::make_unique<Derived>();
 ```
 
-The important point is that if a derived object is going to be deleted through a `Base` pointer, the base class should normally have a virtual destructor.
+A very important point is that if a derived object is going to be destroyed through `Base`, the base-class destructor must be `virtual`.
 
-For example:
+عبارت مناسب چنین is:
 
 ```cpp
 virtual ~Base() = default;
 ```
 
-Without a proper virtual destructor, deleting the derived object through the base type can result in undefined behavior.
-
 ---
 
-# unique_ptr for Arrays
+# اشاره گر unique_ptr for Arrays
 
 `unique_ptr` also has a specialization for arrays.
 
-For example:
+عبارت نمونه:
 
 ```cpp
 std::unique_ptr<int[]> values =
     std::make_unique<int[]>(10);
 ```
 
-The `unique_ptr` will correctly release the array when it is destroyed.
+اشاره گر `unique_ptr` هنگام نابودی، آرایه را به شکل مناسب آزاد می‌کند.
 
-Elements can be accessed like a normal array:
+عبارت دسترسی به عنصر نیز مانند آرایه معمولی is:
 
 ```cpp
 values[0] = 10;
 values[1] = 20;
 ```
 
-In modern C++, however, `std::array` is generally preferable for fixed-size arrays, while `std::vector` is usually preferable for dynamically sized collections, unless there is a specific reason to use `unique_ptr<T[]>`.
+In modern code, `std::array` is usually preferable for fixed-size arrays and `std::vector` for variable-size collections, unless this specific form of dynamic ownership is actually needed.
 
 ---
 
-# Does unique_ptr Consume a Lot of Memory?
+# Does unique_ptr Itself Consume a Lot of Memory?
 
-In the common case, a `unique_ptr<T>` is conceptually similar in size to a raw pointer.
+Normally, `unique_ptr<T>` is conceptually about the size of a raw pointer.
 
-The important point is that `unique_ptr` is a small object that provides ownership semantics and automatic cleanup.
+The important point is that `unique_ptr` is a small object that manages ownership and responsibility for releasing the resource.
 
-If a custom deleter is used, however, the size of the `unique_ptr` can be different depending on the deleter type.
+If a custom deleter is used, the size of `unique_ptr` may be different.
 
 ---
 
-# What Is a Custom Deleter?
+# What Is a custom deleter?
 
-`unique_ptr` is not limited to objects that are released using `delete`.
+`unique_ptr` is not limited to deleting objects created with `new`.
 
-We can specify how a resource should be released.
-
-For example:
+می‌توانیم مشخص کنیم منبع چگونه آزاد شود:
 
 ```cpp
 struct FileDeleter
@@ -911,39 +912,31 @@ struct FileDeleter
 using FilePtr = std::unique_ptr<FILE, FileDeleter>;
 ```
 
-This capability makes `unique_ptr` useful for resources other than ordinary dynamically allocated memory, such as file handles or resources that must be released using a specific function.
+This capability also makes `unique_ptr` useful for resources other than memory, such as file handles or resources that must be released with a specific function. Here, we use a functor to define how the file should be released.
 
 ---
 
-# An Important Note About make_unique
+# One Very Important Point: make_unique
 
-`std::make_unique` was introduced in C++14.
+`std::make_unique` was added in C++14.
 
-The preferred modern syntax is:
+عبارت پیشنهادی چنین is:
 
 ```cpp
 auto ptr = std::make_unique<MyClass>();
 ```
 
-It is simpler and is generally the preferred way to create a `unique_ptr` in modern C++.
+The advantage is that this approach is simpler and is the preferred way to create a `unique_ptr` in modern C++.
 
-If the project specifically uses C++11, `make_unique` is not part of the standard library.
-
-In that case, the following is possible:
-
-```cpp
-std::unique_ptr<MyClass> ptr(new MyClass());
-```
-
-Alternatively, a suitable `make_unique` helper can be implemented for a C++11 project.
+If the project really targets C++11, `make_unique` is not available in the standard library. You can use `std::unique_ptr<T>(new T(...))` or define an appropriate C++11 helper.
 
 ---
 
-# A Common Mistake: Creating Multiple unique_ptr Objects from One Raw Pointer
+# A Common Mistake: Creating Multiple unique_ptrs from One raw Pointer
 
-We must never give the same raw pointer to multiple independent `unique_ptr` objects.
+We must not give the same raw pointer to multiple `unique_ptr` objects.
 
-The following is extremely dangerous:
+عبارت بسیار خطرناک:
 
 ```cpp
 MyClass* raw = new MyClass();
@@ -952,17 +945,17 @@ std::unique_ptr<MyClass> p1(raw);
 std::unique_ptr<MyClass> p2(raw);
 ```
 
-Now there are two independent owners that both believe they are responsible for deleting the same object.
+There are now two independent owners, both of which believe they should eventually delete the same object.
 
-The result can be a double delete and undefined behavior.
+The result can be a `double delete` and undefined behavior.
 
 ---
 
-# A Common Mistake: Deleting the Result of get()
+# Common Mistake: Deleting the Result of get
 
-The pointer returned by `get()` does not belong to the caller.
+The pointer returned by `get()` is not owned by the caller.
 
-The following is incorrect:
+عبارت زیر غلط is:
 
 ```cpp
 auto ptr = std::make_unique<MyClass>();
@@ -972,105 +965,103 @@ MyClass* raw = ptr.get();
 delete raw;
 ```
 
-The problem is that `ptr` still owns the object and will later attempt to delete it.
+`ptr` still owns the object and will later attempt to delete it again.
 
 ---
 
-# A Common Mistake: Keeping a Raw Pointer for Too Long
+# Common Mistake: Keeping a raw Pointer for Too Long
 
-A raw pointer returned by `get()` is valid only while the object owned by the `unique_ptr` remains alive.
+A raw pointer obtained from `get()` is valid only while the object owned by the `unique_ptr` still exists.
 
-The following is dangerous:
+عبارت خطرناک:
 
 ```cpp
 MyClass* raw = ptr.get();
 
 ptr.reset();
 
-// raw is now potentially dangling
+// raw is no longer valid
 ```
 
-After `reset()`, the object may have been deleted and `raw` may point to invalid memory.
-
-This is known as a **dangling pointer**.
+Therefore, if the raw pointer outlives its owner, it can become a `dangling pointer`.
 
 ---
 
 # When Should We Use unique_ptr?
 
-`unique_ptr` is usually an excellent choice when exactly one entity owns an object.
+When an object has exactly one owner, `unique_ptr` is usually an excellent choice.
 
-Common use cases include:
+عبارت‌های رایج isفاده عبارت‌اند از:
 
 ```text
-Owning a class member
-Creating objects in factories
-Transferring ownership between functions
-Managing dynamically allocated resources
-Managing resources with custom deleters
-Implementing polymorphism
+مالکیت یک عضو داخل کلاس
+factory ایجاد شیء در 
+انتقال مالکیت بین توابع
+مدیریت منابع پویا
+custom deleter مدیریت منابع با 
+polymorphism پیاده‌سازی 
 ```
 
-If multiple independent owners are genuinely required, `std::shared_ptr` may be appropriate.
+If multiple independent owners are required, we should consider `std::shared_ptr`.
 
-If shared ownership is not actually necessary, using `shared_ptr` simply for convenience is generally not a good design choice.
-
----
-
-# unique_ptr vs shared_ptr
-
-The main difference is the ownership model.
-
-| Feature             | `unique_ptr`        | `shared_ptr`    |
-| ------------------- | ------------------- | --------------- |
-| Ownership           | Unique              | Shared          |
-| Copy                | No                  | Yes             |
-| Move                | Yes                 | Yes             |
-| Management overhead | Low                 | Higher          |
-| Ownership model     | Simple and explicit | More complex    |
-| Main use case       | Single owner        | Multiple owners |
-
-A useful rule is:
-
-> If you are unsure which one to use, first ask whether shared ownership is genuinely necessary.
+If shared ownership is not actually required, using `shared_ptr` merely for convenience is usually not a good choice.
 
 ---
 
-# An Important Rule for Modern C++ Design
+# Difference Between unique_ptr and shared_ptr
 
-One useful design principle is:
+تفاوت اصلی این دو در مدل مالکیت is.
 
-> Express ownership with smart pointers, and express non-owning access with references or raw pointers.
+| ویژگی         | `unique_ptr` | `shared_ptr` |
+| ------------- | ------------ | ------------ |
+| مالکیت        | Unique         | Shared        |
+| Copy          | No          | Yes          |
+| Move          | Yes          | Yes          |
+| هزینه مدیریتی | Low           | Higher        |
+| کنترل مالکیت  | Simple and clear  | More complex    |
+| کاربرد اصلی   | One owner      | Multiple owners     |
 
-For example:
+یک قاعده ساده این is:
+
+> اگر نمی‌دانید از کدام isفاده کنید، ابتدا بررسی کنید آیا واقعاً به مالکیت Shared نیاز دارید یا No.
+
+---
+
+# An Important Rule in Modern C++ Design
+
+One very useful rule is:
+
+> Express ownership with a smart pointer, and express non-owning access with a reference or raw pointer.
+
+عبارت نمونه:
 
 ```cpp
 std::unique_ptr<Engine> engine;
 ```
 
-This means that `Car` owns the `Engine`.
+This member means that `Car` owns the `Engine`.
 
-The following:
+عبارت زیر:
 
 ```cpp
 Engine* getEngine();
 ```
 
-means that the caller receives access to the `Engine` but does not become its owner.
+This getter means that the caller can access the `Engine` but does not own it.
 
-The following:
+عبارت زیر:
 
 ```cpp
 std::unique_ptr<Engine> takeEngine();
 ```
 
-means that the caller receives ownership.
+This API means that the caller takes ownership.
 
 ---
 
 # A Complete Example
 
-A real class can be designed like this:
+یک کلاس واقعی می‌تواند به شکل زیر طراحی شود:
 
 ```cpp
 class Car
@@ -1111,27 +1102,27 @@ public:
 };
 ```
 
-This design provides several clearly defined behaviors.
+This design provides several clearly defined ownership behaviors.
 
-`getEngine()` provides access without transferring ownership.
+`getEngine()` only provides access.
 
-`setEngine()` receives ownership.
+`setEngine()` receives new ownership.
 
 `takeEngine()` transfers ownership.
 
-`resetEngine()` releases the owned resource.
+`resetEngine()` releases the resource.
 
-As a result, the ownership contract of the class is clear.
+As a result, the class API makes its ownership semantics very clear.
 
 ---
 
 # Final Summary
 
-`std::unique_ptr` is a tool for expressing **unique ownership of a resource**.
+`std::unique_ptr` is a way to express **unique ownership of a resource**.
 
-The important point is that `unique_ptr` is not simply a raw pointer with a different name.
+The important point is that `unique_ptr` is not merely a raw pointer with a different name.
 
-Its main purpose is **ownership management and lifetime management**.
+Its core concept is **managing resource ownership and lifetime**.
 
 The key operations to remember are:
 
@@ -1139,60 +1130,57 @@ The key operations to remember are:
 auto ptr = std::make_unique<T>();
 ```
 
-This creates an object and gives ownership to `ptr`.
+The statement above creates an object and gives ownership to `ptr`.
 
 ```cpp
 ptr.get();
 ```
 
-This returns a non-owning raw pointer to the object.
+The statement above retrieves only a non-owning raw pointer.
 
 ```cpp
 ptr.reset();
 ```
 
-This releases the currently owned object and makes the `unique_ptr` empty.
+The statement above releases the current object and makes the `unique_ptr` empty.
 
 ```cpp
 ptr.reset(new T());
 ```
 
-This releases the current object and makes the `unique_ptr` own a new object. For initial creation, however, `make_unique` is generally preferred.
+The statement above releases the current object and makes the `unique_ptr` the owner of a new object; however, `make_unique` is preferred for initial construction.
 
 ```cpp
 ptr.release();
 ```
 
-This removes ownership from the `unique_ptr` and returns the raw pointer.
+The statement above releases ownership from the `unique_ptr` and returns the raw pointer.
 
 ```cpp
 auto other = std::move(ptr);
 ```
-
-This transfers ownership from `ptr` to `other`.
+The statement above transfers ownership from `ptr` to `other`.
 
 ```cpp
 delete ptr.get();
 ```
 
-This violates the ownership model of `unique_ptr` and can lead to undefined behavior.
+The statement above violates the ownership contract of the `unique_ptr` and can lead to undefined behavior.
 
-The most important question to ask when using `unique_ptr` is:
+The final point is that whenever we use `unique_ptr`, we should always ask ourselves:
 
-> **Who owns this object?**
+> ****Who owns this object?****
 
-If the answer is "exactly this class or this variable," `unique_ptr` is usually an appropriate choice.
+If the answer is “this class or variable alone,” `unique_ptr` is usually an appropriate choice.
 
-If the answer is "multiple independent entities share ownership," a different ownership model such as `shared_ptr` may be appropriate.
+If the answer is “multiple entities share ownership,” we should consider another ownership model such as `shared_ptr`.
 
-If nobody should own the object and we only need temporary access to an existing object, a reference or non-owning raw pointer is often more appropriate.
+If nobody owns the object and we only need temporary access to an existing object, a reference or non-owning raw pointer is usually more appropriate.
 
-The key benefit of `unique_ptr` is therefore not simply that we do not have to write `delete`.
-
-Its real benefit is that **ownership and lifetime are expressed explicitly, safely, and automatically in the structure of the program.**
+Ultimately, the most important benefit of `unique_ptr` is not that we no longer have to write `delete`; its main benefit is that **resource ownership is expressed explicitly, clearly, and automatically in the structure of the program.**
 
 ---
-## 🤝 Contributors
+## 🤝 Contributions
 
 <div align="center">
 
