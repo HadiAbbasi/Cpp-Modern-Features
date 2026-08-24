@@ -11,14 +11,60 @@
 
 
 ## why async
->Asynchronous programming allows long-running tasks (such as network requests or file access) to be executed without blocking the main program. Instead of waiting for the task to complete, the program can continue executing other tasks and then return to process the result once the asynchronous task is finished.
 
->Let’s imagine a simple scenario, you’re building a weather application that shows real-time conditions. The app retrieves all its data from a third-party API. Now, if you make this API call inside your main thread (your event loop), everything else in the application must wait until that request finishes and the duration of that wait is completely unknown. During that time, the UI freezes, user interactions lag, and the whole app feels unresponsive.
+Not every concurrency problem is "start a thread and manage it forever." A lot of tasks are closer to this:
 
->This is where std::async steps in as a clean and elegant solution. Instead of blocking the main thread, we can offload the API call to a separate asynchronous task. The main thread keeps running smoothly, handling UI updates and user interactions, while the background task quietly fetches the weather data.
+- run some expensive work
+- continue doing something else
+- collect the answer later
+- handle failure cleanly
 
-Let’s look at a very simple weather application. The app retrieves real-time weather data from a third-party API. But here’s the catch: API calls are slow and unpredictable. To simulate this, I added an artificial 4-second delay in the code. Here, I have used an open-source, header-only library to make the HTTP request .
+That is exactly what futures are good at.
+**Examples:**
 
+- parsing a large config file while the UI continues
+- loading assets in the background
+- dispatching independent computations in a build tool
+- running multiple independent benchmark stages and collecting results later
+
+## Core Cpp Modern Async/Await
+Modern C++ provides a small set of types around asynchronous result handling:
+
+- `std::async`: starts asynchronous work and returns a future
+- `std::future<T>`: represents a result that will become available later [Learn future](./future.md)
+- `std::promise<T>: lets one thread produce a result for another thread
+- `std::shared_future<T>`: allows multiple consumers to observe the same result
+
+The main idea is simple: one side produces, another side waits or retrieves.
+
+## std::async
+The simplest entry point is std::async.
+```cpp
+#include <future>
+#include <iostream>
+
+int compute() {
+    return 42;
+}
+
+int main() {
+    std::future<int> result = std::async(std::launch::async, compute);
+    std::cout << result.get() << '\n';
+}
+```
+Important detail: std::async can use different launch policies.
+
+- std::launch::async: run on a separate thread
+- std::launch::deferred: delay execution until someone waits or calls get()
+- default policy: the implementation may choose either
+
+If you care about predictable behavior, specify the policy explicitly.
+
+```cpp
+auto future_value = std::async(std::launch::async, [] {
+    return 10 * 20;
+});
+```
 ```cpp
 #include <chrono>
 #include <iostream>
