@@ -3,8 +3,8 @@
 [🇺🇸 English](./pair.md) | [🇮🇷 فارسی](../../fa/cpp17/pair.md)
 
 </div>
-
 ---
+
 # `std::pair` in C++17: A Comprehensive Guide
 
 ## Table of Contents
@@ -801,7 +801,6 @@ C++17 makes `std::pair` more convenient through:
 Use `std::pair` when generic member names such as `first` and `second` are sufficient. If your data has more than two members or requires meaningful domain-specific names, prefer `std::tuple` or, often, a custom `struct`.
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

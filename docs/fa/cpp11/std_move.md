@@ -3,7 +3,6 @@
 [🇺🇸 English](../../en/cpp11/std_move.md) | [🇮🇷 فارسی](./std_move.md)
 
 </div>
-
 ---
 
 # مبحث Move Semantics، `std::move` و مفاهیم `lvalue` و `rvalue` در C++
@@ -636,8 +635,7 @@ Buffer& operator=(Buffer&& other) noexcept;
 - https://en.cppreference.com/w/cpp/language/move_constructor
 - https://en.cppreference.com/w/cpp/language/value_category
 
-توجه: این مقاله با استفاده از توضیحات و بازنویسی انجام‌شده توسط **ChatGPT (OpenAI)** و **Qwen (Alibaba)** تهیه و ویرایش شده است.
-
+---
 ## 🤝 مشارکت کنندگان
 
 <div align="center">

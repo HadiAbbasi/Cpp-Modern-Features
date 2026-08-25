@@ -3,8 +3,8 @@
 [🇺🇸 English](../../en/cpp11/nullptr.md) | [🇮🇷 فارسی](./nullptr.md)
 
 </div>
-
 ---
+
 # آشنایی با nullptr در ++C
 
 > **تعریف:**
@@ -98,6 +98,7 @@ if (myPointer) {
 > **نتیجه:**
 > در برنامه‌های ++C مدرن، همیشه استفاده از `nullptr` نسبت به `NULL` و `0` توصیه می‌شود.
 
+---
 ## 🤝 مشارکت‌کنندگان
 
 <div align="center" dir="ltr">

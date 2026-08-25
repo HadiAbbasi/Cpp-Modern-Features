@@ -3,27 +3,33 @@
 [🇺🇸 English](../../en/cpp11/README.md) | [🇮🇷 فارسی](./README.md)
 
 </div>
-
 ---
+
 # امکانات C++ 11
 
 ## 📚 داکیومنت های استاندارد C++11
 
 <div align="center">
 
-| امکانات جدید               |
+| امکانات جدید                 |
 | -------------------------- |
 | [auto](./auto.md)          |
 | [nullptr](./nullptr.md)    |
 | [lambda](./lambda.md)      |
 | [std::move](./std_move.md) |
-| [mutex](./mutex.md)        |
+| [std::mutex](./mutex.md)        |
 | [override](./override.md)  |
+| [std::thread](./thread.md) |
+| [constexpr](./constexpr.md)|
+| [list-initialization](./list-initialization.md)|
+| [std::unique_ptr](./unique_ptr.md)|
+| [std::shared_ptr](./shared_ptr.md)|
+| [std::weak_ptr](./weak_ptr.md)|
+| [std::weak_ptr](./chrono.md)|
 
 </div>
 
 ---
-
 ## 🤝 مشارکت ها
 
 <div align="center">

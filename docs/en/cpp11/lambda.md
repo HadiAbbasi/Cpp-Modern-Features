@@ -3,6 +3,7 @@
 [🇺🇸 English](./lambda.md) | [🇮🇷 فارسی](../../fa/cpp11/lambda.md)
 
 </div>
+---
 
 # Lambda Expression
 One of the most exciting features of C++11 is ability to create lambda functions (sometimes referred to as closures). What does this mean? A lambda function is a function that you can write inline in your source code (usually to pass in to another function, similar to the idea of a functor or function pointer). With lambda, creating quick functions has become much easier, and this means that not only can you start using lambda when you'd previously have needed to write a separate named function, but you can start writing more code that relies on the ability to create quick-and-easy functions.
@@ -159,6 +160,7 @@ When you capture by reference, the lambda function is capable of modifying the l
 ## Summery
 With the introduction of lambdas in C++11, it became possible to define anonymous, inline functions; a feature that in many cases reduces code size, improves readability, simplifies unit testing, and provides a safer replacement for some uses of macros. As a result, the use of lambdas in C++ code is expected to increase significantly. This feature is supported in GCC 4.5 and later, MSVC 10, and Intel Compiler 11 and later.
 
+---
 ## 🤝 Contributors
 
 <div align="center">

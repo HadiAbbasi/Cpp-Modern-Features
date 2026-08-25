@@ -3,8 +3,8 @@
 [🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../fa/cpp11/README.md)
 
 </div>
-
 ---
+
 # C++ 11 Features
 
 ## 📚 C++11 Standards Documentation
@@ -17,14 +17,21 @@
 | [nullptr](./nullptr.md)    |
 | [lambda](./lambda.md)      |
 | [std::move](./std_move.md) |
-| [mutex](./mutex.md)        |
+| [std::mutex](./mutex.md)        |
 | [override](./override.md)  |
+| [std::thread](./thread.md) |
+| [constexpr](./constexpr.md)|
+| [list-initialization](./list-initialization.md)|
+| [std::unique_ptr](./unique_ptr.md)|
+| [std::shared_ptr](./shared_ptr.md)|
+| [std::weak_ptr](./weak_ptr.md)|
+| [std::weak_ptr](./chrono.md)|
 
 </div>
 
 ---
-
 ## 🤝 Contributors
+
 <div align="center">
 
 | GitHub | LinkedIn | Email | Site | Telegram |

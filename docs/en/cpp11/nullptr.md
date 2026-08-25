@@ -3,8 +3,8 @@
 [🇺🇸 English](./nullptr.md) | [🇮🇷 فارسی](../../fa/cpp11/nullptr.md)
 
 </div>
-
 ---
+
 # nullptr type
 
  > **define:** In C++, the concept of a null pointer is used to represent a pointer that does not point to any valid memory address.
@@ -65,6 +65,7 @@ int* myPtr = nullptr;
 | **Type Safety** | Highly Type-Safe | Weak (Prone to overload resolution issues) |
 | **Recommended Standard** | Modern C++ (C++11 and newer) | Legacy C++ and C |
 
+---
 ## 🤝 Contributors
 
 <div align="center">

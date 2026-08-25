@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./apply.md) | [🇮🇷 فارسی](../../fa/cpp17/apply.md)
+
+</div>
+---
+
 # `std::apply` in C++17
 
 ## Table of Contents
@@ -141,7 +148,6 @@ int main() {
 They are often used together, as shown in the class method example.
 
 ---
-
 ## 🤝 Contributors
 
 | GitHub | LinkedIn | Email | Site | Telegram |

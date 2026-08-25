@@ -3,8 +3,8 @@
 [🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../fa/cpp17/README.md)
 
 </div>
-
 ---
+
 # C++ 17 Features
 
 ## 📚 C++17 Standards Documentation
@@ -15,11 +15,13 @@
 |----------|
 | [std::pair](./pair.md) |
 | [std::tuple](./tuple.md) |
+| [std::shared_mutex](./shared_mutex.md) |
+| [std::apply](./apply.md) |
+| [std::variant](./variant.md) |
 
 </div>
 
 ---
-
 ## 🤝 Contributors
 
 <div align="center">

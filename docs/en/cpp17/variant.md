@@ -1,3 +1,10 @@
+<div align="right">
+
+[🇺🇸 English](./variant.md) | [🇮🇷 فارسی](../../fa/cpp17/variant.md)
+
+</div>
+---
+
 # `std::variant` in C++17
 
 ## Table of Contents
@@ -216,9 +223,7 @@ std::variant<std::monostate, NoDefaultConstructor> v; // OK
 
 `std::variant` provides a type-safe, modern alternative to `union`. With `std::visit` and `std::get_if`, it becomes a powerful tool for handling heterogeneous data in C++17.
 
-
 ---
-
 ## 🤝 Contributors
 
 | GitHub | LinkedIn | Email | Site | Telegram |
