@@ -104,6 +104,8 @@ int main() {
 ```
 You can clearly see it: every cycle waits ~4 seconds before doing anything else. And in real applications, API calls can take even longer depending on network speed.
 
+## Conclusion
+`std::async` is a high-level thread abstraction tool in the C++ standard library that simplifies the implementation of asynchronous operations and makes code more concise. However, due to differences between compiler implementations, developers need to carefully consider these factors when using it to avoid potential issues. Special attention should be paid to `thread_local` variables and the returned `std::future`.
 
 ---
 ## 🤝 Contributors
