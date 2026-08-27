@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](./thread.md) | [🇮🇷 فارسی](../../fa/cpp11/thread.md)
+[🇺🇸 English](../../en/cpp11/async.md) | [🇮🇷 فارسی](./async.md)
 
 </div>
 
