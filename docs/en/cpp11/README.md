@@ -17,7 +17,7 @@
 | [nullptr](./nullptr.md)    |
 | [lambda](./lambda.md)      |
 | [std::move](./std_move.md) |
-| [std::mutex](./mutex.md)        |
+| [std::mutex](./mutex.md)|
 | [override](./override.md)  |
 | [std::thread](./thread.md) |
 | [constexpr](./constexpr.md)|
@@ -25,7 +25,10 @@
 | [std::unique_ptr](./unique_ptr.md)|
 | [std::shared_ptr](./shared_ptr.md)|
 | [std::weak_ptr](./weak_ptr.md)|
-| [std::weak_ptr](./chrono.md)|
+| [chorno](./chrono.md)|
+| [async](./async.md)|
+| [promise](./promise.md)|
+| [future](./future.md)|
 
 </div>
 
