@@ -1,90 +1,98 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./shared_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/shared_ptr.md)
 
 </div>
+
 ---
 
-# Complete Guide to `std::shared_ptr` in C++11 — Shared Ownership, Reference Counting, and Memory Management
+# A Complete Guide to `std::shared_ptr` in C++11: Shared Ownership, Reference Counting, and the Difference from `unique_ptr`
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [What Was the Problem?](#what-was-the-problem)
-3. [What Problem Does shared_ptr Solve?](#what-problem-does-shared_ptr-solve)
-4. [What Is the Reference Count?](#what-is-the-reference-count)
-5. [How Can We Observe the Reference Count?](#how-can-we-observe-the-reference-count)
-6. [Creating a shared_ptr](#creating-a-shared_ptr)
-7. [Why Is make_shared Preferred?](#why-is-make_shared-preferred)
-8. [Using shared_ptr in a Setter](#using-shared_ptr-in-a-setter)
-9. [Why Can Passing shared_ptr by Value Be a Good Design?](#why-can-passing-shared_ptr-by-value-be-a-good-design)
-10. [Should We Pass shared_ptr by const Reference?](#should-we-pass-shared_ptr-by-const-reference)
-11. [Using shared_ptr in a Getter](#using-shared_ptr-in-a-getter)
-12. [Why Can Returning shared_ptr from a Getter Be Appropriate?](#why-can-returning-shared_ptr-from-a-getter-be-appropriate)
-13. [Should a Getter Return shared_ptr&?](#should-a-getter-return-shared_ptr)
-14. [Does Copying shared_ptr Copy the Object?](#does-copying-shared_ptr-copy-the-object)
-15. [How to Duplicate a shared_ptr](#how-to-duplicate-a-shared_ptr)
-16. [How to Create a Real Duplicate of the Object](#how-to-create-a-real-duplicate-of-the-object)
-17. [Accessing the Object Inside shared_ptr](#accessing-the-object-inside-shared_ptr)
-18. [Accessing the Object Through a Raw Pointer](#accessing-the-object-through-a-raw-pointer)
-19. [Risks of Using a Raw Pointer from get()](#risks-of-using-a-raw-pointer-from-get)
-20. [get() Does Not Transfer Ownership](#get-does-not-transfer-ownership)
-21. [A Dangerous Mistake with Raw Pointers](#a-dangerous-mistake-with-raw-pointers)
-22. [Can Accessing the Object Cause a Memory Leak?](#can-accessing-the-object-cause-a-memory-leak)
-23. [The Main shared_ptr Problem: Ownership Cycles](#the-main-shared_ptr-problem-ownership-cycles)
-24. [Why Can the Reference Count Fail to Reach Zero?](#why-can-the-reference-count-fail-to-reach-zero)
-25. [Why Does weak_ptr Exist?](#why-does-weak_ptr-exist)
-26. [shared_ptr vs weak_ptr](#shared_ptr-vs-weak_ptr)
-27. [Using shared_ptr in a Class](#using-shared_ptr-in-a-class)
-28. [Should a Getter Return shared_ptr?](#should-a-getter-return-shared_ptr)
-29. [What If We Only Need Access to the Object?](#what-if-we-only-need-access-to-the-object)
-30. [shared_ptr and Move](#shared_ptr-and-move)
-31. [Copy vs Move with shared_ptr](#copy-vs-move-with-shared_ptr)
-32. [reset() with shared_ptr](#reset-with-shared_ptr)
-33. [Can shared_ptr Be Empty?](#can-shared_ptr-be-empty)
-34. [shared_ptr and Multithreading](#shared_ptr-and-multithreading)
-35. [shared_ptr and Destructors](#shared_ptr-and-destructors)
-36. [A Complete Class Example](#a-complete-class-example)
-37. [Returning shared_ptr from a Function](#returning-shared_ptr-from-a-function)
-38. [When Should We Avoid shared_ptr?](#when-should-we-avoid-shared_ptr)
-39. [shared_ptr vs unique_ptr](#shared_ptr-vs-unique_ptr)
-40. [A Simple Rule for Choosing Smart Pointers](#a-simple-rule-for-choosing-smart-pointers)
-41. [Important shared_ptr Rules](#important-shared_ptr-rules)
-42. [Final Summary](#final-summary)
+- [Introduction](#introduction)
+- [What Was the Main Problem?](#what-was-the-main-problem)
+- [What Problem Does shared_ptr Solve?](#what-problem-does-shared_ptr-solve)
+- [What Is the Internal Counter of shared_ptr?](#what-is-the-internal-counter-of-shared_ptr)
+- [How Can the Counter Be Observed?](#how-can-the-counter-be-observed)
+- [An Important Note About use_count()](#an-important-note-about-use_count)
+- [Creating a shared_ptr](#creating-a-shared_ptr)
+- [Why Is make_shared Better?](#why-is-make_shared-better)
+- [Using shared_ptr in a Setter](#using-shared_ptr-in-a-setter)
+- [Why Should a Setter Take shared_ptr by Value?](#why-should-a-setter-take-shared_ptr-by-value)
+- [Should We Take shared_ptr by const Reference?](#should-we-take-shared_ptr-by-const-reference)
+- [Using shared_ptr in a Getter](#using-shared_ptr-in-a-getter)
+- [Why Can a Getter of Type shared_ptr Be Appropriate?](#why-can-a-getter-of-type-shared_ptr-be-appropriate)
+- [Should a Getter Return shared_ptr&?](#should-a-getter-return-shared_ptr)
+- [Does Copying a shared_ptr Mean Copying the Object?](#does-copying-a-shared_ptr-mean-copying-the-object)
+- [How Do We Get a Duplicate of a shared_ptr?](#how-do-we-get-a-duplicate-of-a-shared_ptr)
+- [What If We Want a Real Duplicate of the Object Itself?](#what-if-we-want-a-real-duplicate-of-the-object-itself)
+- [Accessing the Internal Value of shared_ptr](#accessing-the-internal-value-of-shared_ptr)
+- [Accessing the Object Through a Raw Pointer](#accessing-the-object-through-a-raw-pointer)
+- [Risks of Using a Raw Pointer from get()](#risks-of-using-a-raw-pointer-from-get)
+- [The get() Method Does Not Transfer Ownership](#the-get-method-does-not-transfer-ownership)
+- [A Very Dangerous Mistake with Raw Pointers](#a-very-dangerous-mistake-with-raw-pointers)
+- [Can Accessing the Inside of shared_ptr Cause a Memory Leak?](#can-accessing-the-inside-of-shared_ptr-cause-a-memory-leak)
+- [The Main Problem of shared_ptr: Ownership Cycles](#the-main-problem-of-shared_ptr-ownership-cycles)
+- [Why Doesn't the shared_ptr Counter Work Well in This Case?](#why-doesnt-the-shared_ptr-counter-work-well-in-this-case)
+- [Why Does weak_ptr Exist?](#why-does-weak_ptr-exist)
+- [What Is the Difference Between shared_ptr and weak_ptr?](#what-is-the-difference-between-shared_ptr-and-weak_ptr)
+- [shared_ptr in a Class](#shared_ptr-in-a-class)
+- [Is It Better for a Getter to Return shared_ptr?](#is-it-better-for-a-getter-to-return-shared_ptr)
+- [What If We Only Want to Give Access to the Object?](#what-if-we-only-want-to-give-access-to-the-object)
+- [An Important Difference: Getters with unique_ptr](#an-important-difference-getters-with-unique_ptr)
+- [shared_ptr and Transferring with move](#shared_ptr-and-transferring-with-move)
+- [The Difference Between copy and move in shared_ptr](#the-difference-between-copy-and-move-in-shared_ptr)
+- [The reset Operation in shared_ptr](#the-reset-operation-in-shared_ptr)
+- [The reset Operation with a New Object](#the-reset-operation-with-a-new-object)
+- [Can a shared_ptr Be Made Empty?](#can-a-shared_ptr-be-made-empty)
+- [shared_ptr and Multiple Threads](#shared_ptr-and-multiple-threads)
+- [shared_ptr and the Destructor](#shared_ptr-and-the-destructor)
+- [A Complete Example of Class Design](#a-complete-example-of-class-design)
+- [A Note About Returning shared_ptr](#a-note-about-returning-shared_ptr)
+- [When Is Using shared_ptr Not an Appropriate Choice?](#when-is-using-shared_ptr-not-an-appropriate-choice)
+- [The Difference Between shared_ptr and unique_ptr](#the-difference-between-shared_ptr-and-unique_ptr)
+- [A Simple Comparison](#a-simple-comparison)
+- [When Is shared_ptr the Right Choice?](#when-is-shared_ptr-the-right-choice)
+- [When Is unique_ptr Better?](#when-is-unique_ptr-better)
+- [A Golden Rule for Choosing a Smart Pointer](#a-golden-rule-for-choosing-a-smart-pointer)
+- [Important Notes About shared_ptr](#important-notes-about-shared_ptr)
+- [Final Summary](#final-summary)
+- [Contributors](#-contributors)
 
 ---
 
-# Introduction
+## Introduction
 
-The concept of `std::shared_ptr` is one of the most important tools for memory management in modern C++. It was introduced with the C++11 standard.
+The `std::shared_ptr` pointer is one of the most important memory management tools in modern C++, introduced into the language with the C++11 standard.
 
-The main purpose of `shared_ptr` is to manage situations where **multiple parts of a program need to share ownership of the same dynamically allocated object**.
+The main role of `shared_ptr` becomes significant when an object lives in dynamic memory and **more than one part of the program must own that object**.
 
-The key difference from `unique_ptr` is that `unique_ptr` is designed for unique ownership, while `shared_ptr` is designed for shared ownership.
+The `unique_ptr` pointer is designed for unique ownership, but `shared_ptr` is used when ownership must be divided among several `shared_ptr` instances in a shared manner.
 
-In simple terms, if several `shared_ptr` objects point to the same object, that object remains alive as long as **at least one owning `shared_ptr` still exists**.
+To put it more simply: if several `shared_ptr` objects point to one object, the object remains alive as long as **the last owning `shared_ptr` still exists**.
 
 ---
 
-# What Was the Problem?
+# What Was the Main Problem?
 
-Before smart pointers became widely used, dynamic memory management in C++ was commonly performed with `new` and `delete`.
+Before smart pointers came into widespread use, manual memory management was based on `new` and `delete`.
 
-A simple example is:
+Consider the following simple statement:
 
 ```cpp
 MyClass* ptr = new MyClass();
 
-// Use ptr
+// use ptr
 
 delete ptr;
 ```
 
-The problem is that the programmer has to determine exactly when the object is no longer needed and manually call `delete`.
+The problem with this approach is that we must determine exactly when the object is no longer needed and call `delete` at that exact moment.
 
-The problem becomes more complicated when multiple parts of a program need to use the same object.
+The problem becomes more serious when several different parts of the program need the same object.
 
-Consider the following:
+Imagine the following:
 
 ```cpp
 MyClass* ptr = new MyClass();
@@ -96,21 +104,19 @@ useInModuleC(ptr);
 delete ptr;
 ```
 
-The important question here is:
+The important question here is: who should perform the `delete`?
 
-> Who is responsible for calling `delete`?
+If `ModuleA` assumes it owns the object and deletes it, `ModuleB` and `ModuleC` can no longer use it with confidence.
 
-If `ModuleA` assumes that it owns the object and deletes it, `ModuleB` and `ModuleC` may later access an invalid object.
-
-If none of them takes responsibility for deleting the object, the memory may leak.
+If none of them accepts the responsibility for deleting it, the memory will leak.
 
 ---
 
 # What Problem Does shared_ptr Solve?
 
-The concept of `shared_ptr` was introduced to handle situations where **multiple parts of a program genuinely need shared ownership of the same object**.
+The `shared_ptr` pointer was designed for exactly this scenario; that is, when **the ownership of an object must be shared among several parts of the program**.
 
-For example:
+The following statement creates several owners for one object:
 
 ```cpp
 auto ptr1 = std::make_shared<MyClass>();
@@ -119,51 +125,49 @@ auto ptr2 = ptr1;
 auto ptr3 = ptr1;
 ```
 
-Now all three `shared_ptr` objects point to the same object and participate in its ownership.
+Now all three `shared_ptr` objects point to the same object and share in its ownership.
 
-If `ptr1` is destroyed, the object is not deleted because `ptr2` and `ptr3` are still owners.
+When `ptr1` is destroyed, the object is not deleted, because `ptr2` and `ptr3` still own it.
 
-For example:
+The following statement also does not cause the object to be deleted:
 
 ```cpp
 ptr1.reset();
 ```
 
-This only removes `ptr1` from the ownership relationship.
-
-The object is destroyed only when the **last owning `shared_ptr`** releases ownership.
+The object is deleted only when **the last owner** is also destroyed or releases its ownership.
 
 ---
 
-# What Is the Reference Count?
+# What Is the Internal Counter of shared_ptr?
 
-One of the central concepts behind `shared_ptr` is the **reference count**, also commonly called the **strong reference count** or **use count**.
+To manage this shared ownership, the `shared_ptr` pointer uses a concept called the **reference count**.
 
-Consider:
+Consider the following statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
 ```
 
-At this point, there is one owning `shared_ptr`.
+At this moment, there is one owner of the object.
 
-Now:
+The following statement:
 
 ```cpp
 auto p2 = p1;
 ```
 
-A second owner has been created.
+increases the number of owners.
 
-And:
+And this statement:
 
 ```cpp
 auto p3 = p1;
 ```
 
-A third owner has been created.
+adds yet another owner of the same object.
 
-Conceptually, the relationship looks like this:
+We can depict the situation conceptually like this:
 
 ```text
 p1 ──┐
@@ -175,9 +179,9 @@ p3 ──┘
 Owners = 3
 ```
 
-When one of the `shared_ptr` objects is destroyed, the reference count is reduced.
+When one of the `shared_ptr` objects is destroyed, the counter decreases.
 
-For example, after `p2` is destroyed:
+For example, if `p2` is destroyed:
 
 ```text
 p1 ──┐
@@ -187,15 +191,15 @@ p3 ──┘──> MyClass
 Owners = 2
 ```
 
-When the number of owners reaches zero, the managed object is destroyed.
+When the number of owners reaches zero, the object is deleted.
 
 ---
 
-# How Can We Observe the Reference Count?
+# How Can the Counter Be Observed?
 
-The current number of owning `shared_ptr` instances can be observed using `use_count()`.
+We can observe the number of owners that currently exist using `use_count()`.
 
-For example:
+A sample statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -203,9 +207,9 @@ auto p1 = std::make_shared<MyClass>();
 std::cout << p1.use_count();
 ```
 
-Normally, the result is `1`.
+After `p1` is created, the value is normally `1`.
 
-After:
+The following statement:
 
 ```cpp
 auto p2 = p1;
@@ -213,9 +217,9 @@ auto p2 = p1;
 std::cout << p1.use_count();
 ```
 
-The count is normally `2`.
+Now the value will be `2`.
 
-After:
+The following statement:
 
 ```cpp
 auto p3 = p1;
@@ -223,58 +227,49 @@ auto p3 = p1;
 std::cout << p1.use_count();
 ```
 
-The count is normally `3`.
+Now the value will be `3`.
 
-The important point is that `use_count()` is useful for observation and debugging, but it should generally not be the foundation of important program logic.
+The `use_count()` method is useful for observation and debugging, but we must not design the main logic of the program based on its value.
 
 ---
 
 # An Important Note About use_count()
 
-The concept of `use_count()` should not normally be used to implement fragile logic such as:
+The `use_count()` method is not a suitable tool for asking the question "Am I the only owner?".
 
-```cpp
-if (ptr.use_count() == 1)
-{
-    // Assume that I am the only owner
-}
-```
+It is better to design the program based on an ownership contract rather than constantly checking the counter.
 
-The problem is that ownership can change as other `shared_ptr` instances are created or destroyed.
+Also, in multithreaded environments, the value of `use_count()` may no longer be the same immediately after it is read.
 
-This becomes even more important in multithreaded programs, where another thread may change the ownership state.
-
-The better approach is to design the ownership contract explicitly instead of relying on the current value of `use_count()`.
+Therefore, it is better to use `use_count()` mostly for observation, diagnostics, and debugging — not for sensitive design decisions.
 
 ---
 
 # Creating a shared_ptr
 
-In C++11, it is possible to construct a `shared_ptr` directly from `new`:
+In C++11, we can directly use `new` to instantiate objects on the Heap and have a shared pointer refer to them:
 
 ```cpp
 std::shared_ptr<MyClass> ptr(new MyClass());
 ```
 
-However, the preferred approach is usually `std::make_shared`:
+The preferred approach is to use `std::make_shared`:
 
 ```cpp
 auto ptr = std::make_shared<MyClass>();
 ```
 
-The important point is that `make_shared` has been available since C++11.
+The `make_shared` function is both more readable and can usually perform the memory allocation more efficiently.
 
-It makes the code cleaner and, in typical implementations, can also make memory allocation more efficient.
+The important point is that if you are using C++11, `make_shared` has been part of the standard from the very beginning.
 
 ---
 
-# Why Is make_shared Preferred?
+# Why Is make_shared Better?
 
-A `shared_ptr` usually needs some additional information besides the pointer itself.
+Under normal circumstances, `make_shared` can place the memory for the object and the control block in a single allocation.
 
-This information is stored in an implementation-managed structure commonly called the **control block**.
-
-Conceptually, it may contain information such as:
+Its conceptual representation looks like this:
 
 ```text
         Control Block
@@ -288,21 +283,17 @@ Conceptually, it may contain information such as:
            Object
 ```
 
-The exact layout is implementation-dependent.
+This structure can generally reduce the number of required allocations.
 
-A typical implementation of `make_shared` can allocate the control block and the object in a closely related or combined allocation.
-
-This can reduce the number of separate memory allocations.
-
-The exact implementation details should not be relied upon, because the C++ standard does not require a particular internal layout.
+The exact layout details depend on the implementation of the standard library; therefore, we must not rely on a precise, fixed internal layout of `shared_ptr`.
 
 ---
 
 # Using shared_ptr in a Setter
 
-If a class is designed to maintain shared ownership of an object, a setter can receive a `shared_ptr`.
+If a class accepts shared ownership, the `shared_ptr` can usually be received by value.
 
-A clear design is to receive it by value:
+A sample statement:
 
 ```cpp
 class Owner
@@ -318,7 +309,7 @@ public:
 };
 ```
 
-The caller can then provide an existing `shared_ptr`:
+The caller can set an existing `shared_ptr`:
 
 ```cpp
 auto obj = std::make_shared<MyClass>();
@@ -326,17 +317,15 @@ auto obj = std::make_shared<MyClass>();
 owner.setValue(obj);
 ```
 
-Now both `obj` and `owner.value` participate in the shared ownership relationship.
-
-The reference count increases accordingly.
+In this case, both `obj` and `value` own the object, and the counter increases.
 
 ---
 
-# Why Can Passing shared_ptr by Value Be a Good Design?
+# Why Should a Setter Take shared_ptr by Value?
 
-Receiving a `shared_ptr` by value can clearly communicate that the function may keep a copy and therefore participate in ownership.
+Receiving a `shared_ptr` by value can express shared ownership very clearly.
 
-For example:
+The following statement:
 
 ```cpp
 void setValue(std::shared_ptr<MyClass> ptr)
@@ -345,47 +334,45 @@ void setValue(std::shared_ptr<MyClass> ptr)
 }
 ```
 
-The caller can write:
+says that this function receives a `shared_ptr` and, if needed, keeps shared ownership of it.
+
+If the caller has something like this:
 
 ```cpp
+auto obj = std::make_shared<MyClass>();
+
 owner.setValue(obj);
 ```
 
-The important point is that this is different from `unique_ptr`.
-
-With `unique_ptr`, copying is prohibited because ownership must remain unique.
-
-With `shared_ptr`, copying is part of the intended ownership model.
+After the call, both `obj` and `owner.value` own the object.
 
 ---
 
-# Should We Pass shared_ptr by const Reference?
+# Should We Take shared_ptr by const Reference?
 
-The answer depends on what the function actually needs.
+It depends on the function's contract.
 
-If a function only needs temporary access to the `shared_ptr` itself and does not need to create or retain another owner, it can receive:
+If the function only wants to use the `shared_ptr` and is not going to create new ownership, the following can be used:
 
 ```cpp
 void process(const std::shared_ptr<MyClass>& ptr);
 ```
 
-However, if the function is going to store the `shared_ptr` or otherwise create another shared owner, receiving it by value is often clearer:
+If the function is going to store the `shared_ptr` or create shared ownership, receiving it by value is usually a clearer design:
 
 ```cpp
 void setValue(std::shared_ptr<MyClass> ptr);
 ```
 
-The important design principle is:
-
-> The parameter type should communicate the ownership semantics of the function.
+This difference is important, because the parameter type must communicate the ownership contract to the reader of the code.
 
 ---
 
 # Using shared_ptr in a Getter
 
-This is an important area where `shared_ptr` differs from `unique_ptr`.
+This part has a very important difference from `unique_ptr`.
 
-Because `shared_ptr` is specifically designed for shared ownership, returning a `shared_ptr` by value from a getter can be perfectly reasonable.
+Because `shared_ptr` is designed for shared ownership, returning a `shared_ptr` from a getter is completely logical in many APIs.
 
 For example:
 
@@ -396,53 +383,55 @@ std::shared_ptr<MyClass> getValue() const
 }
 ```
 
-The caller can write:
+The caller now receives a new `shared_ptr` that shares ownership of the class's internal object.
+
+The usage statement:
 
 ```cpp
 auto obj = owner.getValue();
 ```
 
-The important point is that `obj` is now another owner of the same object.
+Now `obj` is also one of the owners of the object.
 
 ---
 
-# Why Can Returning shared_ptr from a Getter Be Appropriate?
+# Why Can a Getter of Type shared_ptr Be Appropriate?
 
-Returning a `shared_ptr` is appropriate when the API intends to allow the caller to **keep the object alive independently of the owning class**.
+If the purpose of the getter is for the caller to be able to **maintain shared ownership and the lifetime of the object**, returning a `shared_ptr` is a suitable choice.
 
-For example:
+Consider the following statement:
 
 ```cpp
-auto obj = owner.getValue();
+std::shared_ptr<MyClass> obj = owner.getValue();
 ```
 
-If `owner` is destroyed afterward, `obj` can still keep the managed object alive.
+If `owner` is destroyed later, `obj` can still keep the object alive.
 
-This is one of the fundamental reasons why returning `shared_ptr` can make sense.
+This is precisely one of the fundamental differences between a getter for `shared_ptr` and a getter for `unique_ptr`.
 
 ---
 
 # Should a Getter Return shared_ptr&?
 
-In most designs, exposing a reference to the internal `shared_ptr` is unnecessary.
+Usually, it is better to avoid returning a reference to the internal `shared_ptr`, unless we have a specific reason to do so.
 
-For example:
+The following statement:
 
 ```cpp
 std::shared_ptr<MyClass>& getValue();
 ```
 
-This exposes the internal ownership mechanism of the class.
+exposes the details of the class's internal ownership management to the caller.
 
-The caller could then write:
+The caller could then do something like this:
 
 ```cpp
 owner.getValue().reset();
 ```
 
-Now the caller can directly modify the ownership state maintained by the class.
+Now the caller can modify the class's internal ownership.
 
-A cleaner API is often:
+In many designs, it is better to return the `shared_ptr` itself by value instead:
 
 ```cpp
 std::shared_ptr<MyClass> getValue() const
@@ -451,15 +440,15 @@ std::shared_ptr<MyClass> getValue() const
 }
 ```
 
-The caller receives a new `shared_ptr` that shares ownership, while the class keeps control of its own member.
+This creates a copy of the `shared_ptr` itself, not a copy of the object it owns.
 
 ---
 
-# Does Copying shared_ptr Copy the Object?
+# Does Copying a shared_ptr Mean Copying the Object?
 
-This is one of the most important concepts to understand.
+This is one of the most important points about `shared_ptr`.
 
-Consider:
+The following statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -467,11 +456,11 @@ auto p1 = std::make_shared<MyClass>();
 auto p2 = p1;
 ```
 
-The `MyClass` object is **not copied**.
+does not copy `MyClass`.
 
-Instead, another `shared_ptr` is created that points to the same object.
+It only creates another `shared_ptr` that points to the same object.
 
-Conceptually:
+Its visual representation:
 
 ```text
 p1 ──┐
@@ -481,13 +470,15 @@ p2 ──┼──> MyClass
      └── Control Block
 ```
 
-Both `p1` and `p2` therefore refer to the **same object**.
+Therefore, both `p1` and `p2` point to **the same object**.
 
 ---
 
-# How to Duplicate a shared_ptr
+# How Do We Get a Duplicate of a shared_ptr?
 
-If by "duplicate" we mean creating another `shared_ptr` that shares ownership of the same object, simply copy it:
+If by "getting a duplicate" we mean creating another `shared_ptr` for the same object, it is enough to copy it.
+
+A sample statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -495,23 +486,33 @@ auto p1 = std::make_shared<MyClass>();
 auto p2 = p1;
 ```
 
-Now `p2` is another owner of the same object.
+Now `p2` is a new owner of the same object.
 
-The reference count will normally become `2`:
+The counter statement:
 
 ```cpp
 std::cout << p1.use_count();
 ```
 
-The important point is that this is a **duplicate of the smart pointer ownership**, not a duplicate of the object.
+It should now normally display the value `2`.
 
 ---
 
-# How to Create a Real Duplicate of the Object
+# What If We Want a Real Duplicate of the Object Itself?
 
-If we actually want a completely independent object, copying the `shared_ptr` is not enough.
+Copying a `shared_ptr` is completely different from cloning the object.
 
-For example:
+The following statement:
+
+```cpp
+auto p2 = p1;
+```
+
+does not create a new object here.
+
+If we truly want an independent object, we must copy the object itself — provided that the type in question is copyable.
+
+A sample statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -519,7 +520,9 @@ auto p1 = std::make_shared<MyClass>();
 auto p2 = std::make_shared<MyClass>(*p1);
 ```
 
-Now there are two separate objects:
+Now `p1` and `p2` have two different objects.
+
+The visual representation:
 
 ```text
 p1 ──> MyClass #1
@@ -527,45 +530,45 @@ p1 ──> MyClass #1
 p2 ──> MyClass #2
 ```
 
-The exact behavior depends on whether `MyClass` supports copying and what its copy constructor does.
-
-The important point is that these objects no longer share the same managed instance.
+These two objects share no ownership with each other.
 
 ---
 
-# Accessing the Object Inside shared_ptr
+# Accessing the Internal Value of shared_ptr
 
-A `shared_ptr` behaves similarly to a pointer when accessing the managed object.
+If by "internal value" we mean the object owned by the `shared_ptr`, the `*` operator can be used.
 
-For example:
+A sample statement:
 
 ```cpp
 (*ptr).doSomething();
 ```
 
-The more common syntax is:
+The more common approach is to use the `->` operator:
 
 ```cpp
 ptr->doSomething();
 ```
 
-Both expressions access the object managed by the `shared_ptr`.
+These two are equivalent in terms of accessing the object.
 
 ---
 
 # Accessing the Object Through a Raw Pointer
 
-A raw pointer can be obtained using `get()`:
+To obtain a non-owning raw pointer, `get()` can be used.
+
+A sample statement:
 
 ```cpp
 MyClass* raw = ptr.get();
 ```
 
-The important point is that `raw` is **non-owning**.
+The `raw` pointer does not own the object.
 
-The `shared_ptr` remains responsible for managing the lifetime of the object.
+The `shared_ptr` still owns the object and remains responsible for freeing it.
 
-The raw pointer can be used with APIs that require raw pointers:
+The usage statement:
 
 ```cpp
 if (raw)
@@ -574,13 +577,15 @@ if (raw)
 }
 ```
 
+This approach is useful for interacting with APIs that receive raw pointers.
+
 ---
 
 # Risks of Using a Raw Pointer from get()
 
-The most important risk is that the lifetime of the raw pointer depends on the lifetime of the managed object.
+The most important risk is that the lifetime of the raw pointer depends on the main owner.
 
-Consider:
+The dangerous statement:
 
 ```cpp
 auto ptr = std::make_shared<MyClass>();
@@ -589,46 +594,42 @@ MyClass* raw = ptr.get();
 
 ptr.reset();
 
-raw->doSomething(); // Dangerous
+raw->doSomething(); // dangerous
 ```
 
-If `ptr` was the last owner, the object has already been destroyed.
+After `reset()`, if `ptr` was the last owner, the object has already been deleted.
 
-The `raw` pointer is now a **dangling pointer**.
-
-Using it can result in undefined behavior.
+The `raw` pointer is now a dangling pointer.
 
 ---
 
-# get() Does Not Transfer Ownership
+# The get() Method Does Not Transfer Ownership
 
-The `get()` function only returns the address of the managed object.
+The `get()` method only returns the address of the object.
 
-For example:
+The following statement:
 
 ```cpp
 MyClass* raw = ptr.get();
 ```
 
-This does not mean that `raw` has become an owner.
+does not in any way mean that `raw` has become the owner of the object.
 
-The following must therefore never be done:
+So, after obtaining the raw pointer, you must not delete it as follows; instead, leave the deletion of the object to the smart pointer!:
 
 ```cpp
 delete raw;
 ```
 
-The `shared_ptr` still considers itself responsible for the object.
-
-Later, it may attempt to delete the same object, which can result in undefined behavior.
+This can cause a double deletion, because the `shared_ptr` still owns the object and will eventually try to delete it.
 
 ---
 
-# A Dangerous Mistake with Raw Pointers
+# A Very Dangerous Mistake with Raw Pointers
 
-One of the most dangerous mistakes is constructing multiple independent `shared_ptr` objects from the same raw pointer.
+One of the most dangerous mistakes is constructing several independent `shared_ptr` objects from one shared raw pointer.
 
-For example:
+The following must never be done:
 
 ```cpp
 MyClass* raw = new MyClass();
@@ -637,9 +638,9 @@ std::shared_ptr<MyClass> p1(raw);
 std::shared_ptr<MyClass> p2(raw);
 ```
 
-This creates two independent control blocks.
+The `p1` and `p2` objects create two independent control blocks.
 
-Conceptually:
+The visual representation:
 
 ```text
 p1 ──> Control Block #1 ──> MyClass
@@ -647,13 +648,11 @@ p1 ──> Control Block #1 ──> MyClass
 p2 ──> Control Block #2 ──> MyClass
 ```
 
-Both control blocks believe that they own the same object.
+Both control blocks believe they own the object.
 
-Eventually, both may attempt to delete it.
+Eventually, both may try to delete the object, and the result will be undefined behavior.
 
-The result can be double deletion and undefined behavior.
-
-The correct approach is to copy an existing `shared_ptr`:
+If we need to create multiple `shared_ptr` objects, we must copy them from an existing `shared_ptr`:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -663,35 +662,39 @@ auto p2 = p1;
 
 ---
 
-# Can Accessing the Object Cause a Memory Leak?
+# Can Accessing the Inside of shared_ptr Cause a Memory Leak?
 
-Calling `get()` itself does not cause a memory leak.
+`get()` itself does not cause a memory leak.
 
-The following merely creates a non-owning raw pointer:
+The main problem arises when we manage lifetime and ownership incorrectly through a raw pointer.
+
+The dangerous statement:
 
 ```cpp
 auto ptr = std::make_shared<MyClass>();
 
 MyClass* raw = ptr.get();
+
+ptr.reset();
+
+// raw is now being kept, but the object no longer exists
 ```
 
-The more serious ownership-related problem with `shared_ptr` is usually not `get()` itself.
+This example leads more to a dangling pointer than to a memory leak.
 
-One of the most important problems is **cyclic ownership**.
+The more serious memory leak disaster in `shared_ptr` usually arises from an **ownership cycle**.
 
 ---
 
-# The Main shared_ptr Problem: Ownership Cycles
+# The Main Problem of shared_ptr: Ownership Cycles
 
-A `shared_ptr` keeps its object alive as long as its strong reference count is greater than zero.
+The `shared_ptr` pointer does not delete the object until the reference count reaches zero.
 
-This creates a problem if objects own each other in a cycle.
+If objects own each other in a cycle, the counter may never reach zero.
 
-Consider:
+A classic example:
 
 ```cpp
-class B;
-
 class A
 {
 public:
@@ -705,7 +708,7 @@ public:
 };
 ```
 
-Now:
+If we write:
 
 ```cpp
 auto a = std::make_shared<A>();
@@ -715,7 +718,7 @@ a->b = b;
 b->a = a;
 ```
 
-Conceptually, the ownership looks like this:
+The ownership structure now looks like this:
 
 ```text
 a ──> A ──shared_ptr──> B
@@ -724,23 +727,21 @@ a ──> A ──shared_ptr──> B
        └──shared_ptr────┘
 ```
 
-`A` owns `B`.
+`A` owns `B`, and `B` in turn owns `A`.
 
-At the same time, `B` owns `A`.
+Even if `a` and `b` go out of scope, this cycle may prevent the reference count of each object from reaching zero.
 
-Even after the local variables `a` and `b` go out of scope, the objects can remain alive because they still own each other.
-
-The result is a memory leak.
+The result is that the objects are never freed.
 
 ---
 
-# Why Can the Reference Count Fail to Reach Zero?
+# Why Doesn't the shared_ptr Counter Work Well in This Case?
 
-The important point is that the reference counting mechanism itself is not broken.
+The very important point is that **the reference counting mechanism itself is not broken**.
 
-It is doing exactly what it was designed to do.
+The counter works exactly according to the rules of ownership.
 
-The problem is the ownership model.
+The problem is that our ownership model has created a cycle.
 
 `A` says:
 
@@ -750,29 +751,27 @@ And `B` says:
 
 > I still own `A`.
 
-As a result, neither ownership count can naturally reach zero.
+As a result, neither of them can naturally reach zero.
 
-This is called a **reference cycle** or **ownership cycle**.
-
-This is one of the main situations where `weak_ptr` becomes useful.
+This is exactly the problem that `std::weak_ptr` was designed to partly solve.
 
 ---
 
 # Why Does weak_ptr Exist?
 
-A `weak_ptr` refers to an object managed by `shared_ptr`, but it **does not own that object**.
+The `weak_ptr` pointer refers to an object managed by a `shared_ptr`, but it **does not own that object**.
 
-For example:
+A sample statement:
 
 ```cpp
 std::weak_ptr<MyClass> weak = shared;
 ```
 
-The important point is that creating a `weak_ptr` does not increase the strong ownership count.
+This does not increase the reference count related to the shared ownership.
 
-This allows us to represent relationships that need access to an object but should not keep it alive.
+Therefore, we can have a relationship that only observes the object, without creating ownership over its lifetime.
 
-For the previous example, we can change one side of the relationship:
+In the previous structure, we can change one of the relationships as follows:
 
 ```cpp
 class B
@@ -782,29 +781,41 @@ public:
 };
 ```
 
-Now `B` observes `A` without owning it.
+Now `B` no longer owns `A`.
 
-The ownership cycle is broken.
+As a result, the ownership cycle is broken, and the objects can be freed at the appropriate time.
 
-The objects can therefore be destroyed when the real owners release them.
-
-A deeper discussion of `weak_ptr`, control blocks, and cyclic ownership can be covered separately.
+Deeper details of `weak_ptr` and the control block can be covered in a separate tutorial.
 
 ---
 
-# shared_ptr vs weak_ptr
+# What Is the Difference Between shared_ptr and weak_ptr?
 
-A `shared_ptr` means:
+The `shared_ptr` pointer is an owner.
 
-> I am an owner of this object.
+The statement:
 
-A `weak_ptr` means:
+```cpp
+std::shared_ptr<MyClass>
+```
 
-> I can observe this object, but I do not own it.
+means:
 
-A `weak_ptr` normally needs to be converted temporarily into a `shared_ptr` before accessing the object.
+> I share in the ownership of the object.
 
-For example:
+The statement:
+
+```cpp
+std::weak_ptr<MyClass>
+```
+
+means:
+
+> I only observe the object; I do not own it.
+
+To access the object, a `weak_ptr` usually must first be temporarily converted into a `shared_ptr`.
+
+A sample statement:
 
 ```cpp
 if (auto ptr = weak.lock())
@@ -813,17 +824,17 @@ if (auto ptr = weak.lock())
 }
 ```
 
-If the object is still alive, `lock()` returns a valid `shared_ptr`.
+If the object is still alive, `lock()` creates a valid `shared_ptr`.
 
 If the object has already been destroyed, `lock()` returns an empty `shared_ptr`.
 
 ---
 
-# Using shared_ptr in a Class
+# shared_ptr in a Class
 
-A common use of `shared_ptr` is to make a class participate in shared ownership.
+One of the common uses of `shared_ptr` is for a class to hold shared ownership of an object.
 
-For example:
+A sample statement:
 
 ```cpp
 class Car
@@ -846,7 +857,7 @@ public:
 
 Now `Car` is one of the owners of the `Engine`.
 
-The caller can use it like this:
+Usage:
 
 ```cpp
 auto engine = std::make_shared<Engine>();
@@ -856,15 +867,15 @@ Car car(engine);
 auto engine2 = car.getEngine();
 ```
 
-Now multiple `shared_ptr` instances refer to the same `Engine`.
+Now several `shared_ptr` objects point to the same `Engine`, and all of them share in its ownership.
 
 ---
 
-# Should a Getter Return shared_ptr?
+# Is It Better for a Getter to Return shared_ptr?
 
-If the intention is to allow the caller to keep the object alive independently of the class, returning a `shared_ptr` by value is completely reasonable.
+If the goal is for the caller to be able to maintain the object's lifetime independently of the class, then yes — returning a `shared_ptr` by value is completely logical.
 
-For example:
+The statement:
 
 ```cpp
 std::shared_ptr<Engine> getEngine() const
@@ -873,23 +884,17 @@ std::shared_ptr<Engine> getEngine() const
 }
 ```
 
-The caller receives another owner:
+This getter creates a lightweight copy of the smart pointer itself; it does not copy the object.
 
-```cpp
-auto engine2 = car.getEngine();
-```
-
-The reference count increases accordingly.
-
-The important point is that this is intentional shared ownership.
+The result is a new owner, which increases the reference count.
 
 ---
 
-# What If We Only Need Access to the Object?
+# What If We Only Want to Give Access to the Object?
 
-If the caller only needs temporary access and should not become an owner, returning a `shared_ptr` may be unnecessary.
+If the caller only needs the object for a short time and must not create new ownership, perhaps we should not return a `shared_ptr` at all.
 
-For a non-null object, a reference may be a better API:
+For a non-modifiable object:
 
 ```cpp
 const Engine& getEngine() const
@@ -898,9 +903,9 @@ const Engine& getEngine() const
 }
 ```
 
-This gives access without creating another owner.
+This API gives the caller access, but it does not create new ownership.
 
-If the object may be absent, a non-owning raw pointer can be appropriate:
+If the object being returned can be null, a non-owning const raw pointer is used:
 
 ```cpp
 const Engine* getEngine() const
@@ -909,15 +914,34 @@ const Engine* getEngine() const
 }
 ```
 
-The important principle is to choose the return type based on the intended ownership and lifetime contract.
+The choice among these approaches must be made based on the lifetime and ownership contract.
 
 ---
 
-# shared_ptr and Move
+# An Important Difference: Getters with unique_ptr
 
-`shared_ptr`, like `unique_ptr`, supports move operations.
+With `unique_ptr`, we usually do not want to hand the class's internal ownership over to the caller so easily, because the ownership must remain unique.
 
-For example:
+With `shared_ptr`, handing over a copy of the smart pointer is usually not a problem, because its design is fundamentally based on shared ownership.
+
+As a result, this design is completely natural:
+
+```cpp
+std::shared_ptr<MyClass> getValue() const
+{
+    return value;
+}
+```
+
+The caller receives a new owner, and the class also remains an owner.
+
+---
+
+# shared_ptr and Transferring with move
+
+Like `unique_ptr`, the `shared_ptr` pointer supports move.
+
+A sample statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -925,51 +949,53 @@ auto p1 = std::make_shared<MyClass>();
 auto p2 = std::move(p1);
 ```
 
-The state of `p1` is moved into `p2`.
+The ownership of `p1` is transferred to `p2`.
 
-After the operation, `p1` is empty and `p2` owns the object.
-
-The important distinction is that moving a `shared_ptr` does not create an additional owner.
+After the move, `p1` is empty and `p2` holds the ownership.
 
 ---
 
-# Copy vs Move with shared_ptr
+# The Difference Between copy and move in shared_ptr
 
-Copying a `shared_ptr` creates another owner:
+The copy command creates a new owner.
+
+The statement:
 
 ```cpp
 auto p2 = p1;
 ```
 
-The strong reference count increases.
+The reference count variable increases.
 
-Moving a `shared_ptr` transfers the smart pointer's ownership state:
+The move operation transfers the ownership of the `shared_ptr`.
+
+The statement:
 
 ```cpp
 auto p2 = std::move(p1);
 ```
 
-The source `shared_ptr` becomes empty.
+In this case, the reference count does not increase; the ownership state of the `shared_ptr` itself is transferred.
 
-The important point is that move generally avoids the need to increment the reference count because no additional owner is being created.
+Therefore, the choice between copy and move must be based on whether we want to create a new owner or merely transfer the same ownership.
 
 ---
 
-# reset() with shared_ptr
+# The reset Operation in shared_ptr
 
-The `reset()` function releases the ownership held by a particular `shared_ptr`.
+The `reset()` method is used to release the current ownership.
 
-For example:
+The statement:
 
 ```cpp
 ptr.reset();
 ```
 
-After this operation, `ptr` no longer owns the object.
+The `ptr` pointer no longer owns the object.
 
-If it was the last owner, the object is destroyed.
+If `ptr` was the last owner, the object is deleted as well.
 
-Consider:
+A sample statement:
 
 ```cpp
 auto p1 = std::make_shared<MyClass>();
@@ -978,29 +1004,31 @@ auto p2 = p1;
 p1.reset();
 ```
 
-The object remains alive because `p2` is still an owner.
+After `reset()`, the object created on the Heap is still alive, because `p2` still owns it.
 
-If we then execute:
+If later:
 
 ```cpp
 p2.reset();
 ```
 
-`p2` releases the final ownership and the object can be destroyed.
+The `p2` pointer also releases the final ownership, and the object will be freed.
 
 ---
 
-# reset() with a New Object
+# The reset Operation with a New Object
 
-`reset()` can also make a `shared_ptr` own another object:
+The `reset()` method can also attach the `shared_ptr` to a new object.
+
+A sample statement:
 
 ```cpp
 ptr.reset(new MyClass());
 ```
 
-If `ptr` was the last owner of the previous object, the previous object is released.
+If `ptr` was previously the last owner of the old object, the old object is freed and `ptr` becomes the owner of the new object.
 
-For creating a new object, however, this is usually clearer:
+For creating a new object, using `make_shared` is still preferred:
 
 ```cpp
 ptr = std::make_shared<MyClass>();
@@ -1008,17 +1036,19 @@ ptr = std::make_shared<MyClass>();
 
 ---
 
-# Can shared_ptr Be Empty?
+# Can a shared_ptr Be Made Empty?
 
-Yes.
+Yes!
 
-An empty `shared_ptr` can be created like this:
+The statement:
 
 ```cpp
 std::shared_ptr<MyClass> ptr;
 ```
 
-Its state can be checked with:
+creates an empty `shared_ptr`.
+
+Checking whether the shared_ptr is null:
 
 ```cpp
 if (!ptr)
@@ -1027,48 +1057,40 @@ if (!ptr)
 }
 ```
 
-Or:
+`nullptr` can also be used:
 
 ```cpp
 if (ptr == nullptr)
 {
-    // ptr is empty
+    // Empty
 }
 ```
 
-An empty `shared_ptr` does not own an object.
-
 ---
 
-# shared_ptr and Multithreading
+# shared_ptr and Multiple Threads
 
-An important distinction must be made between **thread safety of the shared ownership mechanism** and **thread safety of the managed object**.
+One of the important points is that we must distinguish between **the thread safety of the control block** and **the thread safety of the object**.
 
-The standard provides important thread-safety guarantees for independent `shared_ptr` objects that share ownership.
+Ownership operations on `shared_ptr` objects are thread-safe under certain specific standard conditions, but this does not mean that the owned object itself is thread-safe.
 
-However, this does not mean that the object itself is thread-safe.
-
-For example:
+If two threads do this at the same time:
 
 ```cpp
 ptr->value++;
 ```
 
-If multiple threads modify `value` simultaneously, `shared_ptr` does not automatically protect that data.
+The `shared_ptr` pointer does not prevent a data race on `value`.
 
-The smart pointer manages lifetime and ownership.
-
-It does not automatically synchronize access to the managed object.
-
-If the object itself is shared between threads, appropriate synchronization mechanisms may still be required.
+Here, the smart pointer is responsible for managing lifetime and ownership, not for the internal synchronization of the object.
 
 ---
 
-# shared_ptr and Destructors
+# shared_ptr and the Destructor
 
-One major advantage of `shared_ptr` is that manual `delete` is normally unnecessary.
+One of the main advantages of `shared_ptr` is that we normally do not need a manual `delete`.
 
-For example:
+The statement:
 
 ```cpp
 class Manager
@@ -1078,17 +1100,15 @@ private:
 };
 ```
 
-When a `Manager` object is destroyed, its `shared_ptr` member is destroyed as well.
+When `Manager` is destroyed, the class's `shared_ptr` member is destroyed as well.
 
-If that `shared_ptr` is the last owner, the managed object is automatically destroyed.
-
-This is another example of the RAII principle.
+If that `shared_ptr` is the last owner, the object is freed too.
 
 ---
 
-# A Complete Class Example
+# A Complete Example of Class Design
 
-A class can be designed like this:
+We can design a class as follows:
 
 ```cpp
 class Manager
@@ -1124,90 +1144,61 @@ public:
 };
 ```
 
-This class clearly exposes several different ownership operations.
+This class manages shared ownership clearly.
 
-`setValue()` accepts shared ownership.
+The `setValue()` method receives new shared ownership.
 
-`getValue()` returns another owning `shared_ptr`.
+The `getValue()` method returns a new `shared_ptr` for shared ownership.
 
-`getRawValue()` provides non-owning access.
+The `getRawValue()` method only gives non-owning access.
 
-`resetValue()` releases the ownership held by the class.
-
-The ownership contract is therefore visible in the API.
-
----
-
-# Returning shared_ptr from a Function
-
-A function can return a `shared_ptr` to transfer or share ownership with its caller.
-
-For example:
-
-```cpp
-std::shared_ptr<MyClass> createObject()
-{
-    return std::make_shared<MyClass>();
-}
-```
-
-The caller can write:
-
-```cpp
-auto obj = createObject();
-```
-
-The caller now owns the returned object through `shared_ptr`.
-
-The important point is that this is different from returning a raw pointer allocated with `new`.
-
-The caller does not need to remember to call `delete`.
+The `resetValue()` method releases the internal ownership.
 
 ---
 
 # A Note About Returning shared_ptr
 
-Some developers worry that returning a `shared_ptr` means that the entire object is copied.
+Some programmers worry that returning a `shared_ptr` causes a heavy copy of the object.
 
-That is incorrect.
+This assumption is wrong.
 
-For example:
+The statement:
 
 ```cpp
 return value;
 ```
 
-does not copy the managed object.
+does not copy the owned object.
 
-It creates or transfers another smart-pointer ownership state as appropriate.
+Only the smart pointer itself and its related ownership information are managed.
 
-The object itself remains the same object.
+In modern code, the compiler can also optimize many move and copy operations.
 
 ---
 
-# When Should We Avoid shared_ptr?
+# When Is Using shared_ptr Not an Appropriate Choice?
 
-We should not use `shared_ptr` everywhere simply because it makes memory management easier.
+We must not use `shared_ptr` everywhere merely because it makes memory management easier.
 
-`shared_ptr` introduces additional ownership machinery and usually has more overhead than `unique_ptr`.
+The `shared_ptr` pointer has more overhead and complexity than `unique_ptr`.
 
-If there is only one clear owner:
+So if we have only one owner:
 
 ```cpp
 std::unique_ptr<MyClass>
 ```
 
-is often a better choice.
+is usually the better choice.
 
-If several independent parts of the program genuinely need to own the object:
+If several parts genuinely must own the object:
 
 ```cpp
 std::shared_ptr<MyClass>
 ```
 
-may be appropriate.
+can be an appropriate choice.
 
-If we only need temporary access:
+If we only need access:
 
 ```cpp
 MyClass&
@@ -1219,128 +1210,169 @@ or:
 MyClass*
 ```
 
-may be a simpler and more accurate design.
+may be a simpler and more precise choice.
 
 ---
 
-# shared_ptr vs unique_ptr
+# The Difference Between shared_ptr and unique_ptr
 
-The most important difference is the ownership model.
+The most important difference between these two is the **ownership model**.
 
-| Feature             | `unique_ptr`    | `shared_ptr`    |
-| ------------------- | --------------- | --------------- |
-| Ownership           | Unique          | Shared          |
-| Copy                | No              | Yes             |
-| Move                | Yes             | Yes             |
-| Reference counting  | No              | Yes             |
-| Multiple owners     | No              | Yes             |
-| Management overhead | Lower           | Higher          |
-| Ownership cycles    | Not applicable  | Possible        |
-| Need for `weak_ptr` | Usually no      | Sometimes       |
-| Main use case       | One clear owner | Multiple owners |
+| Feature                      | `unique_ptr`       | `shared_ptr`                |
+| ---------------------------- | ------------------ | --------------------------- |
+| Ownership type               | Unique             | Shared                      |
+| Copy                         | No                 | Yes                         |
+| Move                         | Yes                | Yes                         |
+| Reference Count              | No                 | Yes                         |
+| Multiple ownership           | No                 | Yes                         |
+| Management overhead          | Lower              | Higher                      |
+| Risk of ownership cycles     | No                 | Yes                         |
+| Possible need for `weak_ptr` | Usually no         | Yes                         |
+| Main use case                | One specific owner | Multiple independent owners |
 
-The simple rule is:
+If we can limit ownership to one specific entity, `unique_ptr` is usually the better choice.
 
-> If ownership can be clearly assigned to one entity, prefer `unique_ptr`.
-
-If multiple independent entities genuinely need to keep the object alive, `shared_ptr` may be the correct choice.
+If several entities must be able to maintain the object's lifetime independently of one another, `shared_ptr` is more suitable.
 
 ---
 
 # A Simple Comparison
 
-A useful mental model is to think of `unique_ptr` as a single ownership key.
+The `unique_ptr` pointer can be thought of as a single key.
 
-Only one entity owns the key.
+Only one person holds the key.
 
-A `shared_ptr` can be thought of as a system in which several entities hold their own ownership handles to the same resource.
+The `shared_ptr` pointer is like a system in which several people each hold a copy of the ownership rights to a resource.
 
-As long as at least one ownership handle remains, the resource stays alive.
+As long as at least one person is still an owner, the resource remains.
 
-A `weak_ptr`, on the other hand, is like someone who knows where the resource is but does not own it.
+The `weak_ptr` pointer is like someone who only knows the address of the resource but does not own it.
 
 ---
 
-# A Simple Rule for Choosing Smart Pointers
+# When Is shared_ptr the Right Choice?
 
-A practical rule can be summarized as follows:
+Using `shared_ptr` is logical when several independent parts of the program must be able to hold the object and maintain its lifetime.
 
-```text
-Unique ownership:
-std::unique_ptr<T>
+### Appropriate Cases for Using `std::shared_ptr`
 
-Shared ownership:
-std::shared_ptr<T>
+The `std::shared_ptr` pointer is appropriate when **the ownership of an object is genuinely shared among several independent parts of the program** and we want the object to remain alive until the last owner is gone.
 
-Non-owning, non-null access:
-T&
+Some common examples:
 
-Non-owning, nullable access:
-T*
+* **Sharing an Object Among Multiple Components:** several components need one shared object, and each of them can own it during its own lifetime.
+* **In Factories:** when a Factory creates an Object and wants to transfer its ownership to the Caller while also allowing multiple owners.
+* **In Graphs and Complex Structures:** in structures where multiple Objects can refer to another Object and its ownership is divided among several parts.
+* **Caches:** when objects in a Cache are simultaneously used by other parts of the program and must not be destroyed immediately just because they were removed from the Cache.
+* **Resources with Multiple Independent Consumers:** when several independent parts of the program need one Resource and none of them alone is fully responsible for its lifetime.
 
-Non-owning observation of an object managed by shared_ptr:
-std::weak_ptr<T>
+**Important note:** the mere fact that several parts use one Object does not mean we must use `std::shared_ptr`. First, we must determine **who owns the Object and when it should be destroyed**. If there is one specific owner, `std::unique_ptr` is usually the more appropriate choice, and the other parts can access the Object merely through a non-owning Reference or Pointer.
+
+---
+
+# When Is unique_ptr Better?
+
+If the ownership is specific and unique, it is better to use `unique_ptr` as much as possible.
+
+A sample statement:
+
+```cpp
+class Car
+{
+private:
+    std::unique_ptr<Engine> engine;
+};
 ```
 
-This is not an absolute rule for every possible design, but it is an excellent starting point when designing C++ APIs.
+The meaning of this design is very clear:
+
+> `Car` owns the `Engine`.
+
+If the `Engine` is not supposed to be owned by any other part, converting it to `shared_ptr` only adds extra complexity.
 
 ---
 
-# Important shared_ptr Rules
+# A Golden Rule for Choosing a Smart Pointer
 
-The `shared_ptr` ownership model is based on reference counting.
+We can have a simple rule:
 
-Copying a `shared_ptr` does not copy the managed object; it creates another owner of the same object.
+Unique ownership:
+unique_ptr
 
-`std::make_shared<T>()` is the preferred way to create a `shared_ptr` in C++11.
+Shared ownership:
+shared_ptr
 
-`get()` returns a non-owning raw pointer.
+Non-owning access, non-nullable:
+reference
 
-`reset()` releases the ownership held by a particular `shared_ptr`.
+Non-owning access, nullable:
+raw pointer
 
-`shared_ptr` supports both copy and move operations.
+Non-owning access to an object managed by shared_ptr,
+with the need to check whether the object is alive:
+weak_ptr
 
-`shared_ptr` can create cyclic ownership if used incorrectly.
+This rule is not absolute, but it is a very good starting point for API design.
 
-`weak_ptr` can be used to create non-owning relationships and break ownership cycles.
+---
 
-A raw pointer obtained from `get()` must not be deleted manually.
+# Important Notes About shared_ptr
 
-We must not create multiple independent `shared_ptr` objects from the same raw pointer.
+The `shared_ptr` pointer manages ownership with reference counting.
 
-`use_count()` is useful for observation and debugging, but it should generally not be used as the foundation of application logic.
+Copying a `shared_ptr` does not copy the object; it only creates shared ownership.
 
-`shared_ptr` manages object lifetime; it does not automatically make the managed object thread-safe.
+Using the following is the recommended way to create a `shared_ptr` in C++11:
+
+`std::make_shared<T>()`
+
+The `get()` method only returns a non-owning raw pointer.
+
+The `reset()` method releases the `shared_ptr`'s ownership, and if it is the last owner, the object is freed as well.
+
+The `release()` method does not exist in `shared_ptr`; that function belongs to `unique_ptr`.
+
+The `shared_ptr` pointer supports both copy and move.
+
+The `unique_ptr` pointer supports move but not copy.
+
+The `shared_ptr` pointer can create ownership cycles if designed incorrectly.
+
+The `weak_ptr` pointer is very important for creating non-owning relationships and breaking such cycles.
+
+The raw pointer obtained from `get()` must not be freed with `delete`.
+
+We must not create several independent `shared_ptr` objects from a single raw pointer.
 
 ---
 
 # Final Summary
 
-The central idea behind `std::shared_ptr` is:
+The core concept of `std::shared_ptr` is:
 
-> **Multiple owners can share the same object, and the object remains alive until the last owning `shared_ptr` releases it.**
+> **Multiple owners can jointly own one object, and the object remains alive as long as the last owner still exists.**
 
-This behavior is implemented through reference counting and a control block associated with the shared ownership relationship.
+This behavior is implemented using reference counting.
 
-Creating a `shared_ptr`:
+The statement for creating a `shared_ptr`:
 
 ```cpp
 auto ptr = std::make_shared<MyClass>();
 ```
 
-Creating another owner:
+Creating a new owner:
 
 ```cpp
 auto other = ptr;
 ```
 
-Moving the ownership state:
+Transferring the state of a `shared_ptr`:
 
 ```cpp
 auto other = std::move(ptr);
 ```
 
-Accessing the managed object:
+Accessing the object:
 
 ```cpp
 ptr->doSomething();
@@ -1352,19 +1384,19 @@ Obtaining a non-owning raw pointer:
 MyClass* raw = ptr.get();
 ```
 
-Releasing ownership held by one `shared_ptr`:
+Releasing ownership:
 
 ```cpp
 ptr.reset();
 ```
 
-Observing the current strong reference count:
+Observing the number of owners:
 
 ```cpp
 ptr.use_count();
 ```
 
-Returning shared ownership from a getter:
+Obtaining shared ownership from a getter:
 
 ```cpp
 std::shared_ptr<MyClass> getValue() const
@@ -1373,7 +1405,7 @@ std::shared_ptr<MyClass> getValue() const
 }
 ```
 
-Returning non-owning access instead:
+Obtaining only non-owning access:
 
 ```cpp
 MyClass* getValue()
@@ -1382,31 +1414,21 @@ MyClass* getValue()
 }
 ```
 
-The most important point is that `shared_ptr` was not created merely to eliminate the need for writing `delete`.
+The very important point is that `shared_ptr` was created to solve the problem of **shared ownership**, not merely to eliminate the need to write `delete`.
 
-Its real purpose is to explicitly represent **shared ownership and shared lifetime**.
+If only one party holds the ownership, `unique_ptr` is usually the better and simpler choice.
 
-If there is only one clear owner, `unique_ptr` is usually simpler, cheaper, and more expressive.
+If several independent parts of the program must be able to maintain the lifetime of an object, `shared_ptr` can be an appropriate choice.
 
-If multiple independent parts of a program genuinely need to keep the same object alive, `shared_ptr` can be the appropriate ownership mechanism.
+If we only want to access the object and do not own it, it is better not to transfer ownership with `shared_ptr` at all.
 
-If we only need temporary access and do not need ownership, a reference or non-owning raw pointer may be more appropriate.
+And finally, if the `shared_ptr` ownership relationships turn into a cycle, reference counting never reaches zero — and this is where `weak_ptr` enters the design to create a **non-owning** relationship.
 
-Finally, if `shared_ptr` ownership relationships form a cycle, reference counting cannot reach zero because the objects continue to own each other.
+Therefore, the most important question when using `shared_ptr` is not "Can I use it here?" but rather:
 
-This is where `weak_ptr` becomes important: it allows us to represent a relationship to an object **without becoming one of its owners**.
+> **Do there really exist multiple independent owners for this object?**
 
-The most important question when choosing `shared_ptr` is therefore not:
-
-> **"Can I use shared_ptr here?"**
-
-but rather:
-
-> **"Do multiple independent entities genuinely need shared ownership of this object?"**
-
-If the answer is yes, `shared_ptr` may be the right tool.
-
-If the answer is no, `unique_ptr`, a reference, or a non-owning raw pointer may provide a simpler and more precise design.
+If the answer to this question is yes, `shared_ptr` can be a suitable tool for expressing this ownership model; otherwise, `unique_ptr` or even a non-owning reference/raw pointer often provides a simpler and more precise design.
 
 ---
 ## 🤝 Contributors
