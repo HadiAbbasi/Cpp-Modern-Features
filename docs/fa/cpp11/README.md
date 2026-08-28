@@ -27,6 +27,8 @@
 | [std::weak_ptr](./weak_ptr.md)|
 | [chorno](./chrono.md)|
 | [async](./async.md)|
+| [promise](./promise.md)|
+| [future](./future.md)|
 
 </div>
 
