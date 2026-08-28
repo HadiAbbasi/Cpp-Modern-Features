@@ -143,6 +143,7 @@ int main()
 
 ## Conclusion
 The std::future provides the programmers with the method for thread communication in asynchronous programming in C++ in an easy way. It is especially helpful in cases where we need to do some tasks in the background and need the result of that task in the main process.
+
 ---
 ## 🤝 Contributors
 <div align="center">
