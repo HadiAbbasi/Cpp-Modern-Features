@@ -6,6 +6,22 @@
 
 # Promise
 In C++ multithreading, a thread is the basic unit that can be executed within a process and to communicate two or more threads with each other, std::promise in conjunction with std::future can be used.
+```text
++-------------------+                          +------------------+
+| std::promise<T>   |                          | std::future<T>   |
+| (Worker/Producer) |                          | (Main/Consumer)  |
++---------+---------+                          +--------+---------+
+          |                                             |
+          |  set_value(data)                            |  get() (blocks)
+          v                                             v
+    +---------------------------------------------------------+
+    |                    Shared State (Heap)                  |
+    |  - Value / Exception storage (std::aligned_storage/any) |
+    |  - Mutex & Condition Variable (internal sync)           |
+    |  - Ready / Abandoned Flags                              |
+    +---------------------------------------------------------+
+
+```
 
 ## What is std:: promise in C++
 
@@ -25,45 +41,28 @@ To use std::promise include the <future> header and follow the below steps:
 The below example demonstrates the use of "std::promise" and "std::future" to communicate between threads.
 
 ```cpp
-// C++ program to use std::promise and std::future to
-// communicate between threads.
 #include <future>
 #include <iostream>
 #include <stdexcept>
 #include <thread>
 
 using namespace std;
-
-// Function to perform some computation and set the result
-// in a promise
 void RetrieveValue(promise<int>& result)
 {
     try {
         int ans = 21095022;
-
-        // Set the result in the promise
         result.set_value(ans);
     }
     catch (...) {
-        // if an error occurs set the exception
         result.set_exception(current_exception());
     }
 }
 
 int main()
 {
-    // Step 1: Creating a std::promise object
     promise<int> myPromise;
-
-    // Step 2: Associate a std::future with the promise
     future<int> myFuture = myPromise.get_future();
-
-    // Step 3: Launching a thread to perform computation and
-    // set the result in the promise
     thread computationThread(RetrieveValue, ref(myPromise));
-
-    // Step 4: Retrieve the value or handle the exception in
-    // the original thread
     try {
         int result = myFuture.get();
         cout << "Result: " << result << endl;
@@ -71,12 +70,92 @@ int main()
     catch (const exception& e) {
         cerr << "Exception is: " << e.what() << endl;
     }
-
-    // thread finishes
     computationThread.join();
 
     return 0;
 }
+```
+
+## Low-Level and Performance Considerations
+
+### Move-Only Semantics
+std::promise is not copyable, but it is movable:
+
+```cpp
+std::promise<int> p1;
+
+// Error: copying is not allowed
+// std::promise<int> p2 = p1;
+
+// Correct: transfer ownership
+std::promise<int> p2 = std::move(p1);
+
+```
+This guarantees that there is only one active producer responsible for satisfying the shared state.
+
+After moving from p1, it no longer owns a shared state. Calling operations such as p1.set_value() will throw std::future_error with:
+```cpp
+std::future_errc::no_state
+```
+
+### `get_future()` Can Be Called Only Once
+
+Each std::promise has exactly one associated std::future. Therefore, get_future() can be called only once:
+```cpp
+std::promise<int> promise;
+std::future<int> future1 = promise.get_future();
+std::future<int> future2 = promise.get_future();
+```
+The error code is:
+```cpp
+std::future_errc::future_already_retrieved
+
+```
+If multiple consumers need to observe the same result, convert the future to `std::shared_future`:
+```cpp
+std::promise<int> promise;
+
+std::shared_future<int> sharedFuture =
+    promise.get_future().share();
+
+```
+A std::shared_future is copyable, and multiple threads can safely wait for and read the same result.
+
+### A Promise Can Be Satisfied Only Once
+
+A promise can receive either:
+- one value through set or(), or
+- one exception through set_exception().
+
+It cannot be satisfied more than once:
+```cpp
+std::promise<int> promise;
+auto future = promise.get_future();
+
+promise.set_value(42);
+
+// Throws std::future_error
+promise.set_value(100);
+
+```
+The same rule applies when mixing set_value() and set_exception():
+
+```cpp
+promise.set_value(42);
+
+// Also throws std::future_error
+promise.set_exception(
+    std::make_exception_ptr(
+        std::runtime_error("Something failed")
+    )
+);
+
+```
+The corresponding error code is:
+
+```cpp
+std::future_errc::promise_already_satisfied
+
 ```
 
 ## Conclusion
