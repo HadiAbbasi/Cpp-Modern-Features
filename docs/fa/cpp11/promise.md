@@ -1,3 +1,11 @@
+
+<div align="right">
+
+[🇺🇸 English](../../en/cpp11/promise.md) | [🇮🇷 فارسی](./promise.md)
+
+</div>
+
+
 # Promise
 
 در برنامه‌نویسی چندنخی (Multithreading) در C++، **Thread** واحد اصلی قابل اجرای یک Process است. برای برقراری ارتباط و انتقال نتیجه بین دو یا چند Thread، می‌توان از `std::promise` در کنار `std::future` استفاده کرد.
@@ -336,3 +344,14 @@ Consumer / Main Thread
 - `get()` برای دریافت مقدار یا دریافت Exception استفاده می‌شود.
 
 به همین دلیل، `std::promise` و `std::future` ابزارهای مفیدی برای **انتقال داده، هماهنگ‌سازی Threadها و مدیریت Exceptionها** در برنامه‌های چندنخی C++ هستند.
+
+
+## 🤝 مشارکت کنندگان
+
+<div align="center">
+
+| GitHub | LinkedIn | Email | Site | Telegram |
+|--------|----------|-------|------|----------|
+| [mbr](https://github.com/mbr1376) | [mbr](https://www.linkedin.com/in/mbr1376/) | m.roodsarabi76@gmail.com | | [mbr](https://t.me/ad1mi2n) |
+
+</div>
