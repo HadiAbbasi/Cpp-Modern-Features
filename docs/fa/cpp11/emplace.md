@@ -1,6 +1,5 @@
-<div align="right">
 
-[🇺🇸 English](../../en/cpp11/regex.md) | [🇮🇷 فارسی](./regex.md)
+[🇺🇸 English](../../en/cpp11/emplace.md) | [🇮🇷 فارسی](./emplace.md)
 
 </div>
 
