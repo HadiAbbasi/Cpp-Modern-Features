@@ -1,89 +1,68 @@
-<div align="right">
+
+<div align="center">
 
 [🇺🇸 English](./weak_ptr.md) | [🇮🇷 فارسی](../../fa/cpp11/weak_ptr.md)
 
 </div>
+
 ---
 
-# `std::weak_ptr` in C++11 — A Complete and Simple Guide to Ownership, `shared_ptr` Cycles, and Preventing Memory Leaks
+# Using `std::weak_ptr` in C++11 — A Complete and Simple Guide to Understanding Ownership, `shared_ptr` Cycles, and Preventing Memory Leaks
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [What problem existed before `weak_ptr`?](#what-problem-existed-before-weak_ptr)
-3. [How does `shared_ptr` manage ownership?](#how-does-shared_ptr-manage-ownership)
-4. [The main problem with `shared_ptr`: Ownership Cycles](#the-main-problem-with-shared_ptr-ownership-cycles)
-5. [Why can't the Reference Counter reach zero?](#why-cant-the-reference-counter-reach-zero)
-6. [What exactly is `weak_ptr`?](#what-exactly-is-weak_ptr)
-7. [The fundamental difference between `shared_ptr` and `weak_ptr`](#the-fundamental-difference-between-shared_ptr-and-weak_ptr)
-8. [Does `weak_ptr` own the object?](#does-weak_ptr-own-the-object)
-9. [How does `weak_ptr` break ownership cycles?](#how-does-weak_ptr-break-ownership-cycles)
-10. [Creating a `weak_ptr`](#creating-a-weak_ptr)
-11. [Putting a `weak_ptr` into a Setter](#putting-a-weak_ptr-into-a-setter)
-12. [Getting a `weak_ptr` from a Getter](#getting-a-weak_ptr-from-a-getter)
-13. [Should a Getter return `weak_ptr`?](#should-a-getter-return-weak_ptr)
-14. [How to make a copy of a `weak_ptr`](#how-to-make-a-copy-of-a-weak_ptr)
-15. [Copy and Move with `weak_ptr`](#copy-and-move-with-weak_ptr)
-16. [`reset()` with `weak_ptr`](#reset-with-weak_ptr)
-17. [Checking Whether a `weak_ptr` Is Empty](#checking-whether-a-weak_ptr-is-empty)
-18. [What is `expired()`?](#what-is-expired)
-19. [Converting `weak_ptr` to `shared_ptr` with `lock()`](#converting-weak_ptr-to-shared_ptr-with-lock)
-20. [Why is `lock()` important?](#why-is-lock-important)
-21. [Accessing the Underlying Object After `lock()`](#accessing-the-underlying-object-after-lock)
-22. [Accessing Object Members Through `weak_ptr`](#accessing-object-members-through-weak_ptr)
-23. [Does `weak_ptr` Have `operator->`?](#does-weak_ptr-have-operator)
-24. [Does `weak_ptr` Provide a Raw Pointer?](#does-weak_ptr-provide-a-raw-pointer)
-25. [The Dangers of Using a Raw Pointer](#the-dangers-of-using-a-raw-pointer)
-26. [How Can `weak_ptr` Prevent a Memory Leak?](#how-can-weak_ptr-prevent-a-memory-leak)
-27. [Using `weak_ptr` Inside a Class](#using-weak_ptr-inside-a-class)
-28. [The Common Parent/Child Pattern](#the-common-parentchild-pattern)
-29. [The Observer Pattern](#the-observer-pattern)
-30. [A Complete Example of a Broken Cycle with `shared_ptr`](#a-complete-example-of-a-broken-cycle-with-shared_ptr)
-31. [Fixing the Example with `weak_ptr`](#fixing-the-example-with-weak_ptr)
-32. [`use_count()` in `weak_ptr`](#use_count-in-weak_ptr)
-33. [Strong Count vs. Weak Count](#strong-count-vs-weak-count)
-34. [What Is the Control Block?](#what-is-the-control-block)
-35. [Why Doesn't `weak_ptr` Keep the Object Alive?](#why-doesnt-weak_ptr-keep-the-object-alive)
-36. [`weak_ptr` vs. `shared_ptr`](#weak_ptr-vs-shared_ptr)
-37. [`weak_ptr` vs. `unique_ptr`](#weak_ptr-vs-unique_ptr)
-38. [When Should We Use `weak_ptr`?](#when-should-we-use-weak_ptr)
-39. [When Should We Not Use `weak_ptr`?](#when-should-we-not-use-weak_ptr)
-40. [Common Mistakes](#common-mistakes)
-41. [A More Realistic Complete Example](#a-more-realistic-complete-example)
-42. [An Important Point About Getters](#an-important-point-about-getters)
-43. [Why Don't We Directly Convert `weak_ptr` to `shared_ptr`?](#why-dont-we-directly-convert-weak_ptr-to-shared_ptr)
-44. [How Can We Understand `lock()` in Very Simple Terms?](#how-can-we-understand-lock-in-very-simple-terms)
-45. [Can `weak_ptr` Itself Cause a Memory Leak?](#can-weak_ptr-itself-cause-a-memory-leak)
-46. [A Subtle Point About `use_count()`](#a-subtle-point-about-use_count)
-47. [`weak_ptr` in One Sentence](#weak_ptr-in-one-sentence)
-48. [Final Summary](#final-summary)
-49. [Final Conclusion](#final-conclusion)
+- [1. Introduction](#1-introduction)
+- [2. What Was the Problem Before `weak_ptr`?](#2-what-was-the-problem-before-weak_ptr)
+- [3. How Does `shared_ptr` Manage Ownership?](#3-how-does-shared_ptr-manage-ownership)
+- [4. The Main Problem with `shared_ptr`: Ownership Cycles and Memory Leaks](#4-the-main-problem-with-shared_ptr-ownership-cycles-and-memory-leaks)
+- [5. What Exactly Is `weak_ptr`?](#5-what-exactly-is-weak_ptr)
+- [6. Fundamental Difference Between `shared_ptr` and `weak_ptr`](#6-fundamental-difference-between-shared_ptr-and-weak_ptr)
+- [7. How Does `weak_ptr` Break Ownership Cycles?](#7-how-does-weak_ptr-break-ownership-cycles)
+- [8. Creating and Passing `weak_ptr` in a Setter](#8-creating-and-passing-weak_ptr-in-a-setter)
+- [9. Returning `weak_ptr` from a Getter](#9-returning-weak_ptr-from-a-getter)
+- [10. Copy, Move, and `reset()` in `weak_ptr`](#10-copy-move-and-reset-in-weak_ptr)
+- [11. Checking Emptiness and `expired()`](#11-checking-emptiness-and-expired)
+- [12. Converting `weak_ptr` to `shared_ptr` Using `lock()`](#12-converting-weak_ptr-to-shared_ptr-using-lock)
+- [13. Accessing Object Members via `weak_ptr`](#13-accessing-object-members-via-weak_ptr)
+- [14. `weak_ptr` and Raw Pointers](#14-weak_ptr-and-raw-pointers)
+- [15. Using `weak_ptr` in Classes and the Parent/Child Pattern](#15-using-weak_ptr-in-classes-and-the-parentchild-pattern)
+- [16. The Observer Pattern](#16-the-observer-pattern)
+- [17. Full Example of a Broken Cycle and Fixing It with `weak_ptr`](#17-full-example-of-a-broken-cycle-and-fixing-it-with-weak_ptr)
+- [18. `use_count()`, Strong Count, Weak Count, and Control Block](#18-use_count-strong-count-weak-count-and-control-block)
+- [19. Differences Between `weak_ptr` and `shared_ptr`](#19-differences-between-weak_ptr-and-shared_ptr)
+- [20. Differences Between `weak_ptr` and `unique_ptr`](#20-differences-between-weak_ptr-and-unique_ptr)
+- [21. When Should or Shouldn't We Use `weak_ptr`?](#21-when-should-or-shouldnt-we-use-weak_ptr)
+- [22. Common Mistakes](#22-common-mistakes)
+- [23. A Complete and More Realistic Example](#23-a-complete-and-more-realistic-example)
+- [24. Final Summary](#24-final-summary)
 
 ---
 
 # 1. Introduction
 
-`std::weak_ptr` is one of the most important parts of C++11's smart-pointer system.
+The `std::weak_ptr` tool is one of the most important parts of memory management in C++11[cite: 1].
 
-The concept of `weak_ptr` makes sense together with `shared_ptr`, and it was introduced to solve an important problem that can occur with the shared-ownership model of `shared_ptr`.
+The phrase `weak_ptr` gains meaning alongside `shared_ptr` and came into existence to solve a problem that is extremely important in the shared ownership model of `shared_ptr`[cite: 1].
 
-The main idea can be expressed in one sentence:
+If we want to state its core function in one sentence, it is:
 
-> **A `weak_ptr` can observe an object without owning that object.**
+> **`weak_ptr` can observe an object without owning that object.**[cite: 1]
 
-This statement may look simple at first, but this exact property solves one of the most important problems associated with `shared_ptr`.
+The statement above might sound simple at first, but this exact feature solves one of the most important problems of `shared_ptr`[cite: 1].
 
-That problem is called an **Ownership Cycle**.
+The problem in question is the **Ownership Cycle**[cite: 1].
 
-If we understand ownership cycles correctly, we have already understood the primary reason why `weak_ptr` exists.
+If we understand the ownership cycle correctly, we have almost understood the main reason for the existence of `weak_ptr` as well[cite: 1].
 
 ---
 
-# 2. What problem existed before `weak_ptr`?
+---
 
-To understand `weak_ptr`, it is useful to first understand why `shared_ptr` exists in the first place.
+# 2. What Was the Problem Before `weak_ptr`?
 
-The purpose of `shared_ptr` is to handle situations where multiple parts of a program need to share ownership of the same object.
+To understand `weak_ptr`, it is better to first know why `shared_ptr` came into existence in the first place[cite: 1].
+
+The `shared_ptr` pointer is meant for times when several different parts of the program need to own an object[cite: 1].
 
 For example:
 
@@ -92,9 +71,10 @@ auto person = std::make_shared<Person>();
 
 auto a = person;
 auto b = person;
+
 ```
 
-Now we have three `shared_ptr` objects:
+Here we have three `shared_ptr` instances:
 
 ```text
 person ──┐
@@ -102,49 +82,54 @@ person ──┐
 a ───────┼──> Person
          │
 b ───────┘
+
 ```
 
-The important point is that all three `shared_ptr` objects own the same `Person`.
+What is important here is that all three `shared_ptr` instances own the exact same `Person`.
 
-The Reference Count keeps track of the number of active owners.
-
-For example:
+The Reference Count property also tracks the number of active owners.
 
 ```text
 person + a + b = 3 owners
+
 ```
 
-When one of them is destroyed:
+When one of them goes away:
 
 ```text
 person + a = 2 owners
+
 ```
 
-When another one is destroyed:
+When another one goes away as well:
 
 ```text
 person = 1 owner
+
 ```
 
-Eventually, when the last owner disappears:
+And finally, when the last owner goes away:
 
 ```text
 0 owners
+
 ```
 
-the object can be destroyed.
+The object is also Destroyed.
 
-This behavior is very useful.
+This behavior is very good.
 
-However, there is one important problem.
+However, there is a very important problem.
 
 ---
 
-# 3. How does `shared_ptr` manage ownership?
+---
 
-`shared_ptr` typically uses an internal structure called a **Control Block**.
+# 3. How Does `shared_ptr` Manage Ownership?
 
-A simplified representation looks like this:
+The `shared_ptr` pointer usually uses an internal structure called a **Control Block**.
+
+Its simplified representation can look something like this:
 
 ```text
               Control Block
@@ -157,11 +142,12 @@ A simplified representation looks like this:
                     │
                     ▼
                  Object
+
 ```
 
-The Strong Count represents the number of actual owners, meaning the number of `shared_ptr` instances that own the object.
+The Strong Count indicates the number of `shared_ptr` owners.
 
-The important concept is that as long as the Strong Count has not reached zero, the object normally remains alive.
+The important point is that as long as Strong Count has not reached zero, the object is usually not Destroyed.
 
 For example:
 
@@ -169,55 +155,64 @@ For example:
 auto p1 = std::make_shared<int>(42);
 auto p2 = p1;
 auto p3 = p2;
+
 ```
 
 Now:
 
 ```text
 Strong Count = 3
+
 ```
 
 When:
 
 ```cpp
 p1.reset();
+
 ```
 
 is executed:
 
 ```text
 Strong Count = 2
+
 ```
 
-Then:
+And when:
 
 ```cpp
 p2.reset();
+
 ```
 
-results in:
+is executed:
 
 ```text
 Strong Count = 1
+
 ```
 
 Finally:
 
 ```cpp
 p3.reset();
+
 ```
 
-removes the last owner.
+causes the last owner to also go away.
 
-At that point, the object can be destroyed.
+As a result, the object can be Destroyed.
 
 ---
 
-# 4. The main problem with `shared_ptr`: Ownership Cycles
+---
 
-The important point is that Reference Counting works very well as long as ownership relationships do not form a cycle.
+# 4. The Main Problem with `shared_ptr`: Ownership Cycles and Memory Leaks
 
-To understand the problem, imagine that we have two classes:
+The important point is that Reference Counting works very well when the ownerships of shared pointers do not form a cycle.
+
+To understand the problem, suppose we have two classes:
 
 ```cpp
 class B;
@@ -233,11 +228,10 @@ class B
 public:
     std::shared_ptr<A> a;
 };
+
 ```
 
-The meaning of these classes is that `A` owns `B`, while `B` also owns `A`.
-
-Now:
+The concept of the code above is that `A` owns `B` and `B` also owns `A`. Now:
 
 ```cpp
 auto a = std::make_shared<A>();
@@ -245,38 +239,41 @@ auto b = std::make_shared<B>();
 
 a->b = b;
 b->a = a;
+
 ```
 
-The ownership relationship now looks like this:
+Now the ownership structure looks like this:
 
 ```text
-        ┌──────────────┐
-        │              │
-        ▼              │
-      Object A      Object B
-        │              │
-        │              │
-        └──────────────┘
+             ┌───────────────┐
+             │               │
+             │               ▼
+      ┌───────────┐      ┌───────────┐
+      │  Object A │ ────▶│  Object B │
+      └───────────┘      └───────────┘
+             ▲               │
+             │               │
+             └───────────────┘
+
 ```
 
-More precisely:
+The more precise statement is:
 
 ```text
 A owns B
 B owns A
+
 ```
 
 This is an **Ownership Cycle**.
 
 ---
 
-# 5. Why can't the Reference Counter reach zero?
+The most important point of this section is right here.
 
-This is one of the most important concepts in the entire subject.
+Suppose local variables `a` and `b` go out of Scope.
 
-Suppose the local variables `a` and `b` go out of scope.
-
-We might expect:
+We might imagine:
 
 ```text
 a destroyed
@@ -286,56 +283,119 @@ therefore:
 
 A destroyed
 B destroyed
+
 ```
 
-But that does not necessarily happen.
+However, such a thing does not necessarily happen. Why?
 
-The reason is that `A` still contains a `shared_ptr` to `B`.
+The reason is that `A` still holds a `shared_ptr` to `B`.
 
-And `B` still contains a `shared_ptr` to `A`.
+And `B` also still holds a `shared_ptr` to `A`.
+
+Meaning:
+
+```text
+A ──shared_ptr──> B
+▲                │
+│                │
+└──shared_ptr────┘
+
+```
 
 Therefore:
 
 ```text
 A has 1 owner
 B has 1 owner
+
 ```
 
-even though there are no longer any external owners.
+Even if no other code from the outside owns them.
 
-The key concept is:
+The key meaning is:
 
-> Each object is keeping the other object alive.
+> Each object is kept alive by the other object.
+> 
+> 
 
-Therefore:
+As a result:
 
 ```text
 A → B → A → B → A → ...
+
 ```
 
-The cycle never gets broken.
+The cycle is never broken.
 
-It is important to understand that **Reference Counting itself has not failed**.
+A very important point is that **Reference Counting is not broken**.
 
-The Reference Counting mechanism is doing exactly what it was designed to do.
+Here, Reference Counting is doing exactly what it was designed to do.
 
-Each `shared_ptr` is effectively saying:
+Each `shared_ptr` says:
 
-> I am still an owner of this object.
+> I still own this object.
+> 
+> 
 
-Since `A` owns `B`, and `B` owns `A`, neither count can reach zero.
+And since `A` owns `B` and `B` owns `A`, neither counter can ever reach zero.
 
-This is exactly the problem that `weak_ptr` was designed to solve.
+This is the exact problem that `weak_ptr` was created to solve.
 
 ---
 
-# 6. What exactly is `weak_ptr`?
+An important point is that `weak_ptr` itself does not generally cure Memory Leaks.
 
-A `weak_ptr` is a smart pointer that can point to an object managed by `shared_ptr` **without owning that object**.
+Its main job is to prevent **Ownership Cycles** in `shared_ptr` structures.
 
-The key phrase is:
+Suppose:
+
+```cpp
+A ──shared_ptr──> B
+B ──shared_ptr──> A
+
+```
+
+A cycle is created.
+
+If we convert one of the relationships to:
+
+```cpp
+B ──weak_ptr──> A
+
+```
+
+Then:
+
+```text
+A ──shared_ptr──> B
+B ──weak_ptr────> A
+
+```
+
+`B` no longer causes `A` to stay alive.
+
+As a result, when the real owner of `A` goes away, `A` can be Destroyed.
+
+This is precisely where `weak_ptr` can prevent Memory Leaks.
+
+---
+
+---
+
+# 5. What Exactly Is `weak_ptr`?
+
+The `weak_ptr` pointer is a Smart Pointer that can **point to an object managed by a `shared_ptr` without owning it**.
+
+The key phrase:
 
 > **Observe, but do not own.**
+> 
+
+Meaning:
+
+> Observe, but do not be the owner.
+> 
+> 
 
 For example:
 
@@ -343,14 +403,16 @@ For example:
 auto shared = std::make_shared<int>(42);
 
 std::weak_ptr<int> weak = shared;
+
 ```
 
-The relationship is:
+Here:
 
 ```text
 shared ──owns──> int
 
 weak ──observes──> int
+
 ```
 
 The important point is that creating `weak` does not increase the Strong Count.
@@ -359,15 +421,37 @@ If:
 
 ```cpp
 shared.use_count()
+
 ```
 
-was `1` before creating `weak`, the Strong Count is still `1` afterward.
+was equal to `1` before creating `weak`, the Strong Count will still be `1` after creating `weak`.
 
 ---
 
-# 7. The fundamental difference between `shared_ptr` and `weak_ptr`
+No.
 
-A simple way to understand the difference is:
+This is the most important feature of `weak_ptr`.
+
+The following statement:
+
+```cpp
+std::weak_ptr<MyClass> weak;
+
+```
+
+does not mean that `weak` owns `MyClass`.
+
+The only difference is that `weak` has a non-owning connection to an Object.
+
+For this reason, `weak_ptr` does not increase the Strong Reference Count.
+
+---
+
+---
+
+# 6. Fundamental Difference Between `shared_ptr` and `weak_ptr`
+
+A simple statement to understand the difference between the two is this:
 
 ```text
 shared_ptr:
@@ -375,13 +459,14 @@ shared_ptr:
 
 weak_ptr:
 "I know about the object, but I do not own it."
+
 ```
 
-A `shared_ptr` helps keep the object alive.
+The `shared_ptr` pointer keeps the Object alive.
 
-A `weak_ptr` does not keep the object alive.
+The `weak_ptr` pointer does not keep the Object alive.
 
-For example:
+For instance:
 
 ```cpp
 auto shared = std::make_shared<int>(42);
@@ -389,39 +474,22 @@ auto shared = std::make_shared<int>(42);
 std::weak_ptr<int> weak = shared;
 
 shared.reset();
+
 ```
 
-If `shared` was the last owner, the `int` object is destroyed.
+Now, if `shared` was the last owner, `int` is Destroyed.
 
-However, `weak` may still exist.
+However, `weak` might still exist.
 
-It simply can no longer access a live object.
+It just can no longer access a live Object.
 
 ---
 
-# 8. Does `weak_ptr` own the object?
-
-No.
-
-This is the most important characteristic of `weak_ptr`.
-
-The following:
-
-```cpp
-std::weak_ptr<MyClass> weak;
-```
-
-does not mean that `weak` owns a `MyClass`.
-
-It simply means that `weak` has a non-owning relationship with an object.
-
-Therefore, `weak_ptr` does not increase the Strong Reference Count.
-
 ---
 
-# 9. How does `weak_ptr` break ownership cycles?
+# 7. How Does `weak_ptr` Break Ownership Cycles?
 
-The key idea is that in an ownership cycle, at least one relationship should be non-owning.
+The main point is that in an ownership cycle, at least one of the ownership relationships must be non-owning.
 
 For example, instead of:
 
@@ -431,6 +499,7 @@ class B
 public:
     std::shared_ptr<A> a;
 };
+
 ```
 
 we can write:
@@ -441,6 +510,7 @@ class B
 public:
     std::weak_ptr<A> a;
 };
+
 ```
 
 Now:
@@ -448,50 +518,54 @@ Now:
 ```text
 A ──shared_ptr──> B
 B ──weak_ptr────> A
+
 ```
 
-The important point is that `A` owns `B`.
+The important point here is that `A` owns `B`.
 
-But `B` only observes `A`.
+However, `B` only observes `A`.
 
-Therefore:
+As a result:
 
 ```text
 A owns B
 B observes A
+
 ```
 
 There is no longer an ownership cycle.
 
 ---
 
-# 10. Creating a `weak_ptr`
+---
 
-A `weak_ptr` is normally created from a `shared_ptr`:
+# 8. Creating and Passing `weak_ptr` in a Setter
+
+Creating a `weak_ptr` is usually done from a `shared_ptr`:
 
 ```cpp
 auto shared = std::make_shared<MyClass>();
 
 std::weak_ptr<MyClass> weak = shared;
+
 ```
 
-The important point is that `weak` connects to the same Control Block.
+Now `weak` only connects to that same Control Block.
 
-A `weak_ptr` is not designed to independently manage an object created with `new`.
+Also, `weak_ptr` cannot independently manage an Object with `new`.
 
-For example, this is generally not a meaningful design:
+For example, this design usually makes no sense:
 
 ```cpp
 std::weak_ptr<MyClass> weak(new MyClass());
+
 ```
 
-The reason is that `weak_ptr` is specifically designed to observe objects whose ownership is managed by `shared_ptr`.
+because `weak_ptr` is fundamentally designed to observe Objects whose Ownership is managed by `shared_ptr`.
 
 ---
 
-# 11. Putting a `weak_ptr` into a Setter
-
-If a class needs to maintain a non-owning relationship with an object, its Setter can accept a `weak_ptr`.
+If a class is supposed to have a non-owning relationship with an Object, the Setter can receive a `weak_ptr`.
 
 For example:
 
@@ -507,9 +581,10 @@ public:
         value = std::move(ptr);
     }
 };
+
 ```
 
-Then:
+Now:
 
 ```cpp
 auto object = std::make_shared<MyClass>();
@@ -517,38 +592,40 @@ auto object = std::make_shared<MyClass>();
 Observer observer;
 
 observer.setValue(object);
+
 ```
 
-The important concept is that `observer` does not become an owner of `object`.
+Here, `observer` has not become the owner of `object`.
 
 If:
 
 ```cpp
 object.reset();
+
 ```
 
-is executed and `object` was the last owner, the object will be destroyed.
+is executed and `object` is the last owner, the Object will be Destroyed.
 
 ---
 
-# 12. Getting a `weak_ptr` from a Getter
+---
 
-If a class stores a non-owning relationship, we can return it through a Getter:
+# 9. Returning `weak_ptr` from a Getter
+
+If a class maintains a non-owning connection, we can return it with a Getter:
 
 ```cpp
 std::weak_ptr<MyClass> getValue() const
 {
     return value;
 }
+
 ```
 
-The important point is that returning a `weak_ptr` does not turn it into ownership.
-
-The caller receives a copy of the `weak_ptr`.
+The important point is that returning `weak_ptr` does not convert it to Ownership.
+The Caller can receive a copy of `weak_ptr`.
 
 ---
-
-# 13. Should a Getter return `weak_ptr`?
 
 In many designs:
 
@@ -557,42 +634,47 @@ std::weak_ptr<MyClass> getValue() const
 {
     return value;
 }
+
 ```
 
-is a good choice.
+is an appropriate choice.
 
-The meaning of this API is essentially:
+This API tells the Caller:
 
-> This object may still exist, but I do not own it, and simply receiving this value should not extend its lifetime.
+> This Object might exist, but I do not own it and I cannot extend its lifetime simply by returning this value.
+> 
+> 
 
-This is an important concept in class design.
+This topic is very important in class design.
 
-If the Getter instead returns:
+If the Getter instead returned:
 
 ```cpp
 std::shared_ptr<MyClass> getValue() const
 {
     return value.lock();
 }
+
 ```
 
-the caller receives a new owner.
+the Caller would receive a new owner.
 
-Therefore, these two Getter designs have completely different semantics.
+Therefore, these two Getters are completely different from a design perspective.
 
 ---
 
-# 14. How to make a copy of a `weak_ptr`
+---
 
-A `weak_ptr`, like many normal C++ objects, can be copied.
+# 10. Copy, Move, and `reset()` in `weak_ptr`
 
-For example:
+The `weak_ptr` pointer, like other regular Objects, is copyable. For example:
 
 ```cpp
 auto shared = std::make_shared<MyClass>();
 
 std::weak_ptr<MyClass> w1 = shared;
 std::weak_ptr<MyClass> w2 = w1;
+
 ```
 
 Now:
@@ -601,82 +683,85 @@ Now:
 w1 ──┐
      ├──> same Control Block
 w2 ──┘
+
 ```
 
-The important point is that copying the `weak_ptr` does not copy the object.
+The important point is that by copying `weak_ptr`, the Object is not copied.
 
-It does not create another owner either.
+Even new Ownership is not created.
 
-It simply creates another observer.
+Only a new Observer is created.
 
 ---
 
-# 15. Copy and Move with `weak_ptr`
-
-A `weak_ptr` supports both Copy and Move operations.
+The `weak_ptr` pointer supports Copy and Move.
 
 Copy:
 
 ```cpp
 auto w2 = w1;
+
 ```
 
-creates another observer.
+creates a new Observer.
 
 Move:
 
 ```cpp
 auto w2 = std::move(w1);
+
 ```
 
-transfers the `weak_ptr` state to `w2`.
+transfers the state of `w1` to `w2`.
 
-After the Move, `w1` will normally be empty.
+After the Move, `w1` will usually be Empty.
 
 ---
 
-# 16. `reset()` with `weak_ptr`
-
-The `reset()` function disconnects the `weak_ptr` from its Control Block.
-
-For example:
+The `reset()` method severs the connection of `weak_ptr` with the Control Block. For example:
 
 ```cpp
 std::weak_ptr<MyClass> weak = shared;
 
 weak.reset();
+
 ```
 
-Now `weak` no longer observes the object.
+Now `weak` no longer observes the Object.
 
-The important point is that calling `reset()` on a `weak_ptr` does not destroy the object.
+Here, `reset()` on `weak_ptr` does not cause the Object to be Destroyed.
 
-A `weak_ptr` does not own the object in the first place.
+Because `weak_ptr` is not the owner of the Object.
 
 If:
 
 ```cpp
 shared.use_count() == 1
+
 ```
 
-then:
+executing:
 
 ```cpp
 weak.reset();
+
 ```
 
-has no effect on the object's lifetime.
+has no effect on the lifetime of the Object.
 
-The object is still managed by `shared`.
+The Object is still managed by `shared`.
 
 ---
 
-# 17. Checking Whether a `weak_ptr` Is Empty
+---
 
-To check whether a `weak_ptr` currently refers to a Control Block and whether its observed object is still alive, we commonly use:
+# 11. Checking Emptiness and `expired()`
+
+To check if `weak_ptr` has no connection to the Object, we can use:
 
 ```cpp
 weak.expired()
+
 ```
 
 For example:
@@ -688,19 +773,16 @@ if (weak.expired())
 {
     // No live object is available through weak
 }
+
 ```
 
-However, there is an important detail.
+However, there is a very important point.
 
-Using `expired()` alone is generally not the best way to make the final decision about accessing the object.
+`expired()` alone is usually not suitable for making a final decision about accessing the Object.
 
 ---
 
-# 18. What is `expired()`?
-
-`expired()` tells us whether the object observed by the `weak_ptr` is no longer alive.
-
-For example:
+The phrase `expired()` determines whether the Object observed by `weak_ptr` is still alive or not. For example:
 
 ```cpp
 auto shared = std::make_shared<int>(42);
@@ -708,144 +790,144 @@ auto shared = std::make_shared<int>(42);
 std::weak_ptr<int> weak = shared;
 
 std::cout << weak.expired();
+
 ```
 
-As long as `shared` keeps the object alive, the result is `false`.
+As long as `shared` keeps the Object alive, the result will be `false`.
 
-Then:
+Later:
 
 ```cpp
 shared.reset();
+
 ```
 
 If `shared` was the last owner:
 
 ```cpp
 weak.expired()
+
 ```
 
-will return `true`.
+will become `true`.
 
-The important point is that `expired()` represents the state at a particular moment.
+The `expired()` method only checks the status at a single instant.
 
 ---
 
-# 19. Converting `weak_ptr` to `shared_ptr` with `lock()`
+---
 
-This is one of the most important parts of `weak_ptr`.
+# 12. Converting `weak_ptr` to `shared_ptr` Using `lock()`
 
-A `weak_ptr` does not allow direct access like:
+This section is one of the most important parts of `weak_ptr`.
+
+The `weak_ptr` pointer does not directly allow the use of:
 
 ```cpp
 weak->someFunction();
+
 ```
 
-Instead, we first convert it to a `shared_ptr` using `lock()`:
+First, we must convert it to a `shared_ptr` using `lock()`:
 
 ```cpp
 auto shared = weak.lock();
+
 ```
 
-If the object is still alive, `shared` will contain a valid `shared_ptr`.
+If the Object is still alive, `shared` will be a valid `shared_ptr`.
 
-If the object has already been destroyed, `shared` will be empty.
+If the Object has been destroyed, `shared` will be empty.
 
-A very common pattern is:
+For example:
 
 ```cpp
 if (auto shared = weak.lock())
 {
     shared->doSomething();
 }
+
 ```
 
-This is one of the most important usage patterns for `weak_ptr`.
+This is one of the most important usage patterns of `weak_ptr`.
 
 ---
 
-# 20. Why is `lock()` important?
-
-The important concept behind `lock()` is that it does not merely check whether the object is alive.
-
-If the object is alive, it creates a `shared_ptr` that temporarily maintains ownership of the object.
-
-This is very important.
-
-Suppose we write:
+The `lock()` method does not just check if the Object is alive. Rather, if the Object is alive, it creates a `shared_ptr` that temporarily preserves Ownership. This topic is extremely important. Suppose:
 
 ```cpp
 if (!weak.expired())
 {
     // ...
 }
+
 ```
 
-and then access the object later.
+and then later we want to use the Object.
 
-In multithreaded environments, or even in more complex designs, the object could potentially be destroyed between the check and the actual use.
+In multithreaded environments or even more complex designs, the Object might be Destroyed between checking and using.
 
-Therefore, this pattern is generally better:
+For this reason, the better pattern is:
 
 ```cpp
 if (auto shared = weak.lock())
 {
     shared->doSomething();
 }
+
 ```
 
-The meaning is:
+The concept of this code is:
 
-> If the object is still alive, create a temporary owner and then use the object.
+> If the Object is still alive, create a temporary owner and then use the Object.
+> 
+> 
 
-This is much safer.
+This approach is much safer.
 
 ---
 
-# 21. Accessing the Underlying Object After `lock()`
+What `lock()` does is atomically check the **Control Block** to see if the target object is still alive; and if it is alive, it creates a new `shared_ptr` in that same operation to acquire ownership of the object.
 
-The `lock()` function returns a `shared_ptr`.
+The importance of this behavior becomes clear when another `shared_ptr` exists simultaneously as the **last owner of the object** and intends to `reset()` it at that exact moment. In such conditions, `weak_ptr::lock()` and `reset()` settle atomically which state holds true:
 
-Therefore, we can use all the usual capabilities of `shared_ptr`:
+* If `lock()` succeeds first, a new `shared_ptr` is created and **Reference Count goes from 1 to 2**. Then, if the previous `shared_ptr` is `reset()`, the Reference Count decreases to 1 and the object remains alive.
 
-```cpp
-if (auto shared = weak.lock())
-{
-    shared->value = 100;
-}
-```
 
-Or:
+* If `reset()` happens first and as a result the Reference Count reaches zero, the object is destroyed and `lock()` returns an empty `shared_ptr` (`nullptr`).
 
-```cpp
-if (auto shared = weak.lock())
-{
-    shared->doSomething();
-}
-```
 
-Conceptually:
+
+Therefore, the important point is that `lock()` does not merely **check for the existence of the object** first and then, in a separate step, construct the `shared_ptr`. Such an approach could create a Race Condition:
 
 ```text
-weak_ptr
-   │
-   │ lock()
-   ▼
-shared_ptr
-   │
-   ▼
-Object
+Does object exist? → Yes
+                     ↓
+               [Another Thread]
+                     ↓
+                   reset()
+                     ↓
+                 object destroyed
+                     ↓
+          Now access object ❌
+
 ```
+
+Instead, `lock()` performs the **"check object liveness + acquire ownership"** operation atomically. As a result, it either acquires new ownership before the last owner is `reset()` and keeps the object alive, or if the last owner has already relinquished its ownership, `lock()` encounters an empty result.
+
+Simply put, `weak_ptr::lock()` guarantees that there is no exploitable time window between **"the object is still alive"** and **"I acquired its ownership."**
 
 ---
 
-# 22. Accessing Object Members Through `weak_ptr`
+# 13. Accessing Object Members via `weak_ptr`
 
-The important point is that `weak_ptr` itself does not provide `operator->` for direct access to the object.
+The `weak_ptr` pointer itself does not have `operator->` for direct access to the Object.
 
-Therefore, this is not valid:
+Therefore, this code is not correct:
 
 ```cpp
 weak->doSomething();
+
 ```
 
 Instead:
@@ -855,70 +937,74 @@ if (auto ptr = weak.lock())
 {
     ptr->doSomething();
 }
+
 ```
 
-And for a data member:
+And for Members:
 
 ```cpp
 if (auto ptr = weak.lock())
 {
     std::cout << ptr->value;
 }
+
 ```
 
 ---
 
-# 23. Does `weak_ptr` Have `operator->`?
-
 No.
 
-This is intentional.
+This decision is entirely intentional.
 
-The reason is that the object may no longer exist.
+The reason is that the Object might no longer exist.
 
 If `weak_ptr` allowed:
 
 ```cpp
 weak->doSomething();
+
 ```
 
-a programmer might accidentally use an object without considering its lifetime.
+the programmer might use the Object without paying attention to its Lifetime.
 
-The `lock()` mechanism forces the programmer to explicitly obtain a `shared_ptr` and therefore acknowledge the object's lifetime before accessing it.
+The `lock()` method forces the programmer to first check the Lifetime status and, if possible, create a temporary `shared_ptr`.
 
 ---
 
-# 24. Does `weak_ptr` Provide a Raw Pointer?
+---
 
-`weak_ptr` does not directly provide a function such as:
+# 14. `weak_ptr` and Raw Pointers
+
+Directly, `weak_ptr` does not have a function like:
 
 ```cpp
 get()
+
 ```
 
-that returns a Raw Pointer to the object.
+that returns a Raw Pointer to the Object.
 
-This is also intentional.
+This design is also intentional.
 
-To access the object, we first do:
+To reach the Object, one must first perform:
 
 ```cpp
 auto shared = weak.lock();
+
 ```
 
 Then:
 
 ```cpp
 MyClass* raw = shared.get();
+
 ```
 
-is available.
+will be available to us.
 
 ---
 
-# 25. The Dangers of Using a Raw Pointer
-
-The dangerous part is that once you have a Raw Pointer, you are no longer using the smart pointer itself to express the lifetime relationship.
+The dangerous scenario is taking ownership of Lifetime management ourselves after obtaining the Raw Pointer.
 
 For example:
 
@@ -931,29 +1017,34 @@ if (shared)
 
     raw->doSomething();
 }
+
 ```
 
-There is no problem here because `shared` remains alive until the end of the scope.
+In this example there is no problem, because `shared` is alive until the end of the Scope.
 
-However, this is dangerous:
+However, if we write inside a main block:
 
 ```cpp
 MyClass* raw = weak.lock().get();
+
 ```
 
-The reason is that `lock()` creates a temporary `shared_ptr`.
+a very serious problem occurs.
 
-That temporary is destroyed at the end of the full expression.
+The `lock()` function created a Temporary `shared_ptr`.
 
-Therefore, the Raw Pointer can immediately become dangling.
+Perhaps before the end of this code block execution and after getting a Raw Pointer, the main object on the Heap gets destroyed, and after its destruction, without being aware of this event, at the end of this block of code and after the main object is Deleted, we might try to access the Deleted object via this Raw Pointer and face a runtime error due to a Dangling Pointer!
 
-So this is dangerous:
+As a result, the Raw Pointer might become Dangling.
+
+Therefore, this is very dangerous:
 
 ```cpp
 MyClass* raw = weak.lock().get();
+
 ```
 
-A safer version is:
+Instead:
 
 ```cpp
 if (auto shared = weak.lock())
@@ -962,59 +1053,20 @@ if (auto shared = weak.lock())
 
     raw->doSomething();
 }
+
 ```
 
-However, in many cases we do not need a Raw Pointer at all.
-
-It is usually better to simply write:
-
-```cpp
-shared->doSomething();
-```
+is safer.
 
 ---
 
-# 26. How Can `weak_ptr` Prevent a Memory Leak?
-
-The important point is that `weak_ptr` does not generally solve every kind of Memory Leak.
-
-Its main purpose here is to prevent **ownership cycles** created by `shared_ptr`.
-
-Suppose we have:
-
-```text
-A ──shared_ptr──> B
-B ──shared_ptr──> A
-```
-
-An ownership cycle is created.
-
-If we change one relationship to:
-
-```text
-B ──weak_ptr────> A
-```
-
-we get:
-
-```text
-A ──shared_ptr──> B
-B ──weak_ptr────> A
-```
-
-The ownership cycle has been removed.
-
-Therefore, when the real owner of `A` disappears, `A` can be destroyed.
-
-This is exactly how `weak_ptr` can prevent a Memory Leak caused by a `shared_ptr` ownership cycle.
-
 ---
 
-# 27. Using `weak_ptr` Inside a Class
+# 15. Using `weak_ptr` in Classes and the Parent/Child Pattern
 
-A common example is a Child storing a reference to its Parent.
+A very common example is holding the Parent inside the Child.
 
-For example:
+Suppose:
 
 ```cpp
 class Parent;
@@ -1035,19 +1087,18 @@ public:
         return parent.lock();
     }
 };
+
 ```
 
-The meaning of this class is that `Child` knows who its Parent is.
+Here `Child` knows who its Parent is.
 
-But Child does not own Parent.
+However, Child does not own Parent.
 
-This prevents the creation of an ownership cycle.
+This prevents cycle creation.
 
 ---
 
-# 28. The Common Parent/Child Pattern
-
-Parent/Child is one of the best examples for understanding `weak_ptr`.
+The Parent/Child concept (Composition Pattern) is one of the best examples for understanding `weak_ptr`.
 
 Suppose:
 
@@ -1057,9 +1108,10 @@ Parent
    │ owns
    ▼
 Child
+
 ```
 
-If Child also stores the Parent using `shared_ptr`:
+If Child also holds Parent using `shared_ptr`:
 
 ```text
 Parent
@@ -1071,11 +1123,12 @@ Child
    │ shared_ptr
    ▼
 Parent
+
 ```
 
-we have a cycle.
+a cycle is created.
 
-The typical design is:
+Usually, the correct method is:
 
 ```text
 Parent
@@ -1087,45 +1140,52 @@ Child
    │ weak_ptr
    ▼
 Parent
+
 ```
 
-In this design, Parent owns Child.
+In this state, Parent owns Child.
 
-Child only observes Parent.
+However, Child only observes Parent.
 
 ---
 
-# 29. The Observer Pattern
+---
 
-Another important use case for `weak_ptr` is the **Observer Pattern**.
+# 16. The Observer Pattern
 
-Suppose we have a main object:
+Another important use case of `weak_ptr` is the Observer Pattern.
+
+Suppose we have a main Object:
 
 ```cpp
 auto subject = std::make_shared<Subject>();
+
 ```
 
-and several observers that need to know whether the Subject still exists.
+and several Observers that need to know when Subject exists.
 
-If the observers store `shared_ptr`, they may unintentionally keep the Subject alive.
+If Observers hold `shared_ptr`, they might unintentionally keep Subject alive.
 
 Instead:
 
 ```cpp
 std::weak_ptr<Subject> subject;
+
 ```
 
-is often more appropriate.
+is more suitable.
 
-The idea of an Observer is:
+The concept of Observer is:
 
-> I want to access the object if it still exists, but I must not keep it alive.
-
-This is exactly the type of relationship that `weak_ptr` is designed to represent.
+> I want to access the Object if it exists, but I should not cause it to stay alive.
+> 
+> 
 
 ---
 
-# 30. A Complete Example of a Broken Cycle with `shared_ptr`
+---
+
+# 17. Full Example of a Broken Cycle and Fixing It with `weak_ptr`
 
 The following is one of the most important examples for understanding `weak_ptr`:
 
@@ -1156,6 +1216,7 @@ public:
         std::cout << "B destroyed\n";
     }
 };
+
 ```
 
 Then:
@@ -1168,26 +1229,26 @@ Then:
     a->b = b;
     b->a = a;
 }
+
 ```
 
-The apparent expectation is that both objects should be destroyed when the scope ends.
+The apparent intention is that with the end of the Scope, both Objects should be Destroyed.
 
-But that does not happen.
+However, such a thing does not happen.
 
 The reason is:
 
 ```text
 A owns B
 B owns A
+
 ```
 
-Therefore, each object keeps the other alive.
+As a result, each Object is kept alive by the other.
 
 ---
 
-# 31. Fixing the Example with `weak_ptr`
-
-To fix the problem, we make one relationship non-owning:
+To fix it, we make one of the relationships non-owning:
 
 ```cpp
 class B
@@ -1200,6 +1261,7 @@ public:
         std::cout << "B destroyed\n";
     }
 };
+
 ```
 
 Now:
@@ -1207,29 +1269,34 @@ Now:
 ```text
 A ──shared_ptr──> B
 B ──weak_ptr────> A
+
 ```
 
-The Ownership Cycle has been removed.
+The Ownership Cycle concept is eliminated.
 
-When the scope ends:
+When Scope ends:
 
 ```text
 a destroyed
 b destroyed
+
 ```
 
-the Strong Counts can reach zero.
+As a result, the Strong Count related to the Objects can reach zero.
 
-The objects can therefore be destroyed.
+The Objects are also Destroyed.
 
 ---
 
-# 32. `use_count()` in `weak_ptr`
+---
 
-A `weak_ptr` also provides:
+# 18. `use_count()`, Strong Count, Weak Count, and Control Block
+
+The `weak_ptr` also has the function:
 
 ```cpp
 use_count()
+
 ```
 
 For example:
@@ -1240,48 +1307,47 @@ auto shared = std::make_shared<int>(42);
 std::weak_ptr<int> weak = shared;
 
 std::cout << weak.use_count();
+
 ```
 
-The returned value represents the number of **Strong Owners**.
+The displayed value is the number of **Strong Owners**.
 
-In other words, it tells us how many `shared_ptr` objects currently own the object.
+Meaning the number of `shared_ptr` instances that own the Object.
 
-The important point is that the `weak_ptr` itself does not increase this number.
+Now here, the `weak_ptr` pointer does not add to this number.
 
 ---
 
-# 33. Strong Count vs. Weak Count
-
-A Control Block generally involves two important counting concepts:
+The Control Block concept usually has two important counting concepts:
 
 ```text
 Strong Count
 Weak Count
+
 ```
 
-The Strong Count represents the number of actual owners, meaning `shared_ptr` instances.
+The Strong Count shows the number of real owners, i.e., `shared_ptr` instances.
 
-The Weak Count is associated with the existence of `weak_ptr` observers and with keeping the Control Block itself alive.
+The Weak Count relates to the existence of `weak_ptr` Observers and managing the Control Block itself.
 
-These two counts should not be confused.
+These two Counts should not be confused with each other.
 
-The most important rule regarding the object itself is:
+The most important rule for the Object is:
 
 ```text
 Strong Count == 0
+
 ```
 
-At that point, the managed object can be destroyed.
+can cause the Object to be Destroyed.
 
-However, the Control Block may remain alive because `weak_ptr` instances may still exist.
+However, the Control Block might still remain due to the existence of `weak_ptr`.
 
 ---
 
-# 34. What Is the Control Block?
+The Control Block concept is an internal structure that `shared_ptr` and `weak_ptr` use to manage Ownership.
 
-The Control Block is an internal structure used by `shared_ptr` and `weak_ptr` to manage ownership and lifetime information.
-
-A simplified representation is:
+Simplified representation:
 
 ```text
              Control Block
@@ -1294,19 +1360,18 @@ A simplified representation is:
                    │
                    ▼
                  Object
+
 ```
 
-The important point is that `weak_ptr` does not directly own the object.
+The important point is that `weak_ptr` does not directly own the Object.
 
-Instead, it is associated with the Control Block that manages the object's ownership.
+Rather, it connects to the Control Block associated with the Ownership of that Object.
 
-This is how it can determine whether the object is still alive.
+For this reason, it can determine whether the Object is still alive or not.
 
 ---
 
-# 35. Why Doesn't `weak_ptr` Keep the Object Alive?
-
-This is a very important question.
+This question is very important.
 
 Suppose:
 
@@ -1314,122 +1379,140 @@ Suppose:
 auto shared = std::make_shared<int>(42);
 
 std::weak_ptr<int> weak = shared;
+
 ```
 
 Now:
 
 ```text
 Strong Count = 1
+
 ```
 
-and a `weak_ptr` also exists.
+and one `weak_ptr` also exists.
 
 If:
 
 ```cpp
 shared.reset();
+
 ```
 
 is executed:
 
 ```text
 Strong Count = 0
+
 ```
 
-The object is destroyed.
+The Object is Destroyed.
 
-However, the Control Block may remain alive so that `weak` can determine the object's state.
+However, the Control Block might still remain so `weak` can determine its state.
 
-Therefore:
+So:
 
 ```text
 Object lifetime
+
 ```
 
 and:
 
 ```text
 Control Block lifetime
+
 ```
 
-are two different concepts.
+are two completely different concepts.
 
-This is an important detail when understanding the internal behavior of `weak_ptr`.
-
----
-
-# 36. `weak_ptr` vs. `shared_ptr`
-
-The following table summarizes the main differences:
-
-| Feature                                 | `shared_ptr`              | `weak_ptr` |
-| --------------------------------------- | ------------------------- | ---------- |
-| Owns the object?                        | Yes                       | No         |
-| Increases Strong Count?                 | Yes                       | No         |
-| Keeps object alive?                     | Yes                       | No         |
-| Supports Copy?                          | Yes                       | Yes        |
-| Supports Move?                          | Yes                       | Yes        |
-| Has `reset()`?                          | Yes                       | Yes        |
-| Has direct `get()`?                     | Yes                       | No         |
-| Has `operator->`?                       | Yes                       | No         |
-| Has `lock()`?                           | No                        | Yes        |
-| Has `expired()`?                        | No                        | Yes        |
-| Suitable for breaking ownership cycles? | No, potentially dangerous | Yes        |
-| Creates ownership?                      | Yes                       | No         |
+This is one of the important points in understanding the internals of `weak_ptr`.
 
 ---
 
-# 37. `weak_ptr` vs. `unique_ptr`
+---
 
-`unique_ptr` and `weak_ptr` are fundamentally different in terms of ownership semantics.
+# 19. Differences Between `weak_ptr` and `shared_ptr`
 
-The meaning of `unique_ptr` is:
+The table below shows the main differences:
 
-> I am the sole owner of this object.
+| Feature | `shared_ptr` | `weak_ptr` |
+| --- | --- | --- |
+| Owns the Object? | Yes | No |
+| Increases Strong Count? | Yes | No |
+| Keeps the Object alive? | Yes | No |
+| Has Copy? | Yes | Yes |
+| Has Move? | Yes | Yes |
+| Has `reset()`? | Yes | Yes |
+| Has direct `get()`? | Yes | No |
+| Has `operator->`? | Yes | No |
+| Has `lock()`? | No | Yes |
+| Has `expired()`? | No | Yes |
+| Suitable for ownership cycles? | Dangerous | Suitable for breaking cycles |
+| Creates Ownership? | Yes | No |
 
-The meaning of `weak_ptr` is:
+---
 
-> I do not own this object at all; I only want to observe it.
+---
+
+# 20. Differences Between `weak_ptr` and `unique_ptr`
+
+The `unique_ptr` and `weak_ptr` pointers are different even in terms of Ownership philosophy.
+
+The `unique_ptr` pointer means:
+
+> I am the sole owner of this Object.
+> 
+> 
+
+The `weak_ptr` pointer means:
+
+> I do not own this Object at all; I just want to observe it.
+> 
+> 
 
 Therefore:
 
 ```cpp
 std::unique_ptr<MyClass>
+
 ```
 
-represents **Unique Ownership**.
+is for **Unique Ownership**.
 
-Whereas:
+However:
 
 ```cpp
 std::weak_ptr<MyClass>
+
 ```
 
-represents **Non-owning Observation** of an object managed by `shared_ptr`.
+is for **Non-owning Observation** of an Object managed by `shared_ptr`.
 
 ---
 
-# 38. When Should We Use `weak_ptr`?
+---
 
-First, when we want to observe an object without extending its lifetime, `weak_ptr` is often appropriate.
+# 21. When Should or Shouldn't We Use `weak_ptr`?
 
-Second, when relationships between objects can create ownership cycles, one of the ownership relationships can often be modeled using `weak_ptr`.
+1- When we want to observe an Object but do not want to extend its Lifetime, `weak_ptr` is a suitable choice.
 
-Third, `weak_ptr` is commonly useful in Observer Patterns, Parent/Child relationships, and certain caching designs.
+2- When relationships between Objects might create a cycle, one of the Ownership relationships can be modeled with `weak_ptr`.
 
-The general principle is:
+3- In the Observer Pattern, Parent/Child Relationship, and Caches, `weak_ptr` can be an appropriate choice.
 
-> **A relationship does not necessarily mean ownership.**
+The general concept is:
 
-This is one of the best mental models for understanding `weak_ptr`.
+> Wherever a relationship exists, Ownership does not necessarily exist.
+> 
+> 
+
+This sentence is one of the best ways to understand `weak_ptr`.
 
 ---
 
-# 39. When Should We Not Use `weak_ptr`?
+We must know that we should not use `weak_ptr` everywhere just because it is a powerful tool.
 
-The important point is that we should not use `weak_ptr` everywhere simply because it is a powerful tool.
-
-If a class genuinely needs to own an object, `weak_ptr` is not the correct choice.
+If a class really needs to own the Object, `weak_ptr` is not the right choice.
 
 For example:
 
@@ -1438,64 +1521,72 @@ class Car
 {
     std::weak_ptr<Engine> engine;
 };
+
 ```
 
-If a `Car` cannot function without its `Engine` and must keep the `Engine` alive, then `shared_ptr` or even `unique_ptr` may be a better choice.
+If Car cannot function without Engine and needs to keep Engine alive, `shared_ptr` or even `unique_ptr` is likely a better choice.
 
-The concept of `weak_ptr` only makes sense when non-ownership is actually part of the design.
+The `weak_ptr` pointer makes sense when non-ownership is part of the design.
 
 ---
 
-# 40. Common Mistakes
+---
 
-One common mistake is assuming that `weak_ptr` keeps an object alive.
+# 22. Common Mistakes
 
-Another mistake is trying to dereference a `weak_ptr` directly:
+One common mistake is thinking that `weak_ptr` keeps the Object alive.
+
+Another mistake is directly dereferencing `weak_ptr`:
 
 ```cpp
 weak->foo();
+
 ```
 
 This is not possible.
 
-The correct approach is:
+The correct form:
 
 ```cpp
 if (auto ptr = weak.lock())
 {
     ptr->foo();
 }
+
 ```
 
-Another common mistake is unnecessarily writing:
+Another mistake is using this expression:
 
 ```cpp
 if (!weak.expired())
 {
     auto ptr = weak.lock();
 }
+
 ```
 
 In most cases, this check is redundant.
 
-A better pattern is:
+The better form:
 
 ```cpp
 if (auto ptr = weak.lock())
 {
     ptr->foo();
 }
+
 ```
 
-Another dangerous mistake is obtaining a Raw Pointer from a temporary:
+Another dangerous mistake is getting a Raw Pointer from a Temporary:
 
 ```cpp
 auto raw = weak.lock().get();
+
 ```
 
-This Raw Pointer can immediately become dangling.
+This Raw Pointer can immediately become Dangling.
 
-A safer version is:
+The safer form:
 
 ```cpp
 if (auto ptr = weak.lock())
@@ -1504,21 +1595,23 @@ if (auto ptr = weak.lock())
 
     raw->foo();
 }
+
 ```
 
-However, in many cases there is no need for a Raw Pointer at all.
-
-It is usually better to simply use:
+Of course, in many cases we do not need a Raw Pointer at all and it is better to directly use:
 
 ```cpp
 ptr->foo();
+
 ```
 
 ---
 
-# 41. A More Realistic Complete Example
+---
 
-The following example demonstrates a common Parent/Child design:
+# 23. A Complete and More Realistic Example
+
+The code below shows a common Parent/Child design:
 
 ```cpp
 #include <iostream>
@@ -1568,6 +1661,7 @@ public:
         std::cout << "Hello from Parent\n";
     }
 };
+
 ```
 
 Then:
@@ -1578,9 +1672,10 @@ auto child = std::make_shared<Child>();
 
 parent->setChild(child);
 child->setParent(parent);
+
 ```
 
-The ownership relationship is:
+The Ownership relationship here looks like this:
 
 ```text
 Parent ──shared_ptr──> Child
@@ -1589,304 +1684,126 @@ Parent ──shared_ptr──> Child
    │ weak_ptr
    │
  Child
+
 ```
 
-The important point is that Child does not keep Parent alive.
+In this design, Child does not keep Parent alive.
 
 ---
 
-# 42. An Important Point About Getters
-
-A Getter involving `weak_ptr` should be designed carefully.
-
-If we want the caller to merely observe the object:
-
-```cpp
-std::weak_ptr<MyClass> getObject() const
-{
-    return object;
-}
-```
-
-is appropriate.
-
-The caller can then decide whether to temporarily acquire ownership:
-
-```cpp
-if (auto object = getObject().lock())
-{
-    object->doSomething();
-}
-```
-
-However, if we want the caller to be able to keep the object alive for some period of time, we can instead return:
-
-```cpp
-std::shared_ptr<MyClass> getObject() const
-{
-    return object.lock();
-}
-```
-
-In this case, the Getter creates and returns a `shared_ptr`.
-
-Therefore, the object remains alive as long as that returned `shared_ptr` exists.
-
 ---
 
-# 43. Why Don't We Directly Convert `weak_ptr` to `shared_ptr`?
+# 24. Final Summary
 
-The following is not allowed:
+The `shared_ptr` pointer was created for **Shared Ownership**.
 
-```cpp
-std::shared_ptr<MyClass> ptr = weak;
-```
+The `weak_ptr` pointer was created for when we want to communicate with an Object, but do not want to own it.
 
-The reason is that the object may no longer exist.
+The main problem arises when several `shared_ptr` instances keep each other alive cyclically.
 
-Therefore, we must explicitly write:
-
-```cpp
-auto ptr = weak.lock();
-```
-
-Now we have two possible states.
-
-First:
-
-```cpp
-if (ptr)
-{
-    // Object is alive
-}
-```
-
-Second:
-
-```cpp
-if (!ptr)
-{
-    // Object has already been destroyed
-}
-```
-
-This design makes the object's lifetime state explicit in the code.
-
----
-
-# 44. How Can We Understand `lock()` in Very Simple Terms?
-
-Imagine the following:
-
-```text
-weak_ptr:
-
-"I have a reference to this person,
-but I am not responsible for keeping them alive."
-
-lock():
-
-"If they are still alive,
-give me a shared_ptr temporarily."
-```
-
-If the person no longer exists:
-
-```text
-lock() → empty shared_ptr
-```
-
-If the person is still alive:
-
-```text
-lock() → valid shared_ptr
-```
-
-This is one of the simplest mental models for understanding `weak_ptr`.
-
----
-
-# 45. Can `weak_ptr` Itself Cause a Memory Leak?
-
-Normally, no.
-
-A `weak_ptr` does not keep the object alive.
-
-It may cause the **Control Block** to remain alive longer, but that is not the same as leaking the managed object.
-
-The important distinction is:
-
-```text
-Strong Count → Object lifetime
-Weak Count   → Control Block lifetime
-```
-
-Therefore, having a `weak_ptr` remain after the object has been destroyed is completely normal.
-
-When the last `weak_ptr` also disappears, the Control Block can eventually be released.
-
----
-
-# 46. A Subtle Point About `use_count()`
-
-The following:
-
-```cpp
-weak.use_count()
-```
-
-returns the number of Strong Owners.
-
-For example:
-
-```cpp
-auto p = std::make_shared<int>(10);
-
-std::weak_ptr<int> w = p;
-
-std::cout << w.use_count();
-```
-
-will normally print:
-
-```text
-1
-```
-
-The important point is that:
-
-```cpp
-w.use_count()
-```
-
-does **not** return the number of `weak_ptr` objects.
-
-To determine whether the object is still alive, it is generally better to use:
-
-```cpp
-w.expired()
-```
-
-or, preferably:
-
-```cpp
-if (auto p = w.lock())
-```
-
----
-
-# 47. `weak_ptr` in One Sentence
-
-If we wanted to summarize the entire article in one sentence:
-
-> **`std::weak_ptr` is a non-owning smart pointer that allows us to observe an object managed by `shared_ptr` without increasing the Strong Reference Count and therefore without extending the object's lifetime.**
-
-The more important concept is that this property allows us to break ownership cycles.
-
----
-
-# 48. Final Summary
-
-The purpose of `shared_ptr` is **Shared Ownership**.
-
-The purpose of `weak_ptr` is to establish a relationship with an object without owning it.
-
-The main problem occurs when multiple `shared_ptr` objects keep each other alive in a cycle.
-
-For example:
+The statement:
 
 ```text
 A owns B
 B owns A
+
 ```
 
 creates an Ownership Cycle.
 
-The result is that the Reference Count can never reach zero.
+The result of this cycle is that Reference Count never reaches zero.
 
-A `weak_ptr` can make one of these relationships non-owning:
+The `weak_ptr` pointer can make one of these relationships non-owning:
 
 ```text
 A owns B
 B observes A
+
 ```
 
-This breaks the cycle.
+As a result, the cycle is broken.
 
-Creating a `weak_ptr`:
+Creating `weak_ptr`:
 
 ```cpp
 auto shared = std::make_shared<MyClass>();
 
 std::weak_ptr<MyClass> weak = shared;
+
 ```
 
 Copying it:
 
 ```cpp
 auto weak2 = weak;
+
 ```
 
 Moving it:
 
 ```cpp
 auto weak2 = std::move(weak);
+
 ```
 
 Resetting it:
 
 ```cpp
 weak.reset();
+
 ```
 
-Checking whether the object has expired:
+Checking for expiration:
 
 ```cpp
 weak.expired();
+
 ```
 
-Safely converting it to a `shared_ptr`:
+Safe conversion to `shared_ptr`:
 
 ```cpp
 auto shared = weak.lock();
+
 ```
 
-Accessing the object:
+Accessing the Object:
 
 ```cpp
 if (auto shared = weak.lock())
 {
     shared->doSomething();
 }
+
 ```
 
-Accessing a Raw Pointer:
+Accessing Raw Pointer:
 
 ```cpp
 if (auto shared = weak.lock())
 {
     MyClass* raw = shared.get();
 }
+
 ```
 
-The important point is that `weak_ptr` does not directly provide `get()`, and we must first call `lock()` to obtain a valid `shared_ptr`.
+An important point is that `weak_ptr` does not directly have `get()`, and to access the Object we must first obtain a valid `shared_ptr` using `lock()`.
 
-Another important point is that `weak_ptr` does not own the object and therefore cannot keep it alive.
+Another important point is that `weak_ptr` does not own the Object and therefore cannot keep the Object alive.
 
 ---
 
-# Final Conclusion
-
-The concept of smart pointers can be remembered through four simple questions:
+Smart Pointers can be remembered with four simple questions in mind:
 
 ```text
 Who owns the object?
 Who shares ownership?
 Who only observes it?
 Can ownership form a cycle?
+
 ```
 
-The answers are generally:
+The answers are usually as follows:
 
 ```text
 One owner
@@ -1897,29 +1814,31 @@ Multiple owners
 
 Non-owning observer of shared ownership
     → weak_ptr
+
 ```
 
-The final idea is that `weak_ptr` is not simply a "weaker" version of `shared_ptr`.
+The final point is that `weak_ptr` is not a "weaker" version of `shared_ptr`.
 
-The word **weak** does not mean that it is less capable.
+The word `weak` in its name does not mean it has fewer capabilities.
 
-It refers to **Weak Ownership**—or, more precisely, the absence of Strong Ownership.
+The real meaning of this name is:
 
-`weak_ptr` intentionally does not keep the object alive.
+> **Weak Ownership — or more precisely, the absence of Strong Ownership.**
+> 
 
-And that is exactly why it can break ownership cycles created by `shared_ptr`.
+`weak_ptr` intentionally does not keep the Object alive.
 
-If a programmer remembers only one sentence from this article, it should be this:
+And that is precisely why it can break `shared_ptr` ownership cycles.
 
-> **`shared_ptr` says, "As long as I exist, the object should remain alive." `weak_ptr` says, "If the object is still alive, let me see and use it, but my existence should never prevent the object from being destroyed."**
+If a programmer remembers only one sentence from this tutorial, it should be this:
+
+> **`shared_ptr` says "as long as I exist, the Object must stay alive"; `weak_ptr` says "if the Object is still alive, let me see it, but my presence should not prevent its destruction."**
+> 
 
 ---
-## 🤝 Contributors
 
-<div align="center">
+## 🤝 Contributions
 
 | GitHub | LinkedIn | Email | Site | Telegram |
-|--------|----------|-------|------|----------|
-| [HadiAbbasi](https://github.com/HadiAbbasi) | [Hadi Abbasi](https://www.linkedin.com/in/hadi-abbasi-programmer/) | [Hadi Abbasi](hadi.abbasi.programmer@gmail.com) | [Hiens.org](https://hiens.org) | [Hadi Abbasi](@Hadi_Abbasi_Programmer) |
-
-</div>
+| --- | --- | --- | --- | --- |
+| [HadiAbbasi](https://www.google.com/search?q=https://github.com/HadiAbbasi) | [Hadi Abbasi](https://www.google.com/search?q=https://www.linkedin.com/in/hadi-abbasi-programmer/) | [Hadi Abbasi](https://www.google.com/search?q=mailto%3Ahadi.abbasi.programmer%40gmail.com) | [Hiens.org](https://hiens.org) | [Hadi Abbasi](https://www.google.com/search?q=https://t.me/Hadi_Abbasi_Programmer) |
