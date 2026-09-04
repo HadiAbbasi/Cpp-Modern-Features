@@ -7,8 +7,6 @@
 # Regular expressions
 ![regex](./assets/regex.webp)
 
-Due to my years of work in video game development I don’t often come across scenarios where I need to do much text processing. Based on some recent interviews I realized I have to enhance my text processing skills in C++. This has brought me to reacquainting myself with regular expressions and how to work with them in C++.
-
 I’ll quickly cover regular expression syntax and mention some features that aren’t supported by the standard C++ library. I’m told 3rd party libraries like Boost do support them but I like to keep things to the standard so that the code is cross platform. With that out of the way let’s start with a quick syntax overview of regular expressions based on the ECMAScript standard which C++ adheres to.
 
 
