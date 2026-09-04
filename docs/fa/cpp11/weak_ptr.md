@@ -43,7 +43,7 @@
 
 ابزار `std::weak_ptr` یکی از مهم‌ترین بخش‌های مدیریت حافظه در C++11 است.
 
-عبارت `weak_ptr` همراه با `shared_ptr` معنا پیدا می‌کند و برای حل مشکلی به وجود آمد که در مدل مالکیت اشتراکی `shared_ptr` بسیار مهم است.
+اشاره گر `weak_ptr` همراه با `shared_ptr` معنا پیدا می‌کند و برای حل مشکلی به وجود آمد که در مدل مالکیت اشتراکی `shared_ptr` بسیار مهم است.
 
 کارکرد اصلی را اگر بخواهیم در یک جمله بیان کنیم، این است:
 
@@ -143,7 +143,7 @@ person = 1 owner
                  Object
 ```
 
-عبارت Strong Count تعداد مالک‌های `shared_ptr` را نشان می‌دهد.
+شمارنده Strong Count تعداد مالک‌های `shared_ptr` را نشان می‌دهد.
 
 نکته مهم این است که تا زمانی که Strong Count صفر نشده باشد، شیء معمولاً Destroy نمی‌شود.
 
@@ -742,7 +742,7 @@ if (weak.expired())
 
 ---
 
-عبارت `expired()` مشخص می‌کند که Object مورد مشاهده توسط `weak_ptr` دیگر زنده است یا خیر. برای مثال:
+متد `expired()` مشخص می‌کند که Object مورد مشاهده توسط `weak_ptr` دیگر زنده است یا خیر. برای مثال:
 
 ```cpp
 auto shared = std::make_shared<int>(42);
@@ -1043,7 +1043,7 @@ public:
 
 ---
 
-عبارت Parent/Child (الگوی Composition) یکی از بهترین مثال‌ها برای درک `weak_ptr` است.
+مثال Parent/Child (الگوی Composition) یکی از بهترین مثال‌ها برای درک `weak_ptr` است.
 
 فرض کنید:
 
@@ -1129,7 +1129,7 @@ std::weak_ptr<Subject> subject;
 
 # 17. مثال کامل از چرخه خراب و اصلاح آن با `weak_ptr`
 
-عبارت زیر یکی از مهم‌ترین مثال‌ها برای درک `weak_ptr` است:
+مثال زیر یکی از مهم‌ترین مثال‌ها برای درک `weak_ptr` است:
 
 ```cpp
 #include <iostream>
@@ -1176,7 +1176,7 @@ public:
 
 اما چنین اتفاقی رخ نمی‌دهد.
 
-عبارت دلیل این است:
+دلیل این است:
 
 ```text
 A owns B
@@ -1230,7 +1230,7 @@ Objectها نیز Destroy می‌شوند.
 
 # 18. `use_count()`، Strong Count، Weak Count و Control Block
 
-عبارت `weak_ptr` نیز تابع:
+اشاره گر `weak_ptr` نیز تابع:
 
 ```cpp
 use_count()
@@ -1263,9 +1263,9 @@ Strong Count
 Weak Count
 ```
 
-عبارت Strong Count تعداد مالک‌های واقعی یعنی `shared_ptr`ها را نشان می‌دهد.
+شمارنده Strong Count تعداد مالک‌های واقعی یعنی `shared_ptr`ها را نشان می‌دهد.
 
-عبارت Weak Count مربوط به وجود Observerهای `weak_ptr` و مدیریت خود Control Block است.
+شمارنده Weak Count مربوط به وجود Observerهای `weak_ptr` و مدیریت خود Control Block است.
 
 این دو Count را نباید با یکدیگر اشتباه گرفت.
 
@@ -1472,7 +1472,7 @@ weak->foo();
 
 این امکان وجود ندارد.
 
-عبارت صحیح:
+روش صحیح:
 
 ```cpp
 if (auto ptr = weak.lock())
@@ -1481,7 +1481,7 @@ if (auto ptr = weak.lock())
 }
 ```
 
-اشتباه دیگر استفاده از این عبارت است:
+اشتباه دیگر استفاده از این متد است:
 
 ```cpp
 if (!weak.expired())
@@ -1492,7 +1492,7 @@ if (!weak.expired())
 
 در اغلب موارد این بررسی اضافی است.
 
-عبارت بهتر:
+روش بهتر:
 
 ```cpp
 if (auto ptr = weak.lock())
@@ -1636,7 +1636,7 @@ B owns A
 
 نتیجه این چرخه این است که Reference Count هیچ‌گاه به صفر نمی‌رسد.
 
-عبارت `weak_ptr` می‌تواند یکی از این روابط را غیرمالکانه کند:
+اشاره گر `weak_ptr` می‌تواند یکی از این روابط را غیرمالکانه کند:
 
 ```text
 A owns B
@@ -1653,7 +1653,7 @@ auto shared = std::make_shared<MyClass>();
 std::weak_ptr<MyClass> weak = shared;
 ```
 
-عبارت کپی کردن آن:
+روش کپی کردن آن:
 
 ```cpp
 auto weak2 = weak;
@@ -1665,7 +1665,7 @@ auto weak2 = weak;
 auto weak2 = std::move(weak);
 ```
 
-عبارت Reset کردن آن:
+روش Reset کردن آن:
 
 ```cpp
 weak.reset();
@@ -1677,7 +1677,7 @@ weak.reset();
 weak.expired();
 ```
 
-عبارت تبدیل امن به `shared_ptr`:
+روش تبدیل امن به `shared_ptr`:
 
 ```cpp
 auto shared = weak.lock();
@@ -1692,7 +1692,7 @@ if (auto shared = weak.lock())
 }
 ```
 
-عبارت دسترسی به Raw Pointer:
+روش دسترسی به Raw Pointer:
 
 ```cpp
 if (auto shared = weak.lock())
@@ -1703,7 +1703,7 @@ if (auto shared = weak.lock())
 
 نکته مهم این است که `weak_ptr` مستقیماً `get()` ندارد و برای دسترسی به Object باید ابتدا با `lock()` یک `shared_ptr` معتبر دریافت کنیم.
 
-عبارت مهم دیگر این است که `weak_ptr` مالک Object نیست و بنابراین نمی‌تواند Object را زنده نگه دارد.
+نکته مهم دیگر این است که `weak_ptr` مالک Object نیست و بنابراین نمی‌تواند Object را زنده نگه دارد.
 
 ---
 
@@ -1716,7 +1716,7 @@ Who only observes it?
 Can ownership form a cycle?
 ```
 
-عبارت پاسخ‌ها معمولاً چنین هستند:
+پاسخ‌ها معمولاً چنین هستند:
 
 ```text
 One owner
