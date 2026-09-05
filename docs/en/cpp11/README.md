@@ -29,6 +29,10 @@
 | [async](./async.md)|
 | [promise](./promise.md)|
 | [future](./future.md)|
+| [regex](./regex.md)|
+| [thread_local](./regex.md)|
+| [emplace](./emplace.md)|
+
 
 </div>
 
