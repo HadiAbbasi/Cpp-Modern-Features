@@ -56,8 +56,6 @@ If we understand the ownership cycle correctly, we have almost understood the ma
 
 ---
 
----
-
 # 2. What Was the Problem Before `weak_ptr`?
 
 To understand `weak_ptr`, it is better to first know why `shared_ptr` came into existence in the first place[cite: 1].
@@ -120,8 +118,6 @@ The object is also Destroyed.
 This behavior is very good.
 
 However, there is a very important problem.
-
----
 
 ---
 
@@ -203,8 +199,6 @@ p3.reset();
 causes the last owner to also go away.
 
 As a result, the object can be Destroyed.
-
----
 
 ---
 
@@ -380,8 +374,6 @@ This is precisely where `weak_ptr` can prevent Memory Leaks.
 
 ---
 
----
-
 # 5. What Exactly Is `weak_ptr`?
 
 The `weak_ptr` pointer is a Smart Pointer that can **point to an object managed by a `shared_ptr` without owning it**.
@@ -428,8 +420,6 @@ was equal to `1` before creating `weak`, the Strong Count will still be `1` afte
 
 ---
 
-No.
-
 This is the most important feature of `weak_ptr`.
 
 The following statement:
@@ -444,8 +434,6 @@ does not mean that `weak` owns `MyClass`.
 The only difference is that `weak` has a non-owning connection to an Object.
 
 For this reason, `weak_ptr` does not increase the Strong Reference Count.
-
----
 
 ---
 
@@ -482,8 +470,6 @@ Now, if `shared` was the last owner, `int` is Destroyed.
 However, `weak` might still exist.
 
 It just can no longer access a live Object.
-
----
 
 ---
 
@@ -534,8 +520,6 @@ B observes A
 ```
 
 There is no longer an ownership cycle.
-
----
 
 ---
 
@@ -608,8 +592,6 @@ is executed and `object` is the last owner, the Object will be Destroyed.
 
 ---
 
----
-
 # 9. Returning `weak_ptr` from a Getter
 
 If a class maintains a non-owning connection, we can return it with a Getter:
@@ -660,8 +642,6 @@ std::shared_ptr<MyClass> getValue() const
 the Caller would receive a new owner.
 
 Therefore, these two Getters are completely different from a design perspective.
-
----
 
 ---
 
@@ -753,8 +733,6 @@ The Object is still managed by `shared`.
 
 ---
 
----
-
 # 11. Checking Emptiness and `expired()`
 
 To check if `weak_ptr` has no connection to the Object, we can use:
@@ -812,8 +790,6 @@ weak.expired()
 will become `true`.
 
 The `expired()` method only checks the status at a single instant.
-
----
 
 ---
 
@@ -971,8 +947,6 @@ The `lock()` method forces the programmer to first check the Lifetime status and
 
 ---
 
----
-
 # 14. `weak_ptr` and Raw Pointers
 
 Directly, `weak_ptr` does not have a function like:
@@ -1057,8 +1031,6 @@ if (auto shared = weak.lock())
 ```
 
 is safer.
-
----
 
 ---
 
@@ -1149,8 +1121,6 @@ However, Child only observes Parent.
 
 ---
 
----
-
 # 16. The Observer Pattern
 
 Another important use case of `weak_ptr` is the Observer Pattern.
@@ -1180,8 +1150,6 @@ The concept of Observer is:
 > I want to access the Object if it exists, but I should not cause it to stay alive.
 > 
 > 
-
----
 
 ---
 
@@ -1285,8 +1253,6 @@ b destroyed
 As a result, the Strong Count related to the Objects can reach zero.
 
 The Objects are also Destroyed.
-
----
 
 ---
 
@@ -1429,8 +1395,6 @@ This is one of the important points in understanding the internals of `weak_ptr`
 
 ---
 
----
-
 # 19. Differences Between `weak_ptr` and `shared_ptr`
 
 The table below shows the main differences:
@@ -1449,8 +1413,6 @@ The table below shows the main differences:
 | Has `expired()`? | No | Yes |
 | Suitable for ownership cycles? | Dangerous | Suitable for breaking cycles |
 | Creates Ownership? | Yes | No |
-
----
 
 ---
 
@@ -1490,8 +1452,6 @@ is for **Non-owning Observation** of an Object managed by `shared_ptr`.
 
 ---
 
----
-
 # 21. When Should or Shouldn't We Use `weak_ptr`?
 
 1- When we want to observe an Object but do not want to extend its Lifetime, `weak_ptr` is a suitable choice.
@@ -1527,8 +1487,6 @@ class Car
 If Car cannot function without Engine and needs to keep Engine alive, `shared_ptr` or even `unique_ptr` is likely a better choice.
 
 The `weak_ptr` pointer makes sense when non-ownership is part of the design.
-
----
 
 ---
 
@@ -1604,8 +1562,6 @@ Of course, in many cases we do not need a Raw Pointer at all and it is better to
 ptr->foo();
 
 ```
-
----
 
 ---
 
@@ -1688,8 +1644,6 @@ Parent ──shared_ptr──> Child
 ```
 
 In this design, Child does not keep Parent alive.
-
----
 
 ---
 
