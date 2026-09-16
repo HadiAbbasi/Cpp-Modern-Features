@@ -20,6 +20,10 @@ std::bind(function, object/value, arguments...);
 
 The return type of the std::bind function is a type that is dependent on the function or member function being bound, the arguments passed to the std::bind function, and the placeholders used to specify where the arguments passed to the returned function object should be placed.
 
+
+>`std::bind` locks in some arguments ahead of time, giving you a new callable with fewer parameters.Press enter or click to view image in full size
+
+![bind](./assets/bind.webp)
 ---
 ## 🤝 Contributors
 <div align="center">
