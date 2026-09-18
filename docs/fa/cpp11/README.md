@@ -32,6 +32,9 @@
 | [regex](./regex.md)|
 | [thread_local](./regex.md)|
 | [emplace](./emplace.md)|
+| [atomic](./atomic.md)|
+| [bind](./bind.md)|
+| [function](./function.md)|
 </div>
 
 ---
