@@ -1456,20 +1456,5 @@ The most useful mental model is simple: **a structured binding gives names to co
 |---|---|---|---|---|
 | [Ordikhani](https://github.com/Ordikhani) |  |[Ordikhani](ordikhanifateme@gmail.com) |  | [Ordikhani](@OrdikhaniFateme) |
 
-### How to contribute
 
-1. Fork the repository containing this guide.
-2. Create a feature branch:
-
-```bash
-git checkout -b improve-structured-bindings
-```
-
-3. Make changes and ensure code examples compile with the intended language standard.
-4. Open a pull request with a short description of what changed and why.
-5. Add yourself to the contributors list if appropriate.
-
-Suggestions are especially useful for additional compiler-quirk examples, newer C++ standard updates, and real-world refactoring examples.
-
----
 
