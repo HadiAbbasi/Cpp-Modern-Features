@@ -84,9 +84,63 @@ The static_assert keyword provides several benefits over traditional compile-tim
 - Can evaluate expressions involving sizeof, type traits, and template parameters.
 - Helps detect common programming mistakes before execution.
 
-## Using static_assert with Templates
+## Scope of static_assert
+A static_assert declaration can appear in multiple scopes within a C++ program, allowing compile-time checks to be performed at different levels of the code.
+
+### Namespace Scope
+A static_assert declared at namespace scope is evaluated during compilation and applies to the entire translation unit.
+```cpp
+#include <iostream>
+
+static_assert(sizeof(void*) == 8,
+              "64-bit architecture required");
+
+int main()
+{
+    cout << "Assertion passed";
+    return 0;
+}
+
+```
+
+### Class Scope
+
+A static_assert can be placed inside a class or class template to enforce compile-time constraints on class definitions or template parameters.CPP
+
+```cpp
+template <class T, int Size>
+class Vector
+{
+    static_assert(Size > 3,
+                  "Vector size is too small");
+
+    T values[Size];
+};
+```
+
+### Block Scope
+A static_assert can be declared inside a function or block to validate compile-time conditions that are relevant to that specific scope.
+```cpp
+template <typename T, int N>
+void func()
+{
+    static_assert(N >= 0,
+                  "Array size cannot be negative");
+
+    T arr[N];
+}
+```
 
 
+## Invalid static_assert Expressions
+
+```cpp
+int main()
+{
+    static_assert(1 / 0, "never shows up!");
+    return 0;
+}
+```
 ---
 ## 🤝 Contributors
 <div align="center">
