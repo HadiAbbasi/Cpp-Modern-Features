@@ -6,7 +6,7 @@
 
 ---
 
-# `std::any` in C++17 and Beyond — Complete Deep-Dive Guide
+# `std::any` in C++17
 
 `std::any` is a type-safe container introduced in C++17 that can store a single value of almost any copy-constructible type. Its stored type can change dynamically at runtime while retaining complete type safety, value semantics, and automatic lifetime management without requiring common base classes or inheritance hierarchies.
 

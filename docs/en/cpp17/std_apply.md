@@ -6,7 +6,7 @@
 
 ---
 
-# `std::apply` in C++17 and Beyond — Complete Deep-Dive Guide
+# `std::apply` in C++17 
 
 `std::apply` is a utility function introduced in C++17 that invokes a Callable object (function, lambda, functor) by "unpacking" the elements of a tuple-like object as separate arguments. It bridges the gap between heterogeneous storage (`std::tuple`) and functional calls, eliminating the need for verbose, recursive template metaprogramming.
 
