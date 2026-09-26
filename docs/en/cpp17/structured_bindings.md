@@ -5,7 +5,7 @@
 </div>
 
 ----
-# Structured Bindings in C++17 and Beyond — Complete Deep-Dive Guide
+# Structured Bindings in C++17 
 
 Structured bindings are a C++17 language feature that lets you decompose an object into named bindings in a single declaration. They are especially useful with `std::pair`, `std::tuple`, `std::array`, ordinary arrays, map elements, and classes with accessible non-static data members.
 
