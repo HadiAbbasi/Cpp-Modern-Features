@@ -35,7 +35,9 @@
 | [atomic](./atomic.md)|
 | [bind](./bind.md)|
 | [function](./function.md)|
-
+| [static_assert](./static_assert.md)|
+| [Range Base For](./range_base.md.md)|
+| [Decltype](./decltype.md.md)|
 
 </div>
 
