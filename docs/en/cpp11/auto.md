@@ -3,7 +3,25 @@
 [🇺🇸 English](./auto.md) | [🇮🇷 فارسی](../../fa/cpp11/auto.md)
 
 </div>
+
 ---
+
+## Table of Contents
+
+- [auto type](#auto-type)
+  - [Introduction](#introduction)
+  - [Syntax](#syntax)
+  - [Using References](#using-references)
+  - [A Common Use Case: Iterators](#a-common-use-case-iterators)
+    - [Before C++11](#before-c11)
+    - [Since C++11](#since-c11)
+  - [Basic Examples](#basic-examples)
+  - [Advantages](#advantages)
+  - [Important Notes](#important-notes)
+  - [Best Practices](#best-practices)
+  - [Summary](#summary)
+- [Contributors](#-contributors)
+
 
 # auto type
 
