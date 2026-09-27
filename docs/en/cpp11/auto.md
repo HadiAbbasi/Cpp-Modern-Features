@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./auto.md) | [🇮🇷 فارسی](../../fa/cpp11/auto.md)
 

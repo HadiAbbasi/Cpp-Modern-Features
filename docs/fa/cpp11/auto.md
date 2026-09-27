@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp11/auto.md) | [🇮🇷 فارسی](./auto.md)
 
@@ -125,7 +125,7 @@ auto value = 10;   // صحیح
 auto value;        // خطا
 ```
 
-- `auto` به صورت پیش‌فرض مقدار را کپی می‌کند.
+- دستور `auto` به صورت پیش‌فرض مقدار را کپی می‌کند.
 
 ```cpp
 auto x = obj;
@@ -149,8 +149,8 @@ const auto& x = obj;
 
 استفاده از `auto` در موارد زیر توصیه می‌شود:
 
-- Iteratorها
-- Lambda Expressionها
+- Iterator
+- Lambda Expression
 - انواع Template
 - انواع بازگشتی طولانی
 - کدهای Generic
