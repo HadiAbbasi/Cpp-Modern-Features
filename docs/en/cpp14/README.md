@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../en/cpp14/README.md)
+[🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../fa/cpp14/README.md)
 
 </div>
 
