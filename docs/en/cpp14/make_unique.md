@@ -7,8 +7,7 @@
 ---
 
 ## Table of Contents
-
-* [`std::make_unique` چیست؟](#what-is-stdmake_unique)
+* [What is `std::make_unique`?](#what-is-stdmake_unique)
 * [Why Do We Need `make_unique`?](#why-do-we-need-make_unique)
 * [The Relationship Between `make_unique` and the Heap](#the-relationship-between-make_unique-and-the-heap)
 * [Difference Between `new` and `make_unique`](#difference-between-new-and-make_unique)
