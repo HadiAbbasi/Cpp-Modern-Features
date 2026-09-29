@@ -8,51 +8,45 @@
 
 ## فهرست مطالب
 
-- دستور `std::make_unique` چیست؟
-- چرا اصلاً به `make_unique` نیاز داریم؟
-- رابطه‌ی `make_unique` با Heap
-- تفاوت `new` با `make_unique`
-- ساختار کلی `make_unique`
-- مثال ساده
-- چرا `make_unique` بهتر از `new` خام است؟
-- مشکل Memory Leak با `new`
-- مزیت مهم‌تر: Exception Safety
-- تفاوت `make_unique` با `unique_ptr(new ...)`
-- انتقال Ownership
-- استفاده در توابع
-- استفاده به‌عنوان مقدار بازگشتی
-- ساخت Object با Constructor Arguments
-- ساخت Array با `make_unique`
-- ماهیت `make_unique_for_overwrite`
-- تفاوت `make_unique` و `make_unique_for_overwrite`
-- دسترسی به Object
-- متدهای مهم `unique_ptr`
-- متد `get()`
-- متد `release()`
-- متد `reset()`
-- متد `swap()`
-- بررسی وجود Object
-- Custom Deleter
-- وراثت و Polymorphism
-- Destructor مجازی و نکته مهم
-- آیا `make_unique` سریع‌تر است؟
-- آیا `make_unique` یک Allocation انجام می‌دهد؟
-- متد `make_unique` و `shared_ptr`
-- چه زمانی نباید از `make_unique` استفاده کرد؟
-- خطاهای رایج
-- الگوی پیشنهادی در C++ مدرن
-- جمع‌بندی
+- [دستور `std::make_unique` چیست؟](#-دستور-stdmake_unique-چیست)
+- [چرا اصلاً به `make_unique` نیاز داریم؟](#-چرا-اصلاً-به-make_unique-نیاز-داریم)
+- [رابطه‌ی `make_unique` با Heap](#-رابطه‌ی-make_unique-با-heap)
+- [تفاوت `new` با `make_unique`](#-تفاوت-new-با-make_unique)
+- [ساختار کلی `make_unique`](#-ساختار-کلی-make_unique)
+- [مثال ساده](#-مثال-ساده)
+- [چرا `make_unique` بهتر از `new` خام است؟](#-چرا-make_unique-بهتر-از-new-خام-است)
+- [مشکل Memory Leak با `new`](#-مشکل-memory-leak-با-new)
+- [مزیت مهم‌تر: Exception Safety](#-مزیت-مهمتر-exception-safety)
+- [تفاوت `make_unique` با `unique_ptr(new ...)`](#-تفاوت-make_unique-با-unique_ptrnew-)
+- [انتقال Ownership](#-انتقال-ownership)
+- [استفاده در توابع](#-استفاده-در-توابع)
+- [استفاده به‌عنوان مقدار بازگشتی](#-استفاده-بهعنوان-مقدار-بازگشتی)
+- [ساخت Object با Constructor Arguments](#-ساخت-object-با-constructor-arguments)
+- [ساخت Array با `make_unique`](#-ساخت-array-با-make_unique)
+- [ماهیت `make_unique_for_overwrite`](#-ماهیت-make_unique_for_overwrite)
+- [تفاوت `make_unique` و `make_unique_for_overwrite`](#-تفاوت-make_unique-و-make_unique_for_overwrite)
+- [دسترسی به Object](#-دسترسی-به-object)
+- [متدهای مهم `unique_ptr`](#-متدهای-مهم-unique_ptr)
+- [آیا `make_unique` سریع‌تر از `new` است؟](#-آیا-make_unique-سریعتر-از-new-است)
+- [آیا `make_unique` یک Allocation انجام می‌دهد؟](#-آیا-make_unique-یک-allocation-انجام-میدهد)
+- [`make_unique` و `shared_ptr`](#-make_unique-و-shared_ptr)
+- [چه زمانی نباید از `make_unique` استفاده کرد؟](#-چه-زمانی-نباید-از-make_unique-استفاده-کرد)
+- [خطاهای رایج](#-خطاهای-رایج)
+- [الگوی پیشنهادی در C++ مدرن](#-الگوی-پیشنهادی-در-c-مدرن)
+- [مهم‌ترین تفاوت دستورات `new` و `make_unique`](#-مهمترین-تفاوت-دستورات-new-و-make_unique)
+- [یک مثال کامل](#-یک-مثال-کامل)
+- [یک تصویر ذهنی بسیار مهم](#-یک-تصویر-ذهنی-بسیار-مهم)
+- [خلاصه و جمع‌بندی](#-خلاصه-و-جمع‌بندی)
+- [مشارکت‌ها](#-مشارکت-ها)
 
 ---
 
-# دستور `std::make_unique` در C++؛ ساخت امن و مدرن `unique_ptr`
+# دستور `std::make_unique` در ++C؛ ساخت امن و مدرن `unique_ptr`
 
 
-# 1. دستور `std::make_unique` چیست؟
+# دستور `std::make_unique` چیست؟
 
-دستور `std::make_unique` یک تابع قالبی (Function Template) در کتابخانه استاندارد C++ است که از C++14 به زبان اضافه شده است.
-
-وظیفه‌ی اصلی آن بسیار ساده است:
+دستور `std::make_unique` یک تابع از نوع Function Template در کتابخانه استاندارد C++ است که از C++14 به زبان اضافه شده است. وظیفه‌ی اصلی آن بسیار ساده است:
 
 > یک Object را ایجاد می‌کند، آن را در Dynamic Storage قرار می‌دهد و نتیجه را داخل یک `std::unique_ptr` قرار می‌دهد.
 
@@ -80,11 +74,11 @@ Heap
 
 یعنی Object به‌صورت Dynamic ساخته شده و `unique_ptr` مالک آن شده است.
 
-طبق استاندارد، `make_unique` برای نوع‌های معمولی تقریباً معادل ساختن `unique_ptr` با `new` است.
+طبق استاندارد، `make_unique` برای انواع معمولی تقریباً معادل ساختن `unique_ptr` با `new` است.
 
 ---
 
-# 2. چرا اصلاً به `make_unique` نیاز داریم؟
+# چرا اصلاً به `make_unique` نیاز داریم؟
 
 قبل از C++14 برای ساخت یک `unique_ptr` معمولاً چنین کدی نوشته می‌شد:
 
@@ -92,51 +86,19 @@ Heap
 std::unique_ptr<User> user(new User());
 ```
 
-این کد از نظر فنی درست است.
+این کد از نظر فنی درست است. اما دو مشکل دارد:
 
-اما دو مشکل دارد:
+###  Exception Safety
 
-### مشکل اول: خوانایی
+مزیت مهم‌ `make_unique` این است که در C++ مدرن، هدف این است که مدیریت حافظه مستقیماً در اختیار RAII قرار بگیرد و استفاده‌ی مستقیم از `new` تا حد ممکن حذف شود.
 
-نوع `User` دو بار نوشته شده:
-
-```cpp
-std::unique_ptr<User>(new User());
-```
-
-در حالی که:
-
-```cpp
-std::make_unique<User>();
-```
-
-هم کوتاه‌تر است و هم مفهوم مورد نظر را واضح‌تر بیان می‌کند.
+تابع `make_unique` دقیقاً برای همین الگو طراحی شده است. یکی از انگیزه‌های اصلی اضافه‌شدن آن به C++، ایمنی بیشتر در برابر Exceptionها بود.
 
 ---
 
-### مشکل دوم: Exception Safety
+# رابطه‌ی `make_unique` با Heap
 
-مزیت مهم‌تر `make_unique` همین مورد است.
-
-در C++ مدرن، هدف این است که مدیریت حافظه مستقیماً در اختیار RAII قرار بگیرد و استفاده‌ی مستقیم از `new` تا حد ممکن حذف شود.
-
-`make_unique` دقیقاً برای همین الگو طراحی شده است. یکی از انگیزه‌های اصلی اضافه‌شدن آن به C++، ایمنی بیشتر در برابر Exceptionها بود.
-
----
-
-# 3. رابطه‌ی `make_unique` با Heap
-
-یک تصور اشتباه رایج این است که:
-
-> `make_unique` یک نوع حافظه‌ی جدید به نام Heap ایجاد می‌کند.
-
-خیر.
-
-Heap همان Heap است.
-
-`make_unique` فقط یک روش استاندارد و امن‌تر برای ساخت Object در Dynamic Storage و قرار دادن مالکیت آن در `unique_ptr` است.
-
-مثلاً:
+`make_unique` فقط یک روش استاندارد و امن‌تر برای ساخت Object در Dynamic Storage و قرار دادن مالکیت آن در `unique_ptr` است. مثلاً:
 
 ```cpp
 auto p = std::make_unique<int>(42);
@@ -160,11 +122,11 @@ Dynamic Storage
 
 وقتی `p` از Scope خارج شود، Object نیز Destroy و حافظه‌ی آن آزاد می‌شود.
 
-`unique_ptr` مالکیت Object را در اختیار دارد و هنگام نابودی، از Deleter خود برای آزادسازی Object استفاده می‌کند.
+پس `unique_ptr` مالکیت Object را در اختیار دارد و هنگام نابودی، از Deleter خود برای آزادسازی Object استفاده می‌کند.
 
 ---
 
-# 4. تفاوت `new` با `make_unique`
+# تفاوت `new` با `make_unique`
 
 مهم است بین این دو مفهوم تفاوت بگذاریم:
 
@@ -230,11 +192,11 @@ unique_ptr destructor
 
 بنابراین دیگر `delete` دستی لازم نیست.
 
-اگر Raw Pointer حاصل از `new` گم شود، Memory Leak رخ می‌دهد؛ `unique_ptr` برای جلوگیری از چنین مدیریت دستی‌ای طراحی شده است.
+اگر Raw Pointer (اشاره گر ستاره دار) حاصل از `new` گم شود، Memory Leak رخ می‌دهد؛ `unique_ptr` برای جلوگیری از چنین مدیریت دستی‌ای طراحی شده است.
 
 ---
 
-# 5. ساختار کلی `make_unique`
+# ساختار کلی `make_unique`
 
 برای یک Object معمولی:
 
@@ -293,9 +255,7 @@ std::unique_ptr<User>(
 
 ---
 
-# 6. مثال ساده
-
-مثلاً:
+# مثال ساده
 
 ```cpp
 #include <iostream>
@@ -341,22 +301,20 @@ main()
                     └── Person destructor
 ```
 
-بنابراین:
+بنابراین نباید بنویسیم:
 
 ```cpp
 delete person.get();
 ```
 
-نباید نوشته شود.
-
 ---
 
-# 7. چرا `make_unique` بهتر از `new` خام است؟
+# چرا `make_unique` بهتر از `new` خام است؟
 
 مقایسه:
 
 ```cpp
-User* user = new User();
+auto user = new User();
 ```
 
 در برابر:
@@ -377,7 +335,7 @@ User* user = new User();
 delete user;
 ```
 
-اگر یک مسیر اجرای برنامه فراموش شود:
+اگر در مسیر اجرای برنامه فراموش شود که delete شود:
 
 ```cpp
 return;
@@ -421,7 +379,7 @@ memory آزاد
 
 ---
 
-# 8. مشکل Memory Leak با `new`
+# مشکل Memory Leak با `new`
 
 مثلاً:
 
@@ -436,9 +394,7 @@ void foo()
 }
 ```
 
-تا زمانی که `doSomething()` Exception ایجاد نکند، ممکن است همه چیز درست باشد.
-
-اما:
+تا زمانی که متد `doSomething()` ناگهان `Exception` ایجاد نکند، ممکن است همه چیز درست باشد. اما:
 
 ```cpp
 void foo()
@@ -451,15 +407,13 @@ void foo()
 }
 ```
 
-اگر `doSomething()` Exception ایجاد کند، اجرای تابع در همان نقطه متوقف می‌شود و:
+اگر `doSomething()` ناگهان `Exception` ایجاد کند، اجرای تابع در همان نقطه متوقف می‌شود و:
 
 ```cpp
 delete user;
 ```
 
-دیگر اجرا نمی‌شود.
-
-در نتیجه:
+دیگر اجرا نمی‌شود. در نتیجه:
 
 ```text
 User
@@ -482,7 +436,7 @@ void foo()
 
 ---
 
-# 9. مزیت مهم‌تر: Exception Safety
+# مزیت مهم‌تر: Exception Safety
 
 این موضوع یکی از مهم‌ترین دلایل استفاده از `make_unique` است.
 
@@ -510,7 +464,7 @@ process(
 
 ---
 
-# 10. تفاوت `make_unique` با `unique_ptr(new ...)`
+# تفاوت `make_unique` با `unique_ptr(new ...)`
 
 این دو:
 
@@ -556,7 +510,7 @@ std::make_unique<T>()
 
 ---
 
-# 11. انتقال Ownership
+# انتقال Ownership
 
 `unique_ptr` یعنی:
 
@@ -574,9 +528,7 @@ auto p1 = std::make_unique<User>();
 auto p2 = p1; // ERROR
 ```
 
-چون Copy کردن `unique_ptr` ممنوع است.
-
-اما Ownership قابل انتقال است:
+چون Copy کردن `unique_ptr` ممنوع است. اما Ownership قابل انتقال است:
 
 ```cpp
 auto p2 = std::move(p1);
@@ -599,11 +551,11 @@ p2 ─────► User
 
 این ویژگی برای مدل کردن مالکیت انحصاری بسیار مهم است.
 
-`unique_ptr` Moveable است اما Copyable نیست.
+`unique_ptr` از نوع `Moveable ` است اما Copyable نیست.
 
 ---
 
-# 12. استفاده در توابع
+# استفاده در توابع
 
 مثلاً:
 
@@ -630,7 +582,7 @@ Ownership به تابع منتقل می‌شود.
 
 ---
 
-# 13. استفاده به‌عنوان مقدار بازگشتی
+# استفاده به‌عنوان مقدار بازگشتی
 
 یکی از کاربردهای بسیار خوب:
 
@@ -655,7 +607,7 @@ auto user = createUser();
 
 ---
 
-# 14. ساخت Object با Constructor Arguments
+# ساخت Object با Constructor Arguments
 
 فرض کنید:
 
@@ -704,11 +656,9 @@ Arguments:
 
 ---
 
-# 15. ساخت Array با `make_unique`
+# ساخت Array با `make_unique`
 
-`make_unique` فقط برای Objectهای معمولی نیست.
-
-برای Array با اندازه‌ی runtime نیز overload وجود دارد:
+دستور `make_unique` فقط برای Objectهای معمولی نیست. برای Array با اندازه‌ی runtime نیز overload وجود دارد:
 
 ```cpp
 auto data =
@@ -721,9 +671,7 @@ auto data =
 10 × int
 ```
 
-در Dynamic Storage ساخته می‌شود.
-
-سپس:
+در Dynamic Storage ساخته می‌شود. سپس:
 
 ```cpp
 data[0] = 10;
@@ -737,9 +685,7 @@ data[2] = 30;
 std::cout << data[2];
 ```
 
-قابل استفاده است.
-
-برای Arrayهای Dynamic، `unique_ptr<T[]>` دارای `operator[]` است.
+قابل استفاده است. برای ArrayهایDynamic ، نوع داده unique_ptr<T[]>  دارای  operator[] است.
 
 نکته مهم:
 
@@ -747,9 +693,7 @@ std::cout << data[2];
 std::make_unique<int[]>(10);
 ```
 
-مجاز است.
-
-اما:
+مجاز است. اما:
 
 ```cpp
 std::make_unique<int[10]>();
@@ -759,7 +703,7 @@ std::make_unique<int[10]>();
 
 ---
 
-# 16. ماهیت `make_unique_for_overwrite`
+# ماهیت `make_unique_for_overwrite`
 
 از C++20 تابع دیگری اضافه شده است:
 
@@ -785,7 +729,7 @@ auto buffer =
 
 ---
 
-# 17. تفاوت `make_unique` و `make_unique_for_overwrite`
+# تفاوت `make_unique` و `make_unique_for_overwrite`
 
 این دو را مقایسه کنیم:
 
@@ -856,7 +800,7 @@ read(fd, buffer.get(), 1024);
 
 ---
 
-# 18. دسترسی به Object
+# دسترسی به Object
 
 مثلاً:
 
@@ -887,11 +831,9 @@ user->setName("Ali");
 
 ---
 
-# 19. متدهای مهم `unique_ptr`
+# متدهای مهم `unique_ptr`
 
-`make_unique` خودش متدهای زیادی ندارد؛ چون یک **factory function** است و نتیجه‌ی آن `unique_ptr` است.
-
-بنابراین امکانات اصلی بعد از ساخت، از طریق `unique_ptr` در دسترس هستند.
+دستور `make_unique` خودش متدهای زیادی ندارد؛ چون یک **factory function** است و نتیجه‌ی آن `unique_ptr` است. بنابراین امکانات اصلی بعد از ساخت، از طریق `unique_ptr` در دسترس هستند.
 
 مهم‌ترین‌ها:
 
@@ -911,328 +853,7 @@ operator[]
 
 ---
 
-# 20. متد `get()`
-
-```cpp
-auto user =
-    std::make_unique<User>();
-
-User* raw =
-    user.get();
-```
-
-`get()` یک Raw Pointer به Object می‌دهد.
-
-یعنی:
-
-```text
-unique_ptr
-    │
-    └──────► User
-              ↑
-              │
-            raw pointer
-```
-
-اما نکته بسیار مهم:
-
-```cpp
-user.get()
-```
-
-مالکیت را منتقل نمی‌کند.
-
-بنابراین:
-
-```cpp
-delete user.get();
-```
-
-کاملاً اشتباه است.
-
-چون `unique_ptr` هنوز مالک Object است و بعداً خودش تلاش می‌کند آن را Delete کند.
-
----
-
-# 21. متد `release()`
-
-این متد با `get()` کاملاً متفاوت است.
-
-```cpp
-auto user =
-    std::make_unique<User>();
-
-User* raw =
-    user.release();
-```
-
-بعد از `release()`:
-
-```text
-unique_ptr
-     │
-     └── nullptr
-
-
-raw ─────► User
-```
-
-Ownership از `unique_ptr` خارج شده است.
-
-از این لحظه برنامه‌نویس مسئول مدیریت Object است.
-
-بنابراین اگر:
-
-```cpp
-User* raw = user.release();
-```
-
-نوشته شود، باید در نهایت مکانیزم مناسبی برای آزاد کردن `raw` وجود داشته باشد.
-
-`release()` به‌صورت مستقیم Object را Destroy نمی‌کند؛ فقط مالکیت را رها می‌کند.
-
----
-
-# 22. متد `reset()`
-
-مثلاً:
-
-```cpp
-auto user =
-    std::make_unique<User>();
-
-user.reset();
-```
-
-Object Destroy می‌شود و:
-
-```text
-user
-  ↓
-nullptr
-```
-
-می‌شود.
-
-همچنین می‌توان Object جدیدی را به آن سپرد:
-
-```cpp
-user.reset(
-    new User()
-);
-```
-
-اما در کد مدرن معمولاً بهتر است تا جای ممکن چنین ترکیبی با `new` نوشته نشود.
-
-مثلاً اگر هدف جایگزینی مالکیت است، می‌توان ساختار طراحی را طوری نوشت که Object جدید از ابتدا با Smart Pointer ساخته شود.
-
----
-
-# 23. متد `swap()`
-
-دو `unique_ptr`:
-
-```cpp
-auto a =
-    std::make_unique<User>();
-
-auto b =
-    std::make_unique<User>();
-```
-
-می‌توانند Ownership خود را عوض کنند:
-
-```cpp
-a.swap(b);
-```
-
-یا:
-
-```cpp
-std::swap(a, b);
-```
-
-نتیجه:
-
-```text
-قبل:
-
-a ─────► User A
-b ─────► User B
-
-
-بعد:
-
-a ─────► User B
-b ─────► User A
-```
-
----
-
-# 24. بررسی وجود Object
-
-`unique_ptr` می‌تواند Empty باشد.
-
-مثلاً:
-
-```cpp
-std::unique_ptr<User> user;
-```
-
-در ابتدا:
-
-```text
-user ─────► nullptr
-```
-
-می‌توان نوشت:
-
-```cpp
-if (user)
-{
-    user->run();
-}
-```
-
-یا:
-
-```cpp
-if (user != nullptr)
-{
-    user->run();
-}
-```
-
-معمولاً شکل اول خواناتر است.
-
----
-
-# 25. متد Custom Deleter
-
-یکی از امکانات حرفه‌ای `unique_ptr` استفاده از Deleter سفارشی است.
-
-مثلاً:
-
-```cpp
-struct UserDeleter
-{
-    void operator()(User* user) const
-    {
-        std::cout << "Deleting User\n";
-        delete user;
-    }
-};
-```
-
-سپس:
-
-```cpp
-std::unique_ptr<User, UserDeleter> user(
-    new User()
-);
-```
-
-در اینجا هنگام Destroy شدن `unique_ptr`، به‌جای `delete` مستقیم از `UserDeleter` استفاده می‌شود.
-
-اما یک نکته مهم وجود دارد:
-
-> `std::make_unique` امکان تعیین Custom Deleter را در Interface خودش ندارد.
-
-`make_unique` یک `unique_ptr<T>` معمولی با `std::default_delete<T>` ایجاد می‌کند.
-
-بنابراین اگر Custom Deleter لازم باشد، معمولاً باید `unique_ptr` را به روش دیگری بسازید.
-
----
-
-# 26. وراثت و Polymorphism
-
-مثلاً:
-
-```cpp
-class Animal
-{
-public:
-    virtual ~Animal() = default;
-};
-
-class Dog : public Animal
-{
-};
-```
-
-می‌توان نوشت:
-
-```cpp
-std::unique_ptr<Animal> animal =
-    std::make_unique<Dog>();
-```
-
-این یک الگوی بسیار مهم در Polymorphism است.
-
-در واقع:
-
-```text
-unique_ptr<Animal>
-        │
-        ▼
-      Dog
-```
-
-Ownership همچنان منحصر به `unique_ptr` است.
-
----
-
-# 27. ماهیت Destructor مجازی و یک نکته بسیار مهم
-
-اگر قرار است Object مشتق‌شده از طریق Base Class حذف شود:
-
-```cpp
-std::unique_ptr<Base>
-```
-
-بهتر است Destructor کلاس Base مجازی باشد:
-
-```cpp
-class Base
-{
-public:
-    virtual ~Base() = default;
-};
-```
-
-سپس:
-
-```cpp
-std::unique_ptr<Base> p =
-    std::make_unique<Derived>();
-```
-
-ایمن است.
-
-اما اگر Base چنین باشد:
-
-```cpp
-class Base
-{
-public:
-    ~Base() = default;
-};
-```
-
-و سپس:
-
-```cpp
-std::unique_ptr<Base> p =
-    std::make_unique<Derived>();
-```
-
-استفاده از Base برای حذف Derived می‌تواند به Undefined Behavior منجر شود.
-
-این موضوع در `unique_ptr<Base>` اهمیت بسیار زیادی دارد.
-
----
-
-# 28. آیا `make_unique` سریع‌تر از `new` است؟
+# آیا `make_unique` سریع‌تر از `new` است؟
 
 این نکته بسیار مهم است:
 
@@ -1258,7 +879,7 @@ std::unique_ptr<User>(
 
 ---
 
-# 29. آیا `make_unique` یک Allocation انجام می‌دهد؟
+# آیا `make_unique` یک Allocation انجام می‌دهد؟
 
 برای Object معمولی، از نظر مفهومی:
 
@@ -1295,7 +916,7 @@ shared_ptr ───► Control Block
 
 ---
 
-# 30. `make_unique` و `shared_ptr`
+# `make_unique` و `shared_ptr`
 
 برای مالکیت انحصاری:
 
@@ -1331,7 +952,7 @@ shared_ptr
 
 ---
 
-# 31. چه زمانی نباید از `make_unique` استفاده کرد؟
+# چه زمانی نباید از `make_unique` استفاده کرد؟
 
 `make_unique` بسیار مناسب است، اما برای همه‌ی سناریوها نیست.
 
@@ -1350,9 +971,7 @@ auto user =
     std::make_unique<User>();
 ```
 
-است.
-
-Heap را فقط به دلیل «مدرن بودن» نباید انتخاب کرد.
+است. Heap را فقط به دلیل «مدرن بودن» نباید انتخاب کرد.
 
 ---
 
@@ -1394,7 +1013,7 @@ std::shared_ptr
 
 ---
 
-# 32. خطاهای رایج
+# خطاهای رایج
 
 ## خطای اول: Delete کردن Object
 
@@ -1471,9 +1090,7 @@ auto user =
 User user;
 ```
 
-نیست.
-
-اگر Ownership Dynamic لازم نیست، Object معمولی روی Stack معمولاً انتخاب ساده‌تری است.
+نیست. اگر Ownership Dynamic لازم نیست، Object معمولی روی Stack معمولاً انتخاب ساده‌تری است.
 
 ---
 
@@ -1504,7 +1121,7 @@ raw
 
 ---
 
-# 33. الگوی پیشنهادی در C++ مدرن
+# الگوی پیشنهادی در C++ مدرن
 
 برای ساخت Object با مالکیت انحصاری:
 
@@ -1561,13 +1178,40 @@ new
 delete
 ```
 
-به‌صورت مستقیم استفاده نمی‌شود.
-
-این رویکرد با فلسفه‌ی RAII و Smart Pointerهای استاندارد C++ هماهنگ است.
+به‌صورت مستقیم استفاده نمی‌شود. این رویکرد با فلسفه‌ی RAII و Smart Pointerهای استاندارد C++ هماهنگ است.
 
 ---
 
-# 34. یک مثال کامل
+# مهم ترین تفاوت دستورات `new` و `make_unique`
+
+فرض کنید دو متد با ورودی‌های متفاوت داریم:
+
+```cpp
+void process(User* user);                    // Raw Pointer
+void process(std::unique_ptr<User> user);    // unique_ptr
+```
+
+اگر با `new` فراخوانی کنیم:
+
+```cpp
+process(new User());
+```
+
+متد با ورودی Raw Pointer یعنی با ورودی `User*` انتخاب می‌شود.
+
+اما اگر با `make_unique` فراخوانی کنیم:
+
+```cpp
+process(std::make_unique<User>());
+```
+
+متد `std::unique_ptr<User>` انتخاب می‌شود.
+
+**نکته:** نوع عبارت ورودی، مشخص می‌کند کدام overload انتخاب شود.
+
+---
+
+# یک مثال کامل
 
 ```cpp
 #include <iostream>
@@ -1714,27 +1358,7 @@ automatic destruction
 
 ---
 
-# تفاوت نهایی در یک جدول
-
-| ویژگی                  | `new`                   | `unique_ptr(new T)`            | `make_unique<T>()`      |
-| ---------------------- | ----------------------- | ------------------------------ | ----------------------- |
-| ساخت Object            | ✅                       | ✅                              | ✅                       |
-| Dynamic Storage        | ✅                       | ✅                              | ✅                       |
-| Raw Pointer نتیجه      | ✅                       | ❌                              | ❌                       |
-| مالکیت خودکار          | ❌                       | ✅                              | ✅                       |
-| نیاز معمول به `delete` | ✅                       | ❌                              | ❌                       |
-| RAII                   | ❌                       | ✅                              | ✅                       |
-| Exception Safety       | ضعیف‌تر در استفاده دستی | بهتر، ولی حساس به نحوه استفاده | ✅ بسیار مناسب           |
-| خوانایی                | متوسط                   | ضعیف‌تر                        | ✅ عالی                  |
-| تکرار Type             | ندارد                   | دارد                           | ندارد                   |
-| C++ Version            | قدیمی                   | C++11                          | C++14                   |
-| Custom Deleter مستقیم  | —                       | ✅                              | ❌                       |
-| ساخت Array             | `new[]`                 | `unique_ptr<T[]>`              | ✅ `make_unique<T[]>(n)` |
-| Ownership انحصاری      | ❌                       | ✅                              | ✅                       |
-
----
-
-# خلاصه‌ی حرفه‌ای
+# خلاصه‌ و جمع بندی
 
 `std::make_unique` را نباید صرفاً یک «جایگزین کوتاه‌تر برای `new`» دانست.
 
@@ -1760,15 +1384,13 @@ std::unique_ptr<User>(
 );
 ```
 
-از نظر فنی معتبر است، اما در C++ مدرن معمولاً ترجیح داده می‌شود:
+از نظر فنی معتبر است و حتی مدیریت اتوماتیک آن توسط Unique_Ptr انجام می شود و مشکلی ندارد، اما در C++ مدرن معمولاً ترجیح داده می‌شود:
 
 ```cpp
 std::make_unique<User>(...);
 ```
 
-استفاده شود.
-
-و نکته‌ی بسیار مهم این است که `make_unique` الزاماً باعث **Performance بهتر** نسبت به `unique_ptr(new T)` نمی‌شود؛ مزیت اصلی آن **Safety، Ownership شفاف‌تر، خوانایی بهتر و کاهش خطاهای مدیریت حافظه** است.
+استفاده شود و نکته‌ی بسیار مهم این است که `make_unique` الزاماً باعث **Performance بهتر** نسبت به `unique_ptr(new T)` نمی‌شود؛ مزیت اصلی آن **Safety، Ownership شفاف‌تر، خوانایی بهتر و کاهش خطاهای مدیریت حافظه** است.
 
 همچنین باید بین این سه مفهوم تفاوت گذاشته شود:
 
