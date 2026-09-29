@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp14/README.md) | [🇮🇷 فارسی](./README.md)
 
