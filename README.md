@@ -1,9 +1,11 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](README.md) | [🇮🇷 فارسی](README.fa.md)
 
 </div>
+
 ---
+
 <div align="center">
 In the name of GOD
   
@@ -12,7 +14,6 @@ In the name of GOD
 ## 📚 C++ Standards Documentation
 
   <img src="assets/img1.png" alt="Image" />
-
 
 | C++ Version | Link to Documentation Page                                                                                  |
 | ----------- | ----------------------------------------------------------------------------------------------------------- |
@@ -30,6 +31,7 @@ In the name of GOD
 Note: Some parts of this article was prepared and edited using explanations and rewrites provided by ChatGPT (OpenAI) and Qwen (Alibaba).
 
 ---
+
 ## 🤝 Contributors
 
 <div align="center">
