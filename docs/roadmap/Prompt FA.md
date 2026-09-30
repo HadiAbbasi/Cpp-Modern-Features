@@ -1,14 +1,3 @@
-حتماً. من prompt را از نو مرتب کردم و چند مشکل را هم برطرف کردم:
-
-* بخش‌های تکراری حذف شده‌اند.
-* قوانین از **محتوای کلی → پوشش حرفه‌ای → موضوعات اضافی → ساختار → RTL → کد** مرتب شده‌اند.
-* فقط دو بخش **قابل ویرایش** در ابتدای prompt قرار گرفته‌اند: `SUBJECT` و `ADDITIONAL TOPICS`.
-* توضیحات مربوط به قوانین RTL که خودشان داخل prompt تکرار شده بودند حذف شده‌اند.
-* قانون function name را با inline code هم هماهنگ کردم.
-* بخش مربوط به کامنت‌های کد فقط یک‌بار و به‌صورت دقیق آمده است.
-* خروجی مدل باید فقط Markdown نهایی باشد.
-
-````text
 # ============================================
 # EDITABLE INPUT
 # ============================================
@@ -429,6 +418,3 @@ No Persian text should appear anywhere inside a code snippet.
 * Never apply Persian RTL transformations to actual C++ source code.
 * Never use Persian text inside C++ code comments.
 * Ensure the final document is comprehensive, professional, technically accurate, focused, and free of unnecessary repetition.
-
-```
-```
