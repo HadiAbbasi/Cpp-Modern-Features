@@ -15,6 +15,7 @@
 |----------|
 | [std::make_unique](./make_unique.md) |
 | [std::make_shared](./make_shared.md) |
+| [[[maybe_unused]]](./maybe_unused.md) |
 
 </div>
 
