@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](./[[maybe_unused]].md) | [🇮🇷 فارسی](../../fa/cpp14/[[maybe_unused]].md)
+[🇺🇸 English](./maybe_unused.md) | [🇮🇷 فارسی](../../fa/cpp14/maybe_unused.md)
 
 </div>
 
