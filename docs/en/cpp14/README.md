@@ -16,6 +16,8 @@
 | [std::make_unique](./make_unique.md) |
 | [std::make_shared](./make_shared.md) |
 | [[[maybe_unused]]](./maybe_unused.md) |
+| [generic lambda](./generic_lambda.md) |
+| [lambda init-capture](./lambda_init-capture.md) |
 
 </div>
 
