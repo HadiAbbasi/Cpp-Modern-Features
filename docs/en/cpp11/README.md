@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./README.md) | [🇮🇷 فارسی](../../fa/cpp11/README.md)
 
@@ -36,9 +36,12 @@
 | [bind](./bind.md)|
 | [function](./function.md)|
 | [static_assert](./static_assert.md)|
-| [Range Base For](./range_base.md.md)|
-| [Decltype](./decltype.md.md)|
-
+| [Range Base For](./range_base.md)|
+| [Decltype](./decltype.md)|
+| [default-delete](./default_delete.md)|
+| [enum-class](./enum-class.md)|
+| [final](./final.md)|
+| [noexcept](./noexcept.md)|
 </div>
 
 ---

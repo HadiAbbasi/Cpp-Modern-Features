@@ -1,7 +1,9 @@
+<div align="right">
 
 [🇺🇸 English](../../en/cpp11/emplace.md) | [🇮🇷 فارسی](./emplace.md)
 
 </div>
+
 # آموزش `emplace` و `emplace_back` در ++C
 
 در ++C، توابع `emplace()` و `emplace_back()` برای درج عناصر در
