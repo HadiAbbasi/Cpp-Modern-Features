@@ -42,6 +42,9 @@
 | [enum-class](./enum-class.md)|
 | [final](./final.md)|
 | [noexcept](./noexcept.md)|
+| [forward](./forward.md)|
+| [visit](./visit.md)|
+| [ref](./ref.md)|
 </div>
 
 ---
