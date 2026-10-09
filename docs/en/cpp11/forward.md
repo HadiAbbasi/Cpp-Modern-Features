@@ -4,6 +4,8 @@
 
 </div>
 
+# std::forward
+
 In C++11 we got a new reference syntax: &&. You famously know it as an rvalue reference. But in certain contexts, T&& can act as a forwarding reference (also called a universal reference) - a pattern that can bind to both lvalues and rvalues, adapting depending on what you pass to it.
 
 A universal reference or Forwarding reference is a type of reference pattern that can bind to both lvalues and rvalues — and adapts depending on what you pass to it.
