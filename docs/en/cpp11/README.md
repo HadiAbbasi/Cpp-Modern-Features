@@ -17,7 +17,7 @@
 | [nullptr](./nullptr.md)    |
 | [lambda](./lambda.md)      |
 | [std::move](./std_move.md) |
-| [std::mutex](./mutex.md)|
+| [std::mutex](./mutex.md)   |
 | [override](./override.md)  |
 | [std::thread](./thread.md) |
 | [constexpr](./constexpr.md)|
@@ -45,6 +45,11 @@
 | [forward](./forward.md)|
 | [visit](./visit.md)|
 | [ref](./ref.md)|
+| [std::variadic_templates](./variadic_templates.md)|
+| [std::array](./std_array.md)|
+| [std::unordered_map](./unordered_map.md)|
+| [std::unordered_set](./unordered_set.md)|
+| [std::begin / std::end](./std_begin__std_end.md)|
 
 </div>
 

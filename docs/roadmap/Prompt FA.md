@@ -1,8 +1,9 @@
 # ============================================
 # EDITABLE INPUT
+# DOCUMENT GENERATION INSTRUCTIONS
 # ============================================
+Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-SUBJECT:
 MySubject
 
 ADDITIONAL TOPICS AND REQUIREMENTS:
@@ -11,17 +12,7 @@ ADDITIONAL TOPICS AND REQUIREMENTS:
 - Topic 3
 - Topic 4
 
-
-# ============================================
-# DOCUMENT GENERATION INSTRUCTIONS
-# ============================================
-
-Create a comprehensive Persian educational Markdown document (.md) about the following subject:
-
-Subject: SUBJECT
-
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
-
 
 # 1. Language and Writing Style
 

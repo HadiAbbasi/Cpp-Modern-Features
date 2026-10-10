@@ -45,6 +45,12 @@
 | [forward](./forward.md)|
 | [visit](./visit.md)|
 | [ref](./ref.md)|
+| [std::variadic_templates](./variadic_templates.md)|
+| [std::array](./std_array.md)|
+| [std::unordered_map](./unordered_map.md)|
+| [std::unordered_set](./unordered_set.md)|
+| [std::begin / std::end](./std_begin__std_end.md)|
+
 </div>
 
 ---
