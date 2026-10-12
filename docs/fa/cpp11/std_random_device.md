@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp11/std_random_device.md) | [🇮🇷 فارسی](./std_random_device.md)
 
