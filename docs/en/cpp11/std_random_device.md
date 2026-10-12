@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](./std_random_device.md) | [🇮🇷 فارسی](../../en/cpp11/std_random_device.md)
+[🇺🇸 English](./std_random_device.md) | [🇮🇷 فارسی](../../fa/cpp11/std_random_device.md)
 
 </div>
 
