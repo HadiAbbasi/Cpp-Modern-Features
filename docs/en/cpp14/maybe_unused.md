@@ -813,7 +813,7 @@ Conversely, if an entity is unused because of a bug or incomplete refactoring, u
 
 ---
 
-## 🤝 مشارکت ها
+## 🤝 Contributions
 
 <div align="center">
 

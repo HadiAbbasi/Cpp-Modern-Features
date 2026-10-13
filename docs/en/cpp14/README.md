@@ -18,6 +18,8 @@
 | [[[maybe_unused]]](./maybe_unused.md) |
 | [generic lambda](./generic_lambda.md) |
 | [lambda init-capture](./lambda_init-capture.md) |
+| [return type deduction](./return_type_deduction.md) |
+| [decltype(auto)](./decltype_auto.md) |
 
 </div>
 
