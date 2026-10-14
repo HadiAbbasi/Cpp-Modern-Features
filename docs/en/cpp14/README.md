@@ -20,6 +20,8 @@
 | [lambda init-capture](./lambda_init-capture.md) |
 | [return type deduction](./return_type_deduction.md) |
 | [decltype(auto)](./decltype_auto.md) |
+| [std::shared_lock](./shared_lock.md) |
+| [std::quoted](./quoted.md) |
 
 </div>
 
