@@ -22,6 +22,8 @@
 | [decltype(auto)](./decltype_auto.md) |
 | [std::shared_lock](./shared_lock.md) |
 | [std::quoted](./quoted.md) |
+| [relaxed constexpr](./relaxed_constexpr.md) |
+| [binary literals](./binary_literals.md) |
 
 </div>
 
