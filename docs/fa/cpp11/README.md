@@ -51,7 +51,9 @@
 | [std::unordered_set](./unordered_set.md)|
 | [std::begin / std::end](./std_begin__std_end.md)|
 | [std::random / std::random_device / std::mt19937 / distributions](./std_random_device.md)|
-
+| [unique_lock](./unique_lock.md)|
+| [lock_guard](./lock_guard.md)|
+| [type_traits](./type_traits.md)|
 
 </div>
 
