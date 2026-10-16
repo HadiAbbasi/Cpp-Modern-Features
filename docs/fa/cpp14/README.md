@@ -24,6 +24,8 @@
 | [std::quoted](./quoted.md) |
 | [relaxed constexpr](./relaxed_constexpr.md) |
 | [binary literals](./binary_literals.md) |
+| [digit separators](./digit_separators.md) |
+| [variable templates](./variable_templates.md) |
 
 
 </div>
