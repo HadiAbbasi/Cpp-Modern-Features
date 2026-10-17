@@ -26,6 +26,8 @@
 | [binary literals](./binary_literals.md) |
 | [digit separators](./digit_separators.md) |
 | [variable templates](./variable_templates.md) |
+| [aggregate classes with default member initializers](./aggregate_classes_with_default_member_initializers) |
+| [std::shared_timed_mutex](./std_shared_timed_mutex.md) |
 
 
 </div>

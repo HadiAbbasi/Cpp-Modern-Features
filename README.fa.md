@@ -17,7 +17,8 @@
 
 | نسخه C++ | لینک به صفحه داکیومنت                                                                                       |
 | -------- | ----------------------------------------------------------------------------------------------------------- |
-| C++98    | [![C++98](https://img.shields.io/badge/C%2B%2B-98-blue?style=for-the-badge) ](docs/fa/cpp98/README.md)       |
+| C++98    | [![C++98](https://img.shields.io/badge/C%2B%2B-98-blue?style=for-the-badge) ](docs/fa/cpp98/README.md)      |
+| C++03    | [![C++03](https://img.shields.io/badge/C%2B%2B-03-blue?style=for-the-badge) ](docs/fa/cpp03/README.md)      |
 | C++11    | [![C++11](https://img.shields.io/badge/C%2B%2B-11-blue?style=for-the-badge) ](docs/fa/cpp11/README.md)      |
 | C++14    | [![C++14](https://img.shields.io/badge/C%2B%2B-14-blue?style=for-the-badge) ](docs/fa/cpp14/README.md)      |
 | C++17    | [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?style=for-the-badge) ](docs/fa/cpp17/README.md)      |
