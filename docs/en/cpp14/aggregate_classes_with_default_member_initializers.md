@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](./aggregate_classes_with_default_member_initializers.md) | [🇮🇷 فارسی](../../en/cpp14/aggregate_classes_with_default_member_initializers.md)
+[🇺🇸 English](./aggregate_classes_with_default_member_initializers.md) | [🇮🇷 فارسی](../../fa/cpp14/aggregate_classes_with_default_member_initializers.md)
 
 </div>
 

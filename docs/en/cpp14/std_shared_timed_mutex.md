@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](./std_shared_timed_mutex.md) | [🇮🇷 فارسی](../../en/cpp14/std_shared_timed_mutex.md)
+[🇺🇸 English](./std_shared_timed_mutex.md) | [🇮🇷 فارسی](../../fa/cpp14/std_shared_timed_mutex.md)
 
 </div>
 
