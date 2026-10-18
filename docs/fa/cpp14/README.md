@@ -28,6 +28,9 @@
 | [variable templates](./variable_templates.md) |
 | [aggregate classes with default member initializers](./aggregate_classes_with_default_member_initializers.md) |
 | [std::shared_timed_mutex](./std_shared_timed_mutex.md) |
+| [std::integer_sequence](./std_integer_sequence.md) |
+| [std::index_sequence.md](./std_index_sequence.md) |
+
 
 </div>
 
