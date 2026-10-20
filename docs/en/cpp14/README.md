@@ -30,6 +30,10 @@
 | [std::shared_timed_mutex](./std_shared_timed_mutex.md) |
 | [std::integer_sequence](./std_integer_sequence.md) |
 | [std::index_sequence](./std_index_sequence.md) |
+| [std::exchange](./std_exchange.md) |
+| [std::is_final](./std_is_final.md) |
+| [std::tuple_element_t](./std_tuple_element_t.md) |
+| [std::make_reverse_iterator](./std_make_reverse_iterator.md) |
 
 </div>
 
