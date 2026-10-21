@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./char8_t.md) | [🇮🇷 فارسی](../../fa/cpp20/char8_t.md)
 

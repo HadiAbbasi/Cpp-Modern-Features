@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./consteval.md) | [🇮🇷 فارسی](../../fa/cpp20/consteval.md)
 

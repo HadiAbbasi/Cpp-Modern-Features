@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp20/constinit.md) | [🇮🇷 فارسی](./constinit.md)
 

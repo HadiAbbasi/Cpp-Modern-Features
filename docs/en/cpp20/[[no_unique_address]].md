@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./[[no_unique_address]].md) | [🇮🇷 فارسی](../../fa/cpp20/[[no_unique_address]].md)
 
