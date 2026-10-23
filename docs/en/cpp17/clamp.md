@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](./clamp.md) | [🇮🇷 فارسی](../../fa/cpp17/clmap.md)
+[🇺🇸 English](./clamp.md) | [🇮🇷 فارسی](../../fa/cpp17/clamp.md)
 
 </div>
 
