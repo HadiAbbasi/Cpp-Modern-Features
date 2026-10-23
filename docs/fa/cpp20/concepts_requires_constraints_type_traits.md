@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](../../en/cpp20/requires.md) | [🇮🇷 فارسی](./requires.md)
+[🇺🇸 English](../../en/cpp20/concepts_requires_constraints_type_traits.md) | [🇮🇷 فارسی](./concepts_requires_constraints_type_traits.md)
 
 </div>
 
