@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # type_traits
 The **`type_traits`** library in **C++11** (located in the `<type_traits>` header) is one of the most powerful tools for **Template Metaprogramming**.
 
@@ -166,6 +168,7 @@ The `type_traits` library in C++11 allows you to:
 4. **Conditionally enable function signatures** (`enable_if` for SFINAE).
 
 ---
+
 ## 🤝 Contributors
 <div align="center">
 

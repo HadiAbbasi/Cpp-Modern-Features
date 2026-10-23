@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # unique_lock 
 
 The **`std::unique_lock`** class in **C++11** (defined in the `<mutex>` header) is an advanced **RAII**-based wrapper for managing `std::mutex` locks.
@@ -190,6 +192,7 @@ int main() {
 
 
 ---
+
 ## 🤝 Contributors
 <div align="center">
 

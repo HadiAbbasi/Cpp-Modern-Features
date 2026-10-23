@@ -3,6 +3,7 @@
 [🇺🇸 English](../../en/cpp20/consteval.md) | [🇮🇷 فارسی](./consteval.md)
 
 </div>
+
 ---
 
 # آموزش ساده `consteval` در ++C
@@ -646,6 +647,7 @@ consteval int calculate(int x)
 پس `consteval` ابزاری برای **تغییرناپذیر کردن یک مقدار** نیست؛ ابزاری برای **اجباری کردن محاسبات در زمان کامپایل** است.
 
 ---
+
 ## 🤝 مشارکت ها
 
 <div align="center">

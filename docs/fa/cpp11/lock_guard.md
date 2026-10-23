@@ -136,6 +136,9 @@ void safeSwap() {
 | **قفل‌گذاری به تأخیر افتاده (Deferred Locking)** | ❌ ندارد | ✅ دارد |
 
 > **قانون کلی:** همیشه به‌طور پیش‌فرض از **`std::lock_guard`** استفاده کنید، مگر اینکه به باز کردن دستی قفل یا استفاده از `std::condition_variable` نیاز داشته باشید؛ در این صورت باید به سراغ **`std::unique_lock`** بروید.
+
+---
+
 <div align="center">
 
 | GitHub | LinkedIn | Email | Site | Telegram |

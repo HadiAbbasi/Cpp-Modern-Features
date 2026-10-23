@@ -3,6 +3,7 @@
 [🇺🇸 English](../../en/cpp20/README.md) | [🇮🇷 فارسی](./README.md)
 
 </div>
+
 ---
 
 # امکانات C++ 20
@@ -18,6 +19,9 @@
 | [constexpr](./constexpr.md) |
 | [[[no_unique_address]]](./[[no_unique_address]].md) |
 | [char8_t](./char8_t.md) |
+| [concepts, constraints, type traits using requires](./concepts_requires_constraints_type_traits.md) |
+| [spaceship operator using <=>](./spaceship_operator.md) |
+| [cstd::span](./std_span.md) |
 
 </div>
 

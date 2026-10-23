@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # lock_guard
 The std::lock_guard class in C++11 (defined in the `<mutex>` header) is a simple and safe tool for managing mutex locks. It is based on the well-known RAII pattern, which stands for Resource Acquisition Is Initialization.
 
@@ -120,7 +122,9 @@ void safeSwap() {
 
 
 > **General Rule:** Always use **`std::lock_guard`** by default, unless you need manual unlocking or need to use `std::condition_variable`, in which case you should switch to **`std::unique_lock`**.
+
 ---
+
 ## 🤝 Contributors
 <div align="center">
 

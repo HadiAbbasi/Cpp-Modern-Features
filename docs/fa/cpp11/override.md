@@ -3,6 +3,7 @@
 [🇺🇸 English](../../en/cpp11/override.md) | [🇮🇷 فارسی](./override.md)
 
 </div>
+
 ---
 
 # دستور `Override` در `C++11` به بعد

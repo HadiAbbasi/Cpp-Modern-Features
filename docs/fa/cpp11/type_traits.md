@@ -171,6 +171,9 @@ int main() {
 ۲. **شرایط زمان کامپایل را اعمال کنید** (`static_assert`).
 ۳. **انواع داده را تبدیل کنید** (`remove_reference`, `decay` و غیره).
 ۴. **امضاهای تابع را به‌صورت شرطی فعال کنید** (`enable_if` برای مکانیزم SFINAE).
+
+---
+
 <div align="center">
 
 | GitHub | LinkedIn | Email | Site | Telegram |
