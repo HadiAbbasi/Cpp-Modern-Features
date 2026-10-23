@@ -1,6 +1,6 @@
 <div align="right">
 
-[🇺🇸 English](../../en/cpp11/async.md) | [🇮🇷 فارسی](./async.md)
+[🇺🇸 English](../../en/cpp17/clamp.md) | [🇮🇷 فارسی](./clamp.md)
 
 </div>
 
