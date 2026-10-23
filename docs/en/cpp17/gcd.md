@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # std::gcd
 
 The **`std::gcd`** function is a standard mathematical utility introduced in **C++17** under the C++ Standard Library. 
@@ -129,7 +131,9 @@ int main() {
     std::cout << "LCM: " << std::lcm(a, b) << '\n'; // LCM: 12
 }
 ```
+
 ---
+
 ## 🤝 Contributors
 <div align="center">
 

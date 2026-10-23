@@ -1,3 +1,11 @@
+<div align="center">
+
+[🇺🇸 English](./string_view.md) | [🇮🇷 فارسی](../../fa/cpp17/string_view.md)
+
+</div>
+
+----
+
 # `std::string_view` in C++17
 
 ## Table of Contents

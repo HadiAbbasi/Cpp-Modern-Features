@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # std::clamp
 
 The std::clamp function, introduced in C++17, is a clean and very useful utility in the C++ Standard Library. Its purpose is to constrain a value within a specified range (between a minimum and maximum bound).
@@ -78,8 +80,8 @@ int result = std::max(min_val, std::min(val, max_val));
 int result = std::clamp(val, min_val, max_val);
 ```
 
-
 ---
+
 ## 🤝 Contributors
 <div align="center">
 

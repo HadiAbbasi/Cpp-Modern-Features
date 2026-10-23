@@ -1,3 +1,11 @@
+<div align="right">
+
+[🇺🇸 English](../../en/cpp17/string_view.md) | [🇮🇷 فارسی](./string_view.md)
+
+</div>
+
+---
+
 # آموزش جامع `std::string_view` در C++17 و بالاتر
 
 `std::string_view` یکی از قابلیت‌های مهم C++ مدرن است که برای **مشاهده و پردازش رشته‌ها بدون مالکیت و بدون کپی کردن داده‌ها** طراحی شده است.
@@ -1621,3 +1629,11 @@ string_view → مالک داده نیست
 اگر این مفهوم به‌درستی درک شود، `std::string_view` فقط یک کلاس برای کار با رشته نیست؛ بلکه نمونه‌ی بسیار خوبی از یکی از اصول مهم طراحی در C++ مدرن است:
 
 > **مالکیت داده را از مشاهده و پردازش داده جدا کنید.**
+
+---
+
+## 22. Contributors
+
+| GitHub | LinkedIn | Email | Site | Telegram |
+|---|---|---|---|---|
+| [Ordikhani](https://github.com/Ordikhani) |  |[Ordikhani](ordikhanifateme@gmail.com) |  | [Ordikhani](@OrdikhaniFateme) |

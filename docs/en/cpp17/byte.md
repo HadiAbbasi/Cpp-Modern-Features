@@ -4,6 +4,8 @@
 
 </div>
 
+---
+
 # std::byte
 
 The **`std::byte`** data type is a significant and practical feature introduced in **C++17**, specifically designed to represent **raw memory bytes**.
@@ -155,6 +157,7 @@ int main() {
 
 
 ---
+
 ## 🤝 Contributors
 <div align="center">
 
