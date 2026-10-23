@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp17/gcd.md) | [🇮🇷 فارسی](./gcd.md)
 

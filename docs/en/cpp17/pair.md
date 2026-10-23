@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./pair.md) | [🇮🇷 فارسی](../../fa/cpp17/pair.md)
 

@@ -1,5 +1,3 @@
-
-
 <div align="center">
 
 [🇺🇸 English](./init_statements.md) | [🇮🇷 فارسی](../../fa/cpp17/init_statements.md)

@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp17/clamp.md) | [🇮🇷 فارسی](./clamp.md)
 

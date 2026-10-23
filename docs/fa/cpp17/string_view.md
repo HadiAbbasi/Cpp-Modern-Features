@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](../../en/cpp17/string_view.md) | [🇮🇷 فارسی](./string_view.md)
 

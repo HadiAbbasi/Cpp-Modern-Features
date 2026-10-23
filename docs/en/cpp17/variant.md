@@ -1,4 +1,4 @@
-<div align="right">
+<div align="center">
 
 [🇺🇸 English](./variant.md) | [🇮🇷 فارسی](../../fa/cpp17/variant.md)
 

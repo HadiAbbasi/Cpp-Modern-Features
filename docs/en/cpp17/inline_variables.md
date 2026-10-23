@@ -1,5 +1,3 @@
--
-
 <div align="center">
 
 [🇺🇸 English](./inline_variables.md) | [🇮🇷 فارسی](../../fa/cpp17/inline_variables.md)
