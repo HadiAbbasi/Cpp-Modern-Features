@@ -18,6 +18,9 @@
 | [std::shared_mutex](./shared_mutex.md) |
 | [std::apply](./apply.md) |
 | [std::variant](./variant.md) |
+| [std::clamp](./clamp.md) |
+| [std::gcd](./gcd.md) |
+| [std::byte](./byte.md) |
 
 </div>
 
