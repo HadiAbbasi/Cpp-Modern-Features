@@ -22,6 +22,8 @@
 | [concepts, constraints, type traits using requires](./concepts_requires_constraints_type_traits.md) |
 | [spaceship operator using <=>](./spaceship_operator.md) |
 | [cstd::span](./std_span.md) |
+| [Abbreviated Function Templates](./abbreviated_function_templates.md) |
+| [Lambda Improvements](./lambda_improvements.md) |
 
 </div>
 
