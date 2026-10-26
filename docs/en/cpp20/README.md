@@ -24,6 +24,8 @@
 | [cstd::span](./std_span.md) |
 | [Abbreviated Function Templates](./abbreviated_function_templates.md) |
 | [Lambda Improvements](./lambda_improvements.md) |
+| [Lambda Pack Captures](./lambda_pack_captures.md) |
+| [Template Lambas](./template_lambdas.md) |
 
 </div>
 
