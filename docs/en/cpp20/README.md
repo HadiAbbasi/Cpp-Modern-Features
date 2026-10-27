@@ -26,6 +26,8 @@
 | [Lambda Improvements](./lambda_improvements.md) |
 | [Lambda Pack Captures](./lambda_pack_captures.md) |
 | [Template Lambas](./template_lambdas.md) |
+| [std::format](./std_format.md) |
+| [std::source_location](./std_source_location.md) |
 
 </div>
 
