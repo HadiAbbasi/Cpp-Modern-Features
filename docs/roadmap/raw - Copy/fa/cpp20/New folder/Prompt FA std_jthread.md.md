@@ -4,7 +4,7 @@
 # ============================================
 Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-std::source_location in C++20
+std::jthread in C++20
 
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
 

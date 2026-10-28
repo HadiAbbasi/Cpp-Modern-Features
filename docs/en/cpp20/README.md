@@ -25,9 +25,11 @@
 | [Abbreviated Function Templates](./abbreviated_function_templates.md) |
 | [Lambda Improvements](./lambda_improvements.md) |
 | [Lambda Pack Captures](./lambda_pack_captures.md) |
-| [Template Lambas](./template_lambdas.md) |
+| [Template Lambdas](./template_lambdas.md) |
 | [std::format](./std_format.md) |
 | [std::source_location](./std_source_location.md) |
+| [std::jthread](./std_jthread.md) |
+| [std::counting_semaphore](./std_counting_semaphore.md) |
 
 </div>
 
