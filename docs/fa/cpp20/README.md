@@ -30,6 +30,10 @@
 | [std::source_location](./std_source_location.md) |
 | [std::jthread](./std_jthread.md) |
 | [std::counting_semaphore](./std_counting_semaphore.md) |
+| [std::atomic<std::shared_ptr>](./std_atomic_std_shared_ptr.md) |
+| [std::atomic<std::weak_ptr>](./std_atomic_std_weak_ptr.md) |
+| [std::bit_cast](./std_bit_cast.md) |
+| [std::erase](./std_erase.md) |
 
 </div>
 
