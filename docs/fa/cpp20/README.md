@@ -34,6 +34,8 @@
 | [`std::atomic<std::weak_ptr>`](./std_atomic_std_weak_ptr.md) |
 | [`std::bit_cast`](./std_bit_cast.md) |
 | [`std::erase`](./std_erase.md) |
+| [`std::erase_if`](./std_erase_if.md) |
+| [`std::contains`](./std_contains.md) |
 
 </div>
 
