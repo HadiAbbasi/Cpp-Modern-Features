@@ -36,6 +36,8 @@
 | [`std::erase`](./std_erase.md) |
 | [`std::erase_if`](./std_erase_if.md) |
 | [`std::contains`](./std_contains.md) |
+| [`std::make_unique_for_overwrite`](./std_make_unique_for_overwrite.md) |
+| [`std::make_shared_for_overwrite`](./std_make_shared_for_overwrite.md) |
 
 </div>
 
