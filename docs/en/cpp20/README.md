@@ -38,6 +38,12 @@
 | [`std::contains`](./std_contains.md) |
 | [`std::make_unique_for_overwrite`](./std_make_unique_for_overwrite.md) |
 | [`std::make_shared_for_overwrite`](./std_make_shared_for_overwrite.md) |
+| [`std::remove_cvref`](./std_remove_cvref.md) |
+| [`std::to_address`](./std_to_address.md) |
+| [`std::midpoint`](./std_midpoint.md) |
+| [`std::lerp`](./std_lerp.md) |
+| [`[[likely]]`](./[[likely]].md) |
+| [`[[unlikely]]`](./[[unlikely]].md) |
 
 </div>
 
