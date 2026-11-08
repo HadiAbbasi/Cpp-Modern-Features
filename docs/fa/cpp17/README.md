@@ -24,6 +24,9 @@
 | [std::byte](./data.md) |
 | [std::byte](./size.md) |
 | [std::byte](./empty.md) |
+| [std::conjunction](./conjunction.md) |
+| [std::disjunction](./disjunction.md) |
+| [std::negation](./negation.md) |
 
 </div>
 
