@@ -12,7 +12,6 @@ The **`std::byte`** data type is a significant and practical feature introduced 
 
 Here is a complete guide on why it was introduced, how it works, and practical examples of its usage.
 
----
 
 ## Why Do We Need `std::byte`?
 

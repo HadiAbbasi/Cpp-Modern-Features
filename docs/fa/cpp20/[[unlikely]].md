@@ -1,16 +1,19 @@
+<div align="center">
+
+[🇺🇸 English](../../en/cpp20/[[unlikely]].md) | [🇮🇷 فارسی](./[[unlikely]].md)
+
+</div>
+
+---
+
 # ============================================
 # EDITABLE INPUT
 # DOCUMENT GENERATION INSTRUCTIONS
 # ============================================
 Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-{{{b}}} in C++23
+[[unlikely]] in C++20
 
-ADDITIONAL TOPICS AND REQUIREMENTS:
-- Topic 1
-- Topic 2
-- Topic 3
-- Topic 4
 
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
 
@@ -409,3 +412,16 @@ No Persian text should appear anywhere inside a code snippet.
 * Never apply Persian RTL transformations to actual C++ source code.
 * Never use Persian text inside C++ code comments.
 * Ensure the final document is comprehensive, professional, technically accurate, focused, and free of unnecessary repetition.
+
+
+---
+
+## 🤝 مشارکت ها
+
+<div align="center">
+
+| `GitHub` | `LinkedIn` | `Email` | `Site` | `Telegram` |
+| --- | --- | --- | --- | --- |
+| [HadiAbbasi](https://github.com/HadiAbbasi) | [Hadi Abbasi](https://www.linkedin.com/in/hadi-abbasi-pro) | [hadi.abbasi.programmer@gmail.com](mailto:hadi.abbasi.programmer@gmail.com) | [hiens.org](https://hiens.org) | [Hadi Abbasi_Pro](https://t.me/HadiAbbasi_Programmer) |
+
+</div>

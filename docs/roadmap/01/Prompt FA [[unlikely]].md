@@ -4,13 +4,8 @@
 # ============================================
 Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-{{{b}}} in C++26
+[[unlikely]] in C++20
 
-ADDITIONAL TOPICS AND REQUIREMENTS:
-- Topic 1
-- Topic 2
-- Topic 3
-- Topic 4
 
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
 
