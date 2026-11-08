@@ -6,413 +6,549 @@
 
 ---
 
-# ============================================
-# EDITABLE INPUT
-# DOCUMENT GENERATION INSTRUCTIONS
-# ============================================
-Create a comprehensive Persian educational Markdown document (.md) about the following subject:
-
-[[unlikely]] in C++20
-
-
-The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
-
-# 1. Language and Writing Style
-
-- Write the entire document in Persian.
-- Use clear, natural, educational, and technically accurate Persian.
-- Keep technical terms in English whenever translating them would make their meaning less precise or less familiar to C++ developers.
-- Write for a professional C++ developer, while explaining concepts clearly enough that the reader can follow the subject from its fundamentals to advanced practical usage.
-- Explain not only what a feature is, but also:
-  - why it exists
-  - what problem it solves
-  - how it works
-  - when it should be used
-  - when it should not be used
-  - practical use cases
-  - limitations
-  - edge cases
-  - common mistakes
-  - important design considerations
-- Prefer modern C++ practices over outdated techniques.
-- Do not mention these instructions in the generated document.
-
-
-# 2. Technical Accuracy
-
-- Use modern and standard C++ terminology.
-- Clearly distinguish between:
-  - C++ language features
-  - standard library features
-  - compiler extensions
-  - implementation-specific behavior
-- If a feature belongs to a particular C++ standard version, explicitly mention the relevant version, such as C++11, C++14, C++17, C++20, C++23, or C++26.
-- Do not invent language features, APIs, syntax, standardization details, or compiler behavior.
-- Code examples must use valid and technically correct C++ syntax.
-- When relevant, explain important differences between language versions and older approaches.
-
-
-# 3. Comprehensive Professional Coverage
-
-The document must provide comprehensive coverage of the subject and include all important concepts, features, capabilities, related mechanisms, practical techniques, limitations, edge cases, and important details that a professional C++ developer should know.
-
-Do not limit the document to a basic introduction or a few simple examples.
-
-Cover the subject from a professional and practical perspective, including closely related features when they are relevant to understanding or using the subject effectively.
-
-However, avoid unnecessary repetition and redundant explanations.
-
-- Do NOT repeat the same concept multiple times unless there is a meaningful reason.
-- Do NOT restate information that has already been clearly explained.
-- Do NOT repeat the same example merely to explain the same concept again.
-- If several features share the same underlying concept, explain that concept once and then focus on their differences.
-- Prefer adding new and useful information over repeating previously explained information.
-- Each section should contribute new knowledge, practical insight, an important distinction, or a useful example.
-- Keep the document comprehensive without making it unnecessarily verbose.
-
-The goal is to create documentation that is comprehensive enough for a professional C++ developer while remaining concise, focused, and free of redundant repetition.
-
-
-# 4. Additional Topics and Requirements
-
-In addition to the main subject, cover all relevant topics, concepts, features, or requirements listed in:
-
-ADDITIONAL TOPICS AND REQUIREMENTS
-
-These are explicit requirements and MUST be covered when they are relevant to the main subject.
-
-Integrate these topics naturally into the document structure rather than simply adding them as an unrelated section.
-
-If an additional topic is already naturally covered by another section, do not repeat the explanation. Instead, make sure the existing section adequately covers the requested topic.
-
-If an additional topic is not relevant to the main subject, do not force it into the document.
-
-
-# 5. Document Structure
-
-- Start the document directly with the main `#` heading.
-- Do NOT include a Table of Contents (TOC).
-- Do NOT create a manually written list of links to sections.
-- Do NOT create GitHub anchor links for navigation.
-- Use Markdown headings (`#`, `##`, `###`, etc.) to organize the content naturally.
-- Use sections such as introduction, concepts, usage, examples, practical applications, pitfalls, limitations, comparisons, and summary when they are relevant.
-- Adapt the structure to the actual subject instead of blindly following a fixed structure.
-
-
-# 6. Persian Markdown Heading Rules
-
-Because the document is written in Persian (RTL) and will be rendered on GitHub, all Markdown headings must be written in a way that ensures correct RTL rendering.
-
-Every Markdown heading (`#`, `##`, `###`, etc.) MUST start with at least one meaningful Persian word or Persian phrase.
-
-Never start a heading with:
-
-- an English word
-- an English technical term
-- a C++ keyword
-- a function name
-- a class name
-- a type name
-- a namespace
-- a number
-- a symbol
-- an abbreviation
-
-If the natural title starts with an English technical term, add a short, natural, contextually appropriate Persian prefix before it.
-
-The Persian prefix must be meaningful and related to the actual content of the heading. Do not use meaningless filler words merely to satisfy this rule.
-
-For example, instead of:
-
-## Concepts in C++20
-
-write:
-
-## مفاهیم Concepts در ++C
-
-Instead of:
-
-## std::expected
-
-write:
-
-## معرفی std::expected
-
-Instead of:
-
-## Move Semantics
-
-write:
-
-## مفهوم Move Semantics
-
-Choose the Persian prefix according to the actual meaning of the heading.
-
-Suitable prefixes may include:
-
-- معرفی
-- مفهوم
-- بررسی
-- نحوه استفاده از
-- کاربرد
-- مثال
-- مقایسه
-- تفاوت
-- مدیریت
-- پیاده‌سازی
-- نکات مهم
-- محدودیت‌ها
-
-
-# 7. Heading Numbering
-
-NEVER add numerical prefixes, counters, or section numbers to headings.
-
-Do NOT write:
-
-## 1- مقدمه
-## 2- معرفی
-## 3- مثال
-
-Do NOT write:
-
-## 1. مقدمه
-## 2. معرفی
-## 3. مثال
-
-Do NOT use section numbering such as:
-
-- 1
-- 1.1
-- 1.2
-- 2
-- 2.1
-- 2.2
-
-Instead, write:
+# بررسی Attribute مربوط به `[[unlikely]]` در ++C20
 
 ## مقدمه
 
-## معرفی
+ویژگی استاندارد `[[unlikely]]` در استاندارد ++C20 معرفی شد تا برنامه‌نویسان بتوانند اطلاعاتی درباره احتمال مورد انتظار اجرای یک مسیر مشخص در جریان کنترل برنامه (Control Flow) در اختیار کامپایلر قرار دهند.
 
-## مثال
+این ویژگی یک راهنمای بهینه‌سازی (Optimization Hint) است که به کامپایلر اعلام می‌کند انتظار می‌رود یک دستور یا مسیر اجرایی مشخص، با فراوانی کمتری نسبت به سایر مسیرها اجرا شود.
 
-The Markdown heading hierarchy (`#`, `##`, `###`, ...) is sufficient to organize the document.
+هدف اصلی آن کمک به بهینه‌سازی کدهایی است که در آن‌ها تفاوت مشخصی میان مسیرهای پرتکرار و کم‌تکرار وجود دارد؛ برای مثال، مسیر اجرای موفق یک عملیات در مقایسه با مسیر مدیریت خطای آن.
 
+ویژگی `[[unlikely]]` هم‌زمان با ویژگی `[[likely]]` معرفی شد. هر دو Attribute از استاندارد ++C20 در دسترس هستند.
 
-# 8. Persian RTL Context at the Beginning of New Lines
+نکته مهم این است که این دو Attribute صرفاً راهنماهایی برای کامپایلر محسوب می‌شوند. استفاده از آن‌ها هیچ تضمینی برای افزایش سرعت اجرای برنامه یا تولید یک نوع مشخص از کد ماشین ایجاد نمی‌کند.
 
-Whenever a new paragraph, sentence, list item, blockquote, note, or other block of Persian prose starts on a new line, it MUST NOT begin with an English word, English technical term, C++ keyword, function name, class name, type name, namespace, number, symbol, or abbreviation.
+## مفهوم و هدف طراحی
 
-If the intended Persian text would naturally begin with an English term, add a short, natural, and contextually relevant Persian word or phrase before it.
+### مسئله‌ای که این ویژگی حل می‌کند
 
-This Persian prefix is required to establish the correct RTL context and prevent GitHub from rendering the line as LTR or left-aligned.
+در بسیاری از برنامه‌ها، تمام شاخه‌های یک دستور شرطی (Conditional Statement) با فراوانی یکسان اجرا نمی‌شوند.
 
-For example, instead of:
+برای مثال:
 
-Concepts در ++C به ...
+- بیشتر درخواست‌های شبکه با موفقیت تکمیل می‌شوند، درحالی‌که خطاها نسبتاً نادر هستند.
+- یک Parser معمولاً ورودی معتبر را پردازش می‌کند، اما همچنان باید امکان مدیریت ورودی نامعتبر را داشته باشد.
+- بیشتر تکرارهای یک حلقه به ادامه اجرای آن منجر می‌شوند، درحالی‌که تنها تکرار نهایی باعث خاتمه حلقه می‌شود.
+- در سیستم‌های مبتنی بر Cache، معمولاً Cache Hitها بیشتر از Cache Missها اتفاق می‌افتند.
 
-write:
+کامپایلرها می‌توانند احتمال اجرای شاخه‌های مختلف را با استفاده از ساختار برنامه، قواعد زبان و اطلاعات حاصل از Profiling تخمین بزنند.
 
-مفهوم Concepts در ++C به ...
+بااین‌حال، گاهی برنامه‌نویس اطلاعاتی درباره الگوی واقعی اجرای برنامه دارد که کامپایلر نمی‌تواند صرفاً از روی کد منبع آن‌ها را تشخیص دهد.
 
-Instead of:
+ویژگی `[[unlikely]]` روشی استاندارد برای انتقال این اطلاعات به کامپایلر فراهم می‌کند.
 
-std::expected برای مدیریت ...
+### تفاوت Hint و Guarantee
 
-write:
+وجود Attribute مربوط به `[[unlikely]]` به این معنا نیست که دستور موردنظر الزاماً با فراوانی کمتری اجرا خواهد شد.
 
-نوع std::expected برای مدیریت ...
+این Attribute صرفاً انتظار برنامه‌نویس را بیان می‌کند.
 
-Instead of:
+بنابراین، این ویژگی:
 
-Move Semantics یکی از ...
+- شرط جدیدی به برنامه اضافه نمی‌کند.
+- ترتیب معنایی اجرای دستورات را تغییر نمی‌دهد.
+- احتمال واقعی اجرای یک شاخه را اندازه‌گیری نمی‌کند.
+- اجرای یک شاخه را حذف یا محدود نمی‌کند.
+- اثبات نمی‌کند که یک شاخه غیرقابل‌دسترس (Unreachable) است.
+- اجرای سریع‌تر کد ماشین را تضمین نمی‌کند.
 
-write:
+حتی اگر شاخه‌ای که با `[[unlikely]]` مشخص شده است، در عمل بسیار پرتکرار باشد، برنامه همچنان باید رفتار صحیحی داشته باشد.
 
-مفهوم Move Semantics یکی از ...
+## نحوه نگارش و استفاده
 
-Choose the Persian prefix naturally according to the meaning and context of the sentence.
+### ساختار پایه
 
-Do not use meaningless filler words merely to satisfy this rule.
+ویژگی `[[unlikely]]` یک Standard Attribute است که می‌توان آن را در موقعیت‌های مجاز مربوط به Statement و Label به کار برد.
 
-This rule applies to:
+یکی از کاربردهای رایج آن، مشخص‌کردن شاخه `else` است:
 
-- normal paragraphs
-- individual sentences
-- list items
-- blockquotes
-- explanatory text
-- notes
-- descriptions
+```
+#include <stdexcept>
 
-This rule does NOT apply to:
-
-- fenced code blocks
-- actual source code
-- shell commands
-- URLs
-- filenames
-- lines intentionally written entirely in English
-- technical identifiers when they are part of actual code
-
-
-# 9. C++ RTL Rendering Rule
-
-Because `C++` can be rendered incorrectly when embedded in Persian RTL prose on GitHub:
-
-Whenever `C++` appears inside normal Persian prose, ALWAYS write it as:
-
-++C
-
-For example:
-
-در ++C می‌توان از این قابلیت استفاده کرد.
-
-instead of:
-
-در C++ می‌توان از این قابلیت استفاده کرد.
-
-Apply this replacement EVERY TIME `C++` appears in Persian prose.
-
-Do NOT apply this replacement inside:
-
-- fenced code blocks
-- actual source code
-- compiler commands
-- filenames
-- URLs
-- technical identifiers
-- quoted code
-
-In those contexts, preserve the original `C++` spelling exactly.
-
-
-# 10. Function Names with Parentheses in Persian Prose
-
-When a function name appears together with `()` inside Persian prose, write the parentheses BEFORE the function name in the Markdown source.
-
-For example, write:
-
-()MyFunction
-
-instead of:
-
-MyFunction()
-
-This is necessary to ensure that the function name and its parentheses are rendered correctly in Persian RTL text on GitHub.
-
-For example:
-
-از تابع `()std::move` برای انتقال مقدار استفاده می‌شود.
-
-Do NOT write:
-
-از تابع `std::move()` برای انتقال مقدار استفاده می‌شود.
-
-This rule applies to function names appearing inside Persian prose, including inline code.
-
-IMPORTANT:
-
-- Apply this RTL-safe representation only to Persian prose.
-- Never apply it inside fenced code blocks.
-- Never modify actual C++ source code.
-- Preserve the exact spelling, capitalization, namespace, and qualification of the function name.
-- In actual C++ code, always use standard C++ syntax such as `MyFunction()`.
-
-
-# 11. Code Blocks
-
-All C++ source code must be placed inside fenced Markdown code blocks using the `cpp` language identifier.
-
-For example:
-
-```cpp
-#include <iostream>
-
-int main() {
-    std::cout << "Hello\n";
+int parse_value(bool input_is_valid) {
+    if (input_is_valid) {
+        return 42;
+    } else [[unlikely]] {
+        throw std::invalid_argument{"invalid input"};
+    }
 }
-````
-
-Never apply Persian RTL transformations to the contents of code blocks.
-
-Inside code blocks:
-
-* Keep `C++` exactly as `C++`.
-* Keep function calls exactly as `MyFunction()`.
-* Keep namespaces and identifiers unchanged.
-* Keep valid C++ syntax.
-* Do not reverse parentheses.
-* Do not alter keywords or technical identifiers for RTL purposes.
-
-# 12. Comments Inside Code Snippets
-
-NEVER use Persian words or Persian sentences inside code snippets.
-
-All comments written inside C++ code blocks MUST be written entirely in English.
-
-Do NOT mix Persian and English inside code comments, because mixed RTL/LTR text can render incorrectly and make the code difficult to read on GitHub.
-
-Do NOT write:
-
-```cpp
-// این تابع مقدار را محاسبه می‌کند
-auto result = calculateValue();
 ```
 
-Do NOT write:
+در این مثال، برنامه‌نویس انتظار دارد مسیر مدیریت خطا به‌ندرت اجرا شود.
 
-```cpp
-// محاسبه مقدار نهایی
-auto result = calculateValue();
+توجه داشته باشید که Attribute مربوط به `[[unlikely]]` به شاخه `else` مربوط است، نه به شرط `input_is_valid` یا کل تابع.
+
+### استفاده از Attribute در دستورات if
+
+می‌توان از هر دو Attribute برای مشخص‌کردن مسیرهای پرتکرار و کم‌تکرار استفاده کرد:
+
+```
+int process(int value) {
+    if (value >= 0) [[likely]] {
+        return value * 2;
+    } else [[unlikely]] {
+        return -1;
+    }
+}
 ```
 
-Instead, always write comments entirely in English:
+در این مثال:
 
-```cpp
-// Calculate the final value
-auto result = calculateValue();
+- شاخه `if` با Attribute مربوط به `[[likely]]` مشخص شده است.
+- شاخه `else` با Attribute مربوط به `[[unlikely]]` مشخص شده است.
+
+استفاده هم‌زمان از هر دو Attribute همیشه ضروری نیست. در بسیاری از شرایط، مشخص‌کردن تنها یک شاخه برای انتقال اطلاعات موردنظر به کامپایلر کافی است.
+
+انتخاب این Attributeها باید براساس ویژگی‌های واقعی Workload انجام شود، نه صرفاً براساس حدس و فرضیات.
+
+### استفاده از Attribute در دستورات switch
+
+در دستورات `switch` نیز می‌توان Label مربوط به `case` یا `default` را با این Attribute مشخص کرد.
+
+برای مثال:
+
+```
+int handle_status(int status) {
+    switch (status) {
+        case 0:
+            [[likely]] return 0;
+
+        case 1:
+            return 1;
+
+        default:
+            [[unlikely]] return -1;
+    }
+}
 ```
 
-This applies to:
+این شیوه استفاده در موقعیت‌هایی مانند موارد زیر کاربرد دارد:
 
-* `//` single-line comments
-* `/* ... */` block comments
-* comments inside C++ code snippets
-* explanatory comments attached to code examples
+- مدیریت Status Codeها
+- پیاده‌سازی State Machineها
+- پردازش وضعیت‌های مختلف سیستم
+- Dispatch کردن عملیات
+- مدیریت وضعیت‌های غیرعادی (Exceptional States)
 
-All comments inside code snippets must use English only.
+در این مثال، فرض بر این است که مقدار صفر پرتکرارترین Status است و مقادیر ناشناخته به‌ندرت اتفاق می‌افتند.
 
-Persian explanations must be written outside the code block, as normal Persian prose.
+### استفاده از Attribute در حلقه‌ها
 
-For example:
+ازآنجاکه این Attribute می‌تواند برای Statementهای مربوطه استفاده شود، می‌توان از آن برای ارائه راهنمایی درباره احتمال اجرای دستور یک حلقه نیز بهره برد.
 
-توجه کنید که تابع `()calculateValue` مقدار نهایی را محاسبه می‌کند.
+برای مثال:
 
-```cpp
-// Calculate the final value
-auto result = calculateValue();
+```
+void consume_items() {
+    while (has_more_items()) [[likely]] {
+        consume_one_item();
+    }
+}
 ```
 
-No Persian text should appear anywhere inside a code snippet.
+در این مثال، انتظار می‌رود ادامه اجرای حلقه نسبت به خروج از آن محتمل‌تر باشد.
 
-# 13. Final Output Requirements
+بااین‌حال، Attributeهای `[[likely]]` و `[[unlikely]]` ابزاری برای اندازه‌گیری تعداد تکرارهای حلقه نیستند و نباید جایگزین Profiling شوند.
 
-* Return ONLY the final Markdown document.
-* Do NOT wrap the entire document in a code block.
-* Do NOT provide explanations before or after the document.
-* Do NOT mention these instructions.
-* Do NOT include a Table of Contents.
-* Do NOT number headings.
-* Ensure every heading starts with meaningful Persian text.
-* Ensure every new line of Persian prose has an appropriate Persian RTL context before any English technical term.
-* Ensure every `C++` appearing in Persian prose is written as `++C`.
-* Ensure function names with `()` appearing in Persian prose use the RTL-safe form `()FunctionName`.
-* Never apply Persian RTL transformations to actual C++ source code.
-* Never use Persian text inside C++ code comments.
-* Ensure the final document is comprehensive, professional, technically accurate, focused, and free of unnecessary repetition.
+## تفاوت [[unlikely]] و [[likely]]
 
+هر دو Attribute در استاندارد ++C20 استانداردسازی شده‌اند و به یک خانواده از ویژگی‌های زبان تعلق دارند.
+
+| Attribute      | مفهوم                                                               |
+| -------------- | ------------------------------------------------------------------- |
+| `[[likely]]`   | دستور یا مسیر مرتبط با آن انتظار می‌رود با فراوانی بیشتری اجرا شود. |
+| `[[unlikely]]` | دستور یا مسیر مرتبط با آن انتظار می‌رود با فراوانی کمتری اجرا شود.  |
+
+این Attributeها هیچ احتمال عددی مشخصی را تعیین نمی‌کنند.
+
+برای مثال، استفاده از `[[unlikely]]` به معنای آن نیست که احتمال اجرای یک شاخه دقیقاً یک درصد یا کمتر است. این Attribute صرفاً یک انتظار کیفی درباره فراوانی نسبی اجرای مسیر را بیان می‌کند.
+
+همچنین نباید از این Attributeها برای تعریف قراردادهای منطقی برنامه (Logical Contracts) استفاده کرد.
+
+اگر یک مسیر واقعاً غیرقابل‌دسترس باشد، باید از مکانیزم مناسب برای بیان این ویژگی استفاده کرد. مشخص‌کردن آن با `[[unlikely]]` ثابت نمی‌کند که آن مسیر هرگز اجرا نخواهد شد.
+
+## بررسی رفتار کامپایلر
+
+### نقش Attribute در بهینه‌سازی
+
+کامپایلر ممکن است از راهنمایی‌های مربوط به احتمال اجرای شاخه‌ها هنگام تصمیم‌گیری‌های مختلف برای بهینه‌سازی استفاده کند؛ ازجمله:
+
+- انتخاب نحوه چیدمان Basic Blockها در کد ماشین.
+- قرار دادن مسیرهای پرتکرار و کم‌تکرار در موقعیت‌های متفاوت.
+- تصمیم‌گیری درباره Branch Layout و Fall-through.
+- بهبود احتمالی استفاده از Instruction Cache.
+- تأثیرگذاری غیرمستقیم بر سایر تصمیم‌های بهینه‌سازی.
+
+موارد بالا نمونه‌هایی از تصمیم‌های احتمالی کامپایلر هستند و هیچ‌کدام الزام استاندارد محسوب نمی‌شوند.
+
+استاندارد ++C مشخص نمی‌کند که کامپایلر دقیقاً باید چه دستورالعمل‌های Assembly تولید کند یا کد را با چه ترتیبی در حافظه قرار دهد.
+
+### امکان نادیده‌گرفتن Attribute
+
+کامپایلر مجاز است این راهنمایی را نادیده بگیرد.
+
+ممکن است در یک نسخه مشخص از کامپایلر، سطح Optimization یا معماری پردازنده هدف، هیچ تفاوت قابل‌مشاهده‌ای در Assembly تولیدشده وجود نداشته باشد.
+
+حتی اگر خروجی Assembly تغییر کند، این تغییر لزوماً به معنای بهبود عملکرد نیست.
+
+### تفاوت رفتار کامپایلرها
+
+معنای این Attribute در سطح زبان استانداردسازی شده است، اما کیفیت پیاده‌سازی و تأثیر نهایی آن بر Performance می‌تواند میان کامپایلرهای مختلف متفاوت باشد.
+
+برای مثال، رفتار عملی ممکن است تحت تأثیر عوامل زیر قرار بگیرد:
+
+- نسخه GCC
+- نسخه Clang
+- نسخه MSVC
+- معماری CPU
+- تنظیمات Optimization
+- اطلاعات Profile
+- ساختار کلی برنامه
+
+بنابراین، ارزیابی اثربخشی این Attribute مستلزم بررسی نسخه کامپایلر، گزینه‌های Build و Workload واقعی است.
+
+## ارتباط با Profile-Guided Optimization
+
+### مقایسه Hintهای دستی با PGO
+
+ویژگی `[[unlikely]]` اطلاعاتی را به کامپایلر منتقل می‌کند که برنامه‌نویس از قبل درباره فراوانی اجرای مسیرهای مختلف در اختیار دارد.
+
+در مقابل، تکنیک Profile-Guided Optimization یا به‌اختصار PGO از اطلاعات جمع‌آوری‌شده هنگام اجرای واقعی برنامه استفاده می‌کند تا رفتار مسیرهای مختلف اجرا را تخمین بزند.
+
+یک Workflow معمول برای PGO شامل مراحل زیر است:
+
+- ساخت برنامه با Instrumentation مناسب.
+- اجرای برنامه با یک Workload نماینده از شرایط واقعی.
+- جمع‌آوری اطلاعات مربوط به فراوانی اجرای مسیرهای مختلف.
+- استفاده از اطلاعات Profile جمع‌آوری‌شده هنگام بهینه‌سازی توسط کامپایلر.
+
+هنگامی که یک Profile معتبر در دسترس باشد، اطلاعات آن معمولاً از فرضیات دستی دقیق‌تر است؛ زیرا رفتار واقعی برنامه، توزیع ورودی‌ها و الگوهای اجرای آن را منعکس می‌کند.
+
+### احتمال تعارض با اطلاعات Profile
+
+اگر Hintهای دستی با اطلاعات Profile تعارض داشته باشند، نتیجه نهایی به کامپایلر و مراحل Optimization آن بستگی خواهد داشت.
+
+نباید فرض کرد که Attributeهای دستی همیشه بر اطلاعات Profile اولویت دارند یا برعکس.
+
+برای تصمیم‌گیری دقیق، مستندات کامپایلر را بررسی کنید و خروجی واقعی Build را مورد ارزیابی قرار دهید.
+
+### استراتژی پیشنهادی
+
+برای پروژه‌هایی که Performance در آن‌ها اهمیت دارد، می‌توان از استراتژی زیر استفاده کرد:
+
+- ابتدا کدی ساده، خوانا و قابل‌نگهداری بنویسید.
+- با استفاده از Benchmark یا Profiler و Workloadهای نماینده، عملکرد برنامه را اندازه‌گیری کنید.
+- در صورت امکان از PGO استفاده کنید.
+- فقط زمانی Hintهای دستی اضافه کنید که اطلاعات قابل‌اعتمادی درباره فراوانی اجرای شاخه‌ها در اختیار داشته باشید.
+- پس از اعمال تغییرات، عملکرد برنامه را روی معماری‌های هدف مجدداً ارزیابی کنید.
+
+## کاربردهای عملی
+
+### مدیریت مسیرهای خطا
+
+یکی از رایج‌ترین کاربردهای `[[unlikely]]` مشخص‌کردن مسیر مدیریت خطایی است که انتظار می‌رود در مقایسه با مسیر اجرای موفق، کمتر اتفاق بیفتد.
+
+برای مثال:
+
+```
+int read_value(bool available) {
+    if (available) [[likely]] {
+        return 42;
+    } else [[unlikely]] {
+        return -1;
+    }
+}
+```
+
+در این مثال، انتظار می‌رود مسیر اجرای موفق بیشتر از مسیر خطا اجرا شود.
+
+این الگو در موقعیت‌های زیر کاربرد دارد:
+
+- پردازش درخواست‌های شبکه
+- خواندن اطلاعات از فایل‌ها
+- اعتبارسنجی ورودی‌ها
+- مدیریت خطاهای سیستم
+- بررسی در دسترس بودن منابع
+
+### مدیریت خطا با std::expected
+
+نوع `std::expected` در استاندارد کتابخانه ++C23 معرفی شد. این Type نمایانگر عملیاتی است که می‌تواند یک نتیجه موفق یا یک خطا تولید کند.
+
+اگرچه این Type بخشی از ++C20 نیست، ترکیب مفهومی آن با Branch Hintها می‌تواند کاربردی باشد:
+
+```
+#include <expected>
+#include <string>
+
+std::expected<int, std::string> read_value(bool available) {
+    if (available) [[likely]] {
+        return 42;
+    }
+
+    return std::unexpected{std::string{"value unavailable"}};
+}
+```
+
+این مثال به پشتیبانی از استاندارد ++C23 نیاز دارد.
+
+برای پروژه‌هایی که باید با ++C20 ساخته شوند، می‌توان از مکانیزم‌های موجود برای مدیریت خطا یا یک Result Type سفارشی استفاده کرد.
+
+### مدیریت ورودی نامعتبر در Parserها
+
+در Parserهایی که ورودی معتبر بخش غالب داده‌های دریافتی را تشکیل می‌دهد، مسیر مربوط به ورودی نامعتبر ممکن است نسبتاً کم‌تکرار باشد.
+
+برای مثال:
+
+```
+#include <string_view>
+
+bool parse_token(std::string_view token) {
+    if (!token.empty()) [[likely]] {
+        return token.front() != '#';
+    } else [[unlikely]] {
+        return false;
+    }
+}
+```
+
+استفاده از این Hint تنها زمانی ارزش بررسی دارد که توزیع واقعی ورودی‌ها با این الگو مطابقت داشته باشد.
+
+اگر ورودی خالی در Workload برنامه فراوان باشد، این Annotation ممکن است راهنمایی گمراه‌کننده‌ای به کامپایلر ارائه دهد.
+
+### مدیریت State Machineها
+
+در یک State Machine، ممکن است وضعیت عادی برنامه بسیار پرتکرار باشد، درحالی‌که وضعیت بازیابی (Recovery State) به‌ندرت اتفاق بیفتد.
+
+برای مثال:
+
+```
+enum class State {
+    Ready,
+    Processing,
+    Recovering
+};
+
+void start_processing();
+void continue_processing();
+void recover();
+
+void handle(State state) {
+    switch (state) {
+        case State::Ready:
+            [[likely]] start_processing();
+            break;
+
+        case State::Processing:
+            continue_processing();
+            break;
+
+        case State::Recovering:
+            [[unlikely]] recover();
+            break;
+    }
+}
+```
+
+در این مثال، فرض بر این است که وضعیت `Recovering` با فراوانی کمتری اتفاق می‌افتد.
+
+در برنامه‌های حرفه‌ای، فراوانی وضعیت‌های مختلف بهتر است تا حد امکان از Telemetry معتبر یا اطلاعات Profiling استخراج شود.
+
+## محدودیت‌ها و ملاحظات ظریف
+
+### نبود امکان تعیین احتمال عددی
+
+این Attribute روشی برای تعیین احتمال دقیق اجرای یک شاخه فراهم نمی‌کند.
+
+برای مثال، هیچ Syntax استانداردی مانند نمونه زیر وجود ندارد:
+
+```
+[[unlikely(0.01)]]
+```
+
+فرم‌های استاندارد این خانواده صرفاً شامل `[[likely]]` و `[[unlikely]]` هستند.
+
+### تضمین‌نشدن بهبود Performance
+
+بهینه‌سازی مبتنی بر Branch Probability تنها یکی از عوامل متعدد مؤثر بر عملکرد برنامه است.
+
+عوامل دیگری نیز وجود دارند که ممکن است تأثیر بسیار بیشتری داشته باشند؛ ازجمله:
+
+- Cache Misses
+- دسترسی به حافظه (Memory Access)
+- وابستگی داده‌ها (Data Dependencies)
+- موازی‌سازی در سطح دستورالعمل (Instruction-Level Parallelism)
+- Vectorization
+- Inlining
+- سربار فراخوانی توابع (Function Call Overhead)
+- پیچیدگی الگوریتمی (Algorithmic Complexity)
+
+در برخی شرایط، اضافه‌کردن یک Hint هیچ سودی ندارد یا حتی ممکن است به تولید Code Layout کم‌بازده‌تری منجر شود.
+
+### عدم تغییر معنای برنامه
+
+حتی اگر مسیری که با `[[unlikely]]` مشخص شده است، در عمل بسیار پرتکرار باشد، برنامه باید همچنان رفتار صحیحی داشته باشد.
+
+صحت برنامه هرگز نباید به کم‌تکرار بودن اجرای یک شاخه وابسته باشد.
+
+### پرهیز از استفاده بیش‌ازحد
+
+استفاده گسترده از این Attributeها بدون اندازه‌گیری می‌تواند از ارزش راهنمایی‌های ارائه‌شده به کامپایلر بکاهد.
+
+اگر تقریباً تمام شاخه‌های برنامه با `[[likely]]` یا `[[unlikely]]` مشخص شوند، اطلاعات معنادار چندانی درباره اهمیت نسبی مسیرهای مختلف به کامپایلر منتقل نخواهد شد.
+
+### تفاوت میان Workloadها
+
+فراوانی اجرای شاخه‌ها ممکن است در محیط‌های Development، Testing و Production متفاوت باشد.
+
+همچنین ممکن است برنامه در شرایط عملیاتی مختلف با توزیع‌های متفاوتی از ورودی‌ها مواجه شود.
+
+بنابراین، یک Hint ثابت در کد منبع لزوماً برای تمام Workloadها مناسب نیست.
+
+### جایگزین‌نشدن با طراحی صحیح
+
+مدیریت خطا مستلزم طراحی صحیح جنبه‌های مختلف برنامه است؛ ازجمله:
+
+- قراردادهای API
+- Typeهای بازگشتی توابع (Function Return Types)
+- سیاست‌های استفاده از Exception
+- اعتبارسنجی ورودی‌ها
+- مدیریت منابع (Resource Management)
+- رفتار برنامه هنگام بروز خطا (Failure Behavior)
+
+ویژگی `[[unlikely]]` صرفاً یک Optimization Hint است که می‌تواند در کنار طراحی صحیح برنامه مورد استفاده قرار بگیرد. این ویژگی جایگزین هیچ‌کدام از مکانیزم‌های فوق نیست.
+
+## اشتباهات رایج
+
+### تصور محدودشدن اجرای یک شاخه
+
+یکی از برداشت‌های اشتباه رایج این است که کامپایلر هنگام مشاهده `[[unlikely]]` اجرای شاخه مربوطه را محدود می‌کند.
+
+چنین اتفاقی رخ نمی‌دهد.
+
+این Attribute صرفاً یک Hint است و رفتار منطقی برنامه را تغییر نمی‌دهد.
+
+### استفاده از آن برای مشخص‌کردن کد غیرقابل‌دسترس
+
+اگر یک شاخه از نظر منطقی غیرقابل‌دسترس باشد، `[[unlikely]]` مکانیزم مناسبی برای بیان این ویژگی نیست.
+
+این Attribute نشان می‌دهد که انتظار می‌رود یک مسیر به‌ندرت اجرا شود، نه اینکه اجرای آن غیرممکن باشد.
+
+همچنین نباید آن را با `std::unreachable` اشتباه گرفت.
+
+تابع `std::unreachable()` بخشی از Standard Library در ++C23 است و قرارداد متفاوتی دارد.
+
+### فرض یکسان بودن رفتار در تمام کامپایلرها
+
+استاندارد بودن Syntax و معنای این Attribute در سطح زبان، به معنای یکسان بودن خروجی Machine Code در تمام کامپایلرها نیست.
+
+ارزیابی باید روی کامپایلرها و معماری‌هایی انجام شود که واقعاً توسط پروژه پشتیبانی می‌شوند.
+
+### اضافه‌کردن Hint بدون Benchmark
+
+اگر عملکرد برنامه اندازه‌گیری نشده باشد، اضافه‌کردن Hint ممکن است پیچیدگی نگهداری کد را افزایش دهد، بدون اینکه هیچ سود قابل‌اندازه‌گیری ایجاد کند.
+
+ابتدا گلوگاه عملکردی (Performance Bottleneck) را شناسایی کنید و سپس تغییرات را با Benchmarkهای معتبر ارزیابی کنید.
+
+## مقایسه با روش‌های قدیمی و اختصاصی کامپایلرها
+
+پیش از استانداردسازی این Attributeها، برخی کامپایلرها مکانیزم‌های اختصاصی خود را برای بیان احتمال اجرای شاخه‌ها ارائه می‌کردند.
+
+برای مثال، GCC و Clang از مکانیزم‌هایی مانند `__builtin_expect` پشتیبانی می‌کنند.
+
+این مکانیزم‌ها Compiler-specific Extension یا Built-in محسوب می‌شوند و از نظر Syntax و قابلیت حمل‌پذیری (Portability) نباید آن‌ها را معادل کامل Attribute استاندارد در نظر گرفت.
+
+نمونه‌ای از روش اختصاصی GCC و Clang:
+
+```
+if (__builtin_expect(error_code != 0, 0)) {
+    handle_error();
+}
+```
+
+در این الگو، آرگومان دوم مشخص می‌کند که انتظار می‌رود عبارت موردنظر چه مقداری داشته باشد.
+
+این روش نسبت به `[[unlikely]]` قابلیت حمل‌پذیری کمتری دارد و ممکن است در کامپایلرهای دیگر در دسترس نباشد یا رفتار متفاوتی داشته باشد.
+
+برای کدهای جدید و قابل‌حمل مبتنی بر ++C20، استفاده از Attribute استاندارد معمولاً انتخاب مناسب‌تری است.
+
+بااین‌حال، پروژه‌هایی که به کامپایلرهای قدیمی‌تر یا قابلیت‌های اختصاصی کامپایلر وابسته هستند، باید پشتیبانی واقعی را در محیط‌های Build خود بررسی کنند.
+
+## سازگاری با نسخه‌های مختلف استاندارد ++C
+
+Attributeهای `[[likely]]` و `[[unlikely]]` در استاندارد ++C20 استانداردسازی شده‌اند.
+
+استفاده از آن‌ها به کامپایلری نیاز دارد که از قابلیت‌های مربوط به ++C20 پشتیبانی کند.
+
+برخلاف قابلیت‌های کتابخانه‌ای (Library Features)، این Attributeها بخشی از Syntax زبان هستند و به Header مشخصی نیاز ندارند.
+
+حالت ++C20 را می‌توان از طریق گزینه‌های مناسب Build فعال کرد.
+
+برای مثال:
+
+```
+g++ -std=c++20 -O2 main.cpp -o app
+```
+
+```
+clang++ -std=c++20 -O2 main.cpp -o app
+```
+
+این دستورات صرفاً نمونه‌هایی برای فعال‌کردن حالت ++C20 هستند و پشتیبانی واقعی به نسخه کامپایلر بستگی دارد.
+
+همچنین فعال‌کردن گزینه `-std=c++20` به‌تنهایی تضمین نمی‌کند که تمام Optimizationهای مورد انتظار انجام شوند.
+
+## ارزیابی Attribute در پروژه‌های واقعی
+
+برای ارزیابی ارزش استفاده از `[[unlikely]]`، باید مقایسه‌ها در شرایطی کنترل‌شده انجام شوند.
+
+مراحل پیشنهادی عبارت‌اند از:
+
+- انتخاب یک Workload واقع‌گرایانه و قابل‌تکرار.
+- ساخت یک نسخه از برنامه بدون Hint و نسخه دیگری با Hint.
+- یکسان نگه‌داشتن تنظیمات Optimization.
+- استفاده از نسخه یکسان کامپایلر و معماری هدف.
+- اجرای چندباره Benchmarkها برای کاهش نویز اندازه‌گیری.
+- بررسی Branch Misses و Instruction Count در صورت نیاز.
+- بررسی رفتار Cache با استفاده از ابزارهای Profiling.
+- ارزیابی نتایج در مقایسه با سایر Workloadهای مهم.
+
+بررسی Assembly می‌تواند به درک نحوه واکنش کامپایلر به این Hint کمک کند؛ اما ارزیابی نهایی باید براساس رفتار برنامه در Workloadهای واقعی انجام شود.
+
+صرف مشاهده تفاوت در خروجی Assembly، اثبات‌کننده بهبود Performance نیست.
+
+## چک‌لیست تصمیم‌گیری
+
+پیش از اضافه‌کردن `[[unlikely]]` به کد، بهتر است پرسش‌های زیر را بررسی کنید:
+
+- آیا مسیر موردنظر واقعاً در Workloadهای مهم برنامه کم‌تکرار است؟
+- آیا این اطلاعات براساس Benchmark، Profiling یا شناخت قابل‌اعتماد از توزیع ورودی‌ها به دست آمده‌اند؟
+- آیا کامپایلر و نسخه‌های مورد پشتیبانی پروژه این Attribute را می‌شناسند؟
+- آیا Benchmarkها نشان می‌دهند که استفاده از این Hint واقعاً سودمند است؟
+- آیا برنامه بدون توجه به این Hint همچنان از نظر معنایی صحیح باقی می‌ماند؟
+- آیا روش مناسب‌تری مانند PGO در دسترس است؟
+- آیا این Hint در تمام محیط‌های عملیاتی پروژه همچنان معتبر خواهد بود؟
+
+اگر پاسخ این پرسش‌ها مشخص نیست، معمولاً بهتر است کد را بدون این Attribute نگه دارید.
+
+## جمع‌بندی
+
+ویژگی `[[unlikely]]` در استاندارد ++C20 روشی استاندارد برای اعلام این موضوع فراهم می‌کند که انتظار می‌رود یک Statement یا مسیر مرتبط با یک Label، با فراوانی کمتری اجرا شود.
+
+هدف اصلی آن کمک به تصمیم‌گیری‌های کامپایلر در زمینه بهینه‌سازی Branch Probability و Code Layout است؛ به‌خصوص در مسیرهای مدیریت خطا، وضعیت‌های غیرعادی و شاخه‌هایی که به‌ندرت اجرا می‌شوند.
+
+بااین‌حال، `[[unlikely]]` صرفاً یک Optimization Hint است:
+
+- احتمال عددی مشخصی را تعیین نمی‌کند.
+- نحوه اجرای شاخه‌ها را تغییر نمی‌دهد.
+- غیرقابل‌دسترس بودن یک شاخه را اثبات نمی‌کند.
+- بهبود Performance را تضمین نمی‌کند.
+- جایگزین Profiling یا PGO نیست.
+
+در پروژه‌های حرفه‌ای، استفاده از این Attribute باید محدود، مبتنی بر ویژگی‌های واقعی Workload و همراه با Benchmark باشد.
+
+هنگامی که اطلاعات معتبر Profile در دسترس باشد، PGO معمولاً اطلاعات دقیق‌تری نسبت به فرضیات دستی در اختیار کامپایلر قرار می‌دهد.
 
 ---
 
