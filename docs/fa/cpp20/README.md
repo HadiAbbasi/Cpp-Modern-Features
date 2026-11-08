@@ -44,10 +44,13 @@
 | [`std::lerp`](./std_lerp.md) |
 | [`[[likely]]`](./[[likely]].md) |
 | [`[[unlikely]]`](./[[unlikely]].md) |
+| [`std::endian`](./std_endian.md) |
+| [`std::numbers`](./std_numbers.md) |
 
 </div>
 
 ---
+
 ## 🤝 مشارکت ها
 
 <div align="center">
