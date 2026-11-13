@@ -46,6 +46,14 @@
 | [`[[unlikely]]`](./[[unlikely]].md) |
 | [`std::endian`](./std_endian.md) |
 | [`std::numbers`](./std_numbers.md) |
+| [`std::chrono Calendar`](./std_chrono_calendar.md) |
+| [`std::chrono Time Zones`](./std_chrono_time_zones.md) |
+| [`Designated Initializers`](./designated_initializers.md) |
+| [`Structured Bindings Improvements`](./structured_bindings_improvements.md) |
+| [`std::stop_token`](./std_stop_token.md) |
+| [`std::stop_source`](./std_stop_source.md) |
+| [`std::latch`](./std_latch.md) |
+| [`std::barrier`](./std_barrier.md) |
 
 </div>
 
