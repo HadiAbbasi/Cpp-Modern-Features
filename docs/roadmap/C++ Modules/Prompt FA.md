@@ -4,7 +4,24 @@
 # ============================================
 Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-if consteval in C++23
+C++ Modules in C++20
+
+ADDITIONAL TOPICS AND REQUIREMENTS:
+Block Export
+Separating the Module Interface from the Implementation(Same File)
+Separating the Module Interface from the Implementation(Different Files)
+Multiple Implementatyion Files
+Multiple Interface Files
+Export Import (separated and batch)
+Sub-Modules
+Module Interface Partitions
+Custom Class Templates as Modules
+Modules with Namespaces
+Visibility and Reachability of modules, methods and classes
+using cpp files beside modules (implementation in cpp)
+Private Module Fragments
+Do's and Don't's in modules
+using a private (internal) module in exported module (than can not be visible itself in external modules)
 
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
 

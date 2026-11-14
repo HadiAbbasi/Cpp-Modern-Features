@@ -54,6 +54,7 @@
 | [`std::stop_source`](./std_stop_source.md) |
 | [`std::latch`](./std_latch.md) |
 | [`std::barrier`](./std_barrier.md) |
+| [`modules`](./modules.md) |
 
 </div>
 
