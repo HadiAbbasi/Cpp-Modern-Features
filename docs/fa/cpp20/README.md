@@ -56,6 +56,7 @@
 | [`std::barrier`](./std_barrier.md) |
 | [`modules`](./modules.md) |
 | [`coroutines`](./coroutines.md) |
+| [`Lists,Filters,Views,Ranges`](./lists_filters_views_ranges.md) |
 
 </div>
 

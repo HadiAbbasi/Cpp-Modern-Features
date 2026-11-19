@@ -4,13 +4,9 @@
 # ============================================
 Create a comprehensive Persian educational Markdown document (.md) about the following subject:
 
-MySubject
+Lists, Filters, Views, Ranges, Range Algorithms, Ranges Library Iterator, Pair Algorithms, Projections, Views and and Range Adaptors, View composition and Pipe operator, Range Factories in C++20
+including all important topics in that sent pdf!
 
-ADDITIONAL TOPICS AND REQUIREMENTS:
-- Topic 1
-- Topic 2
-- Topic 3
-- Topic 4
 
 The document will be published on GitHub and is intended for C++ developers. Follow all of the rules below carefully.
 
