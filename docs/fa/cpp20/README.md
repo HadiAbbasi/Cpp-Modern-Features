@@ -55,6 +55,7 @@
 | [`std::latch`](./std_latch.md) |
 | [`std::barrier`](./std_barrier.md) |
 | [`modules`](./modules.md) |
+| [`coroutines`](./coroutines.md) |
 
 </div>
 
