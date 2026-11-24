@@ -1,6 +1,6 @@
 <div align="center">
 
-[🇺🇸 English](../../en/cpp23/std_format improvements.md) | [🇮🇷 فارسی](./std_format improvements.md)
+[🇺🇸 English](../../en/cpp23/std_format_improvements.md) | [🇮🇷 فارسی](./std_format_improvements.md)
 
 </div>
 
