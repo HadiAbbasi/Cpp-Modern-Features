@@ -18,6 +18,12 @@
 | [`if consteval`](./if_consteval.md) |
 | [`Multidimensional subscript operator`](./multi_dimensional_subscript_operator.md) |
 | [`Static operator()`](./static_operator().md) |
+| [`std::expected`](./std_expected.md) |
+| [`std::print`](./std_print.md) |
+| [`std::println`](./std_println.md) |
+| [`std::format improvements `](./std_format_improvements.md) |
+| [`std::ranges improvements`](./std_ranges_improvements.md) |
+| [`std::views::zip`](./std_views_zip.md) |
 
 </div>
 
