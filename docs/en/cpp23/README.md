@@ -18,6 +18,12 @@
 | [`if consteval`](./if_consteval.md) |
 | [`Multidimensional subscript operator`](./multi_dimensional_subscript_operator.md) |
 | [`Static operator()`](./static_operator().md) |
+| [`byteswap`](./byteswap.md) |
+| [`flat_map`](./flat_map.md) |
+| [`flat_set`](./flat_set.md) |
+| [`mdspan`](./mdspan.md) |
+| [`unreachable`](./unreachable.md) |
+| [`to_underlying`](./to_underlying.md) |
 
 </div>
 
