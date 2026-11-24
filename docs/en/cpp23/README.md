@@ -24,6 +24,8 @@
 | [`std::format improvements `](./std_format_improvements.md) |
 | [`std::ranges improvements`](./std_ranges_improvements.md) |
 | [`std::views::zip`](./std_views_zip.md) |
+| [`std::views::zip_transform`](./std_views_zip_transform.md) |
+| [`std::views::adjacent`](./std_views_adjacent.md) |
 
 </div>
 
