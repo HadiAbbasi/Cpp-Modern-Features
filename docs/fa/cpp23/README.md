@@ -32,6 +32,8 @@
 | [`mdspan`](./mdspan.md) |
 | [`unreachable`](./unreachable.md) |
 | [`to_underlying`](./to_underlying.md) |
+| [`std::views::adjacent_transform`](./std_views_adjacent_transform.md) |
+| [`std::views::pairwise`](./std_views_pairwise.md) |
 
 </div>
 

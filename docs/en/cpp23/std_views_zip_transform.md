@@ -6,45 +6,97 @@
 
 ---
 
-# **A Comprehensive Guide to&#x20;**`std::views::zip_transform`**&#x20;in C++23**
+# **آموزش جامع&#x20;**`std::views::adjacent_transform`**&#x20;در ++C23**
 
-## **Introduction**
+## **مقدمه**
 
-The Ranges library in C++20 introduced powerful capabilities for processing collections of data in a declarative and composable manner. These capabilities make it possible to perform operations such as filtering, transforming, and traversing data without writing repetitive loops or manually managing iterators.
+کتابخانه Ranges در ++C20 و ++C23 امکانات قدرتمندی برای پردازش دنباله‌ای از داده‌ها به سبک Declarative Programming فراهم کرده است. یکی از قابلیت‌های کاربردی این مجموعه، امکان پردازش هم‌زمان چند عنصر مجاور در یک Range و تولید نتیجه‌ای جدید از آن‌ها است.
 
-Despite these improvements, one common programming requirement was not directly addressed: **processing multiple ranges simultaneously and applying a function to their corresponding elements**.
+در ++C23، قابلیت `std::views::adjacent_transform` به مجموعه Standard Views اضافه شده است تا بتوان عملیات‌هایی را که به چند عنصر متوالی نیاز دارند، بدون نوشتن حلقه‌های دستی و مدیریت مستقیم Iteratorها انجام داد.
 
-For example, suppose we have two arrays of numbers and want to add their corresponding elements. The traditional approach uses a loop to access both arrays simultaneously. With Ranges, we can also combine them using `std::views::zip` and then apply a transformation to produce the result.
-
-The `std::views::zip_transform` facility in C++23 was designed specifically to simplify these scenarios.
-
-It allows us to traverse multiple ranges simultaneously and invoke a callable on their corresponding elements without first creating a new container or manually storing intermediate results.
-
-In simple terms, `std::views::zip_transform` combines two concepts:
-
-- **Zip:** Combining corresponding elements from multiple ranges.
-- **Transform:** Applying a function to those elements to produce a result.
-
-This facility is part of the standard library and is provided as a Range Adaptor. Its standardization was accomplished through proposal `P2321R2`. In addition to `zip_transform`, this proposal introduced other related facilities, including `zip`, `adjacent`, and `adjacent_transform`.
-
-## **Core Concept and How It Works**
-
-### **What Is std::views::zip_transform?**
-
-`std::views::zip_transform` is a Range Adaptor that accepts a callable and one or more ranges, then creates a new view.
-
-If we represent the input function as \\(f\\) and the input ranges as \\(R_1\\), \\(R_2\\), up to \\(R_n\\), the element at position \\(i\\) in the output is:
-
-\\[ V[i] = f(R_1[i], R_2[i], \ldots, R_n[i]) \\]
-
-For example, consider the following two ranges:
+برای مثال، فرض کنید دنباله‌ای از اعداد در اختیار داریم و می‌خواهیم اختلاف هر دو عنصر متوالی را محاسبه کنیم:
 
 ```
-std::vector<int> a{1, 2, 3, 4};
-std::vector<int> b{10, 20, 30, 40};
+Input:  10, 15, 21, 30, 42
+Output:  5,  6,  9, 12
 ```
 
-If we want to add their corresponding elements:
+در روش‌های سنتی، معمولاً باید دو Iterator یا دو اندیس را به‌صورت هم‌زمان مدیریت کنیم. اما با استفاده از `adjacent_transform` می‌توان این عملیات را مستقیماً به‌صورت یک View تعریف کرد.
+
+این قابلیت به‌خصوص در پردازش داده‌های متوالی، محاسبات عددی، تحلیل تغییرات، پردازش سیگنال، بررسی پنجره‌های لغزان و الگوریتم‌هایی که به همسایگی عناصر وابسته هستند، کاربرد دارد.
+
+## **معرفی قابلیت adjacent_transform**
+
+قابلیت `std::views::adjacent_transform` بخشی از کتابخانه استاندارد Ranges در ++C23 است.
+
+این قابلیت یک View ایجاد می‌کند که روی مجموعه‌ای از عناصر متوالی و مجاور یک Range حرکت می‌کند و برای هر گروه از عناصر، یک Callable را اجرا می‌کند.
+
+تفاوت اصلی آن با الگوریتم‌هایی مانند `std::ranges::transform` این است که تابع Transform در اینجا به‌جای دریافت یک عنصر، مجموعه‌ای از عناصر مجاور را دریافت می‌کند.
+
+برای نمونه، اگر اندازه پنجره برابر با ۳ باشد، عناصر ورودی به شکل زیر پردازش می‌شوند:
+
+```
+Input:
+A, B, C, D, E
+
+Windows:
+(A, B, C)
+(B, C, D)
+(C, D, E)
+```
+
+در هر مرحله، سه عنصر متوالی به تابع موردنظر ارسال می‌شوند.
+
+بنابراین، تعداد عناصر خروجی برای یک Range با اندازه `N` و پنجره با اندازه `K` برابر است با:
+
+\\[ \max(N-K+1, 0) \\]
+
+این قابلیت از نظر مفهومی ترکیبی از دو عملیات است:
+
+- استخراج گروه‌های متوالی با اندازه ثابت.
+- اعمال یک تابع روی هر گروه و تولید نتیجه.
+
+## **محل قرارگیری در استاندارد**
+
+قابلیت `std::views::adjacent_transform` در استاندارد ++C23 معرفی شده است.
+
+این قابلیت با استفاده از مکانیزم‌های جدید Ranges طراحی شده و به خانواده `std::views` تعلق دارد.
+
+برای استفاده از آن باید Header زیر را اضافه کنید:
+
+```
+#include <ranges>
+```
+
+همچنین برای استفاده از سایر امکانات موردنیاز برنامه، Headerهای مربوطه مانند `<vector>`، `<array>` و `<iostream>` را نیز اضافه کنید.
+
+نکته مهم این است که `adjacent_transform` یک قابلیت استاندارد کتابخانه است، نه یک Keyword جدید در زبان ++C و نه یک Compiler Extension.
+
+وجود پشتیبانی از ++C23 در Compiler به‌تنهایی تضمین نمی‌کند که تمام اجزای این قابلیت در نسخه مورد استفاده پیاده‌سازی شده باشند.
+
+## **نحوه استفاده از adjacent_transform**
+
+ساختار کلی استفاده از این قابلیت به شکل زیر است:
+
+```
+std::views::adjacent_transform<N>(function)
+```
+
+در این ساختار:
+
+- پارامتر `N` اندازه هر پنجره یا تعداد عناصر مجاور مورد پردازش را مشخص می‌کند.
+- پارامتر `function` تابعی است که روی عناصر هر پنجره اجرا می‌شود.
+- نتیجه، یک `adjacent_transform_view` است که عناصر خروجی را به‌صورت Lazy تولید می‌کند.
+
+برای مثال، اگر `N` برابر با ۲ باشد، تابع در هر مرحله دو عنصر متوالی دریافت می‌کند.
+
+اگر `N` برابر با ۳ باشد، تابع در هر مرحله سه عنصر متوالی دریافت می‌کند.
+
+نکته مهم این است که `N` یک Template Argument از نوع عدد صحیح در زمان کامپایل است و نمی‌توان اندازه پنجره را در زمان اجرا به‌صورت پویا تغییر داد.
+
+### **مثال ساده با دو عنصر مجاور**
+
+در مثال زیر اختلاف دو عنصر متوالی محاسبه می‌شود:
 
 ```
 #include <iostream>
@@ -52,69 +104,33 @@ If we want to add their corresponding elements:
 #include <vector>
 
 int main() {
-    std::vector<int> a{1, 2, 3, 4};
-    std::vector<int> b{10, 20, 30, 40};
+    std::vector<int> numbers{10, 15, 21, 30, 42};
 
-    auto result = std::views::zip_transform(
-        [](int x, int y) {
-            return x + y;
-        },
-        a,
-        b
-    );
+    auto differences = std::views::adjacent_transform<2>(
+        [](int first, int second) {
+            return second - first;
+        }
+    )(numbers);
 
-    for (int value : result) {
+    for (int value : differences) {
         std::cout << value << ' ';
     }
 }
 ```
 
-Output:
+خروجی:
 
 ```
-11 22 33 44
+5 6 9 12
 ```
 
-In this example, the Lambda function is invoked with the corresponding elements from both ranges at each position.
+در این مثال، تابع Lambda دو پارامتر دریافت می‌کند و اختلاف عنصر دوم و اول را برمی‌گرداند.
 
-An important detail is that `result` is not a new container. It is a view that describes how to calculate the output elements.
+مهم‌ترین نکته این است که تابع برای هر جفت عنصر مجاور اجرا می‌شود، نه برای تمام ترکیب‌های ممکن از دو عنصر.
 
-### **The Difference Between a View and a Container**
+### **مثال با سه عنصر مجاور**
 
-To understand the behavior of `zip_transform` correctly, it is important to understand the difference between a View and a Container.
-
-A container such as `std::vector` is generally responsible for storing and managing data. A view, on the other hand, typically provides a representation of existing data or a computation based on that data.
-
-For example:
-
-```
-std::vector<int> values{1, 2, 3, 4};
-
-auto transformed = values | std::views::transform(
-    [](int value) {
-        return value * 2;
-    }
-);
-```
-
-In this example, the new view calculates its elements when they are accessed.
-
-`zip_transform` follows the same approach, except that it operates on multiple ranges instead of just one.
-
-Consequently:
-
-- No new container is created to store the results.
-- Elements are calculated when the view's iterator is dereferenced.
-- Computed results are not automatically cached in memory.
-- If the results need to be reused, they can be materialized into a container.
-
-### **Lazy Evaluation**
-
-One of the most important characteristics of `zip_transform` is its use of Lazy Evaluation.
-
-This means that creating the view does not execute the transformation function for every element.
-
-For example:
+در مثال بعدی، میانگین سه عنصر متوالی محاسبه می‌شود:
 
 ```
 #include <iostream>
@@ -122,211 +138,41 @@ For example:
 #include <vector>
 
 int main() {
-    std::vector<int> values{1, 2, 3, 4};
+    std::vector<int> numbers{10, 20, 30, 40, 50};
 
-    auto result = std::views::zip_transform(
-        [](int value) {
-            std::cout << "Processing: " << value << '\n';
-            return value * 10;
-        },
-        values
-    );
+    auto averages = std::views::adjacent_transform<3>(
+        [](int first, int second, int third) {
+            return (first + second + third) / 3.0;
+        }
+    )(numbers);
 
-    std::cout << "View created\n";
-
-    auto it = result.begin();
-
-    std::cout << *it << '\n';
-}
-```
-
-Output:
-
-```
-View created
-Processing: 1
-10
-```
-
-In this example, the Lambda is executed only when the iterator associated with the view is dereferenced.
-
-This behavior provides several advantages:
-
-- Avoiding unnecessary computations.
-- Reducing memory consumption.
-- Combining multiple Range Adaptors without creating intermediate containers.
-- Processing data incrementally.
-
-However, lazy evaluation does not imply memoization. If an iterator is dereferenced multiple times, the transformation function may be executed again each time.
-
-This is an important consideration when designing the callable.
-
-## **Using std::views::zip_transform**
-
-### **Required Header**
-
-The `zip_transform` facility is defined in the following header:
-
-```
-#include <ranges>
-```
-
-For examples that use `std::vector`, the following header is also required:
-
-```
-#include <vector>
-```
-
-### **General Syntax**
-
-The general form of this Range Adaptor is:
-
-```
-auto result = std::views::zip_transform(
-    callable,
-    range1,
-    range2,
-    range3
-);
-```
-
-The parameters are:
-
-- `callable`: A function, Lambda, Function Object, or any other valid callable object.
-- `range1`, `range2`, ...: The input ranges.
-
-At least one input range must be provided.
-
-Additionally, all input ranges must satisfy the standard requirements for use with this view.
-
-### **Using a Lambda**
-
-The most common way to use `zip_transform` is to pass a Lambda.
-
-```
-#include <iostream>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> prices{100, 200, 300};
-    std::vector<int> quantities{2, 3, 4};
-
-    auto totals = std::views::zip_transform(
-        [](int price, int quantity) {
-            return price * quantity;
-        },
-        prices,
-        quantities
-    );
-
-    for (auto total : totals) {
-        std::cout << total << '\n';
-    }
-}
-```
-
-Output:
-
-```
-200
-600
-1200
-```
-
-In this example, the Lambda receives the price and quantity of each corresponding product and calculates its total cost.
-
-### **Using a Function Object**
-
-A Lambda is not the only available option. We can also use a Function Object.
-
-```
-#include <iostream>
-#include <ranges>
-#include <vector>
-
-struct Multiply {
-    constexpr int operator()(int a, int b) const {
-        return a * b;
-    }
-};
-
-int main() {
-    std::vector<int> a{2, 3, 4};
-    std::vector<int> b{5, 6, 7};
-
-    auto result = std::views::zip_transform(
-        Multiply{},
-        a,
-        b
-    );
-
-    for (int value : result) {
+    for (double value : averages) {
         std::cout << value << ' ';
     }
 }
 ```
 
-Output:
+خروجی:
 
 ```
-10 18 28
+20 30 40
 ```
 
-Using a Function Object is useful when:
-
-- The computational logic is complex.
-- The operation requires explicit internal state.
-- We want to reuse a callable in different parts of the program.
-- We want to extend its behavior using templates or overloading.
-
-### **Using Standard Library Functions**
-
-We can also use Function Objects provided by the standard library.
-
-For example, we can use `std::plus` to add elements from two ranges:
+در این مثال، پنجره‌های پردازش به شکل زیر هستند:
 
 ```
-#include <functional>
-#include <iostream>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
-
-    for (int value : result) {
-        std::cout << value << ' ';
-    }
-}
+(10, 20, 30)
+(20, 30, 40)
+(30, 40, 50)
 ```
 
-Output:
+هر پنجره به‌صورت مستقل به تابع Lambda ارسال می‌شود.
 
-```
-11 22 33
-```
+## **نحوه استفاده به‌صورت Pipeline**
 
-In this example, `std::plus<>` is a Function Object that uses template argument deduction to determine the operation's argument types.
+یکی از مزیت‌های اصلی Ranges، قابلیت ترکیب Viewها با استفاده از Pipe Operator است.
 
-For operations such as addition, subtraction, multiplication, and comparison, standard Function Objects can make the code simpler and more readable.
-
-## **Relationship with std::views::zip**
-
-### **Introducing zip**
-
-To understand `zip_transform` better, we should first examine `std::views::zip`.
-
-`std::views::zip` was also introduced in C++23. It combines multiple ranges into a single composite range.
-
-Each output element contains the corresponding elements from the input ranges.
+در این روش می‌توان `adjacent_transform` را مستقیماً در یک Pipeline قرار داد:
 
 ```
 #include <iostream>
@@ -334,441 +180,509 @@ Each output element contains the corresponding elements from the input ranges.
 #include <vector>
 
 int main() {
-    std::vector<int> numbers{1, 2, 3};
-    std::vector<char> letters{'A', 'B', 'C'};
+    std::vector<int> numbers{2, 4, 6, 8, 10};
 
-    auto zipped = std::views::zip(numbers, letters);
-
-    for (auto [number, letter] : zipped) {
-        std::cout << number << ' ' << letter << '\n';
-    }
-}
-```
-
-Output:
-
-```
-1 A
-2 B
-3 C
-```
-
-Here, each output element is a tuple-like object containing the corresponding values from both ranges.
-
-### **Differences Between zip and zip_transform**
-
-The primary difference between these two facilities is the type of their output.
-
-| Feature                 | `std::views::zip`             | `std::views::zip_transform`       |
-| ----------------------- | ----------------------------- | --------------------------------- |
-| Input parameters        | One or more ranges            | A callable and one or more ranges |
-| Output                  | A range of tuple-like objects | Results of invoking the callable  |
-| Function execution      | None                          | On dereference                    |
-| Lazy evaluation         | Yes                           | Yes                               |
-| Creates a new container | No                            | No                                |
-| Primary purpose         | Simultaneous traversal        | Simultaneous processing           |
-
-For example, the following code combines elements from two ranges using `zip`:
-
-```
-auto zipped = std::views::zip(a, b);
-```
-
-However, the following code directly adds the corresponding elements:
-
-```
-auto transformed = std::views::zip_transform(
-    std::plus<>{},
-    a,
-    b
-);
-```
-
-Conceptually, the behavior of `zip_transform` is similar to applying `std::views::transform` to the output of `std::views::zip`. However, these two expressions are not necessarily identical in terms of their view types or implementation details.
-
-In fact, `zip_transform` is specifically provided by the standard library for this use case.
-
-### **Manually Combining zip and transform**
-
-Before `zip_transform` was introduced, we could implement similar functionality by combining two Range Adaptors.
-
-```
-#include <functional>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    auto result =
-        std::views::zip(a, b)
-        | std::views::transform(
-            [](const auto& values) {
-                return std::get<0>(values)
-                     + std::get<1>(values);
+    auto result = numbers
+        | std::views::adjacent_transform<2>(
+            [](int a, int b) {
+                return a * b;
             }
         );
+
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
 }
 ```
 
-This approach is valid, but extracting elements from tuple-like objects can make the code more complicated, especially when the number of input ranges increases.
-
-By contrast, `zip_transform` passes the elements directly to the callable:
+خروجی:
 
 ```
-auto result = std::views::zip_transform(
-    std::plus<>{},
-    a,
-    b
+8 24 48 80
+```
+
+در این مثال، ابتدا Range ورودی به `adjacent_transform` داده می‌شود و سپس تابع Lambda روی جفت‌های مجاور اجرا می‌شود.
+
+### **دو شیوه فراخوانی Range Adaptor**
+
+این قابلیت از دو شیوه اصلی استفاده پشتیبانی می‌کند.
+
+**روش اول: ارسال مستقیم Range و تابع**
+
+```
+auto result = std::views::adjacent_transform<2>(
+    numbers,
+    [](int a, int b) {
+        return a + b;
+    }
 );
 ```
 
-This approach:
-
-- Is shorter.
-- Expresses the intended operation more directly.
-- Eliminates the need to extract elements from a tuple.
-- Scales more naturally to a larger number of input ranges.
-
-## **Internal Structure and Standard Requirements**
-
-### **Introducing zip_transform_view**
-
-The actual view type produced by `std::views::zip_transform` is located in the following namespace:
+**روش دوم: ساخت Range Adaptor Closure و استفاده از Pipe**
 
 ```
-std::ranges::zip_transform_view
+auto addAdjacent = std::views::adjacent_transform<2>(
+    [](int a, int b) {
+        return a + b;
+    }
+);
+
+auto result = numbers | addAdjacent;
 ```
 
-This class template is responsible for storing the callable and the input views.
+روش دوم زمانی مفید است که بخواهیم یک Transformation را تعریف کنیم و آن را روی چند Range مختلف به کار ببریم.
 
-A simplified representation of its template constraints looks like this:
+## **معرفی pairwise_transform**
+
+کتابخانه استاندارد یک نام مستعار کاربردی برای حالت پردازش دو عنصر مجاور ارائه می‌کند:
+
+```
+std::views::pairwise_transform
+```
+
+این نام معادل زیر است:
+
+```
+std::views::adjacent_transform<2>
+```
+
+بنابراین، در مواردی که هدف پردازش جفت‌های متوالی است، می‌توان به‌جای مشخص کردن عدد ۲ از `pairwise_transform` استفاده کرد.
+
+برای مثال:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{3, 5, 8, 12, 17};
+
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int current, int next) {
+                return next - current;
+            }
+        );
+
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+2 3 4 5
+```
+
+استفاده از `pairwise_transform` خوانایی کد را افزایش می‌دهد، زیرا هدف پردازش جفت‌های مجاور را به‌صورت مستقیم بیان می‌کند.
+
+## **مفهوم Sliding Window**
+
+یکی از مفاهیم مهم برای درک رفتار `adjacent_transform`، مفهوم Sliding Window است.
+
+در این روش، یک پنجره با اندازه ثابت روی عناصر Range حرکت می‌کند. در هر مرحله، پنجره یک عنصر به جلو منتقل می‌شود و عناصر جدیدی را در بر می‌گیرد.
+
+برای مثال، اگر ورودی شامل عناصر زیر باشد:
+
+```
+10, 20, 30, 40, 50, 60
+```
+
+و اندازه پنجره برابر با ۳ باشد، پنجره‌ها به شکل زیر ساخته می‌شوند:
+
+```
+Step 1: 10, 20, 30
+Step 2:     20, 30, 40
+Step 3:         30, 40, 50
+Step 4:             40, 50, 60
+```
+
+در هر مرحله، تنها یک عنصر به موقعیت بعدی منتقل می‌شود و دو عنصر دیگر با پنجره قبلی مشترک هستند.
+
+این رفتار باعث می‌شود که عناصر میانی در چند پنجره مختلف حضور داشته باشند.
+
+### **تفاوت Sliding Window با Chunking**
+
+مفهوم Sliding Window نباید با تقسیم Range به بخش‌های مستقل یا Chunking اشتباه گرفته شود.
+
+برای مقایسه، فرض کنید یک Range با شش عنصر داریم و اندازه هر گروه برابر با ۳ است.
+
+در حالت Sliding Window:
+
+```
+(10, 20, 30)
+(20, 30, 40)
+(30, 40, 50)
+(40, 50, 60)
+```
+
+اما در حالت Chunking:
+
+```
+(10, 20, 30)
+(40, 50, 60)
+```
+
+در نتیجه:
+
+- در Sliding Window، پنجره‌ها هم‌پوشانی دارند.
+- در Chunking، هر عنصر فقط در یک گروه قرار می‌گیرد.
+- در `adjacent_transform`، پردازش بر اساس پنجره‌های هم‌پوشان انجام می‌شود.
+
+اگر هدف پردازش گروه‌های مستقل و بدون هم‌پوشانی باشد، `std::views::chunk` انتخاب مناسب‌تری است.
+
+## **بررسی اندازه Range خروجی**
+
+یکی از ویژگی‌های مهم `adjacent_transform`، اندازه خروجی آن است.
+
+اگر اندازه Range ورودی برابر با `N` و اندازه پنجره برابر با `K` باشد، اندازه Range خروجی به شکل زیر محاسبه می‌شود:
+
+\\[ S\_{\text{output}} = \begin{cases} S\_{\text{input}}-K+1 & S\_{\text{input}}\geq K\\\ 0 & S\_{\text{input}}\<K \end{cases} \\]
+
+برای مثال:
+
+| اندازه ورودی | اندازه پنجره | اندازه خروجی |
+| ------------ | ------------ | ------------ |
+| 5            | 2            | 4            |
+| 5            | 3            | 3            |
+| 5            | 4            | 2            |
+| 5            | 5            | 1            |
+| 5            | 6            | 0            |
+| 2            | 3            | 0            |
+
+بنابراین، اگر تعداد عناصر ورودی کمتر از اندازه پنجره باشد، هیچ خروجی‌ای تولید نمی‌شود.
+
+### **مثال برای Range کوچک‌تر از پنجره**
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{10, 20};
+
+    auto result = values
+        | std::views::adjacent_transform<3>(
+            [](int a, int b, int c) {
+                return a + b + c;
+            }
+        );
+
+    std::cout << std::ranges::distance(result);
+}
+```
+
+خروجی:
+
+```
+0
+```
+
+در این مثال، چون تنها دو عنصر وجود دارد و پنجره به سه عنصر نیاز دارد، View خروجی خالی است.
+
+نکته مهم این است که در این شرایط تابع Lambda اجرا نمی‌شود.
+
+## **مفهوم Lazy Evaluation**
+
+یکی از مهم‌ترین ویژگی‌های `adjacent_transform`، استفاده از Lazy Evaluation است.
+
+این قابلیت به این معناست که هنگام ساخت View، تمام نتایج محاسبه نمی‌شوند.
+
+برای مثال:
+
+```
+auto result = values
+    | std::views::adjacent_transform<2>(
+        [](int a, int b) {
+            return a + b;
+        }
+    );
+```
+
+در این مرحله فقط یک View ساخته شده است و هنوز نیازی به محاسبه تمام مقادیر خروجی وجود ندارد.
+
+محاسبه هر مقدار زمانی انجام می‌شود که Iterator مربوط به View آن مقدار را Dereference کند.
+
+برای مثال:
+
+```
+for (int value : result) {
+    std::cout << value << '\n';
+}
+```
+
+در این مرحله، مقادیر موردنیاز به‌صورت تدریجی محاسبه می‌شوند.
+
+### **مزایای Lazy Evaluation**
+
+استفاده از این روش مزایای متعددی دارد:
+
+- جلوگیری از تخصیص حافظه برای یک Container خروجی.
+- امکان ترکیب چند Transformation بدون ساخت نتایج میانی.
+- پردازش تدریجی داده‌ها.
+- امکان استفاده از View در Pipelineهای پیچیده.
+- محاسبه تنها مقادیری که واقعاً موردنیاز هستند.
+
+### **نکته مهم درباره محاسبه مجدد**
+
+از آنجا که `adjacent_transform` یک View تنبل است، نباید فرض کنیم که نتیجه هر پنجره الزاماً فقط یک‌بار محاسبه می‌شود.
+
+اگر یک Iterator چندین بار Dereference شود، تابع Transformation ممکن است چندین بار برای همان پنجره اجرا شود.
+
+بنابراین، بهتر است تابع مورد استفاده تا حد امکان Pure Function باشد؛ یعنی برای ورودی یکسان، نتیجه یکسان تولید کند و به Side Effect وابسته نباشد.
+
+برای مثال، تابع زیر انتخاب مناسبی است:
+
+```
+[](int a, int b) {
+    return a + b;
+}
+```
+
+اما تابعی که در هر بار اجرا یک شمارنده خارجی را تغییر می‌دهد، ممکن است رفتار غیرمنتظره‌ای ایجاد کند.
+
+## **الزامات و محدودیت‌های Type System**
+
+قابلیت `adjacent_transform` برای Range و Callable ورودی، محدودیت‌های مشخصی دارد.
+
+شناخت این محدودیت‌ها برای استفاده حرفه‌ای از آن ضروری است.
+
+### **الزام Forward Range**
+
+یکی از مهم‌ترین الزامات این قابلیت، پشتیبانی Range ورودی از مفهوم `std::ranges::forward_range` است.
+
+به بیان ساده، Range باید امکان پیمایش چندباره و نگهداری Iteratorهای معتبر در چارچوب الزامات Forward Iterator را فراهم کند.
+
+به همین دلیل، هر Rangeای که فقط مفهوم `input_range` را پیاده‌سازی کرده باشد، الزاماً برای `adjacent_transform` مناسب نیست.
+
+برای مثال، یک Stream مبتنی بر `std::istream_view` معمولاً فقط Input Range است و نمی‌توان آن را مستقیماً به‌عنوان ورودی این View استفاده کرد.
+
+```
+#include <ranges>
+#include <sstream>
+
+int main() {
+    std::istringstream stream{"10 20 30 40"};
+
+    auto values = std::ranges::istream_view<int>(stream);
+
+    // This does not satisfy the forward_range requirement.
+    // auto result = values
+    //     | std::views::adjacent_transform<2>(
+    //         [](int a, int b) { return a + b; }
+    //     );
+}
+```
+
+برای استفاده از داده‌های چنین Streamهایی، می‌توان ابتدا آن‌ها را در یک Container ذخیره کرد:
+
+```
+#include <iostream>
+#include <ranges>
+#include <sstream>
+#include <vector>
+
+int main() {
+    std::istringstream stream{"10 20 30 40"};
+
+    std::vector<int> values;
+
+    for (int value : std::ranges::istream_view<int>(stream)) {
+        values.push_back(value);
+    }
+
+    auto result = values
+        | std::views::adjacent_transform<2>(
+            [](int a, int b) {
+                return b - a;
+            }
+        );
+
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+10 10 10
+```
+
+در این روش، هزینه ذخیره‌سازی داده‌ها در Container وجود دارد، اما در مقابل یک Range قابل پیمایش مجدد در اختیار خواهیم داشت.
+
+### **الزام N بزرگ‌تر از صفر**
+
+پارامتر اندازه پنجره باید در حالت معمول استفاده از `adjacent_transform_view` بزرگ‌تر از صفر باشد.
+
+به‌صورت مفهومی:
+
+```
+std::views::adjacent_transform<1>
+std::views::adjacent_transform<2>
+std::views::adjacent_transform<3>
+```
+
+همگی حالت‌های معتبر هستند.
+
+اما مقدار صفر با محدودیت‌های خاصی در Standard تعریف شده و نباید آن را یک پنجره معمولی در نظر گرفت.
+
+طبق مشخصات استاندارد، برای Forward Range، حالت صفر معادل `views::zip_transform` است. همچنین محدودیت‌های مربوط به نسخه اصلاح‌شده استاندارد باید در نظر گرفته شوند.
+
+در طراحی معمول برنامه، اگر هدف تبدیل تک‌تک عناصر است، استفاده از `std::views::transform` انتخاب واضح‌تر و مناسب‌تری خواهد بود.
+
+### **الزامات Callable**
+
+تابع ورودی باید بتواند دقیقاً `N` آرگومان دریافت کند.
+
+برای نمونه، در حالت زیر:
+
+```
+std::views::adjacent_transform<3>(
+    [](int a, int b, int c) {
+        return a + b + c;
+    }
+);
+```
+
+تابع باید با سه Reference مربوط به عناصر ورودی قابل فراخوانی باشد.
+
+از نظر مفهومی، استاندارد از Constraintهای `std::regular_invocable` برای بررسی Callable استفاده می‌کند.
+
+همچنین نوع خروجی تابع نباید `void` باشد و باید قابلیت استفاده به‌عنوان Reference یا Value را داشته باشد.
+
+نکته مهم این است که پارامترهای تابع الزاماً نباید از نوع `int` باشند. تابع می‌تواند از انواع مناسب دیگری مانند Reference، `const` Reference یا Generic Parameter استفاده کند.
+
+برای مثال:
+
+```
+auto result = values
+    | std::views::adjacent_transform<2>(
+        [](const auto& first, const auto& second) {
+            return first < second;
+        }
+    );
+```
+
+این روش به‌خصوص برای Rangeهایی که عناصر آن‌ها از انواع پیچیده تشکیل شده‌اند، مفید است.
+
+## **بررسی نحوه پیاده‌سازی و ساختار داخلی**
+
+برای درک بهتر رفتار این قابلیت، بررسی ساختار داخلی `std::ranges::adjacent_transform_view` مفید است.
+
+این Class Template در Namespace زیر تعریف شده است:
+
+```
+std::ranges::adjacent_transform_view
+```
+
+ساختار کلی آن به شکل زیر است:
 
 ```
 namespace std::ranges {
 
     template<
+        forward_range V,
         std::move_constructible F,
-        std::ranges::input_range... Views
+        std::size_t N
     >
     requires
-        (std::ranges::view<Views> && ...) &&
-        (sizeof...(Views) > 0) &&
+        view<V> &&
+        (N > 0) &&
         std::is_object_v<F> &&
         std::regular_invocable<
             F&,
-            std::ranges::range_reference_t<Views>...
+            std::ranges::range_reference_t<V>
         > &&
-        requires {
-            typename std::invoke_result_t<
-                F&,
-                std::ranges::range_reference_t<Views>...
-            >;
+        std::invocable<F&>
+    class adjacent_transform_view;
+
+}
+```
+
+کد بالا صرفاً نمایشی از ساختار Template است و Declaration کامل استاندارد محسوب نمی‌شود؛ زیرا برای `N` آرگومان، نوع Reference متناظر باید به‌صورت تکراری در Constraint قرار گیرد.
+
+محدودیت‌های اصلی Template عبارت‌اند از:
+
+- `V` باید یک `view` و در عین حال یک `forward_range` باشد.
+- نوع `F` باید قابلیت Move Construction داشته باشد.
+- مقدار `N` باید بزرگ‌تر از صفر باشد.
+- نوع `F` باید یک Object Type باشد.
+- تابع باید با `N` آرگومان از نوع Reference عناصر Range قابل فراخوانی باشد.
+- نوع خروجی تابع باید قابل استفاده باشد و `void` نباشد.
+
+### **ارتباط با adjacent_view**
+
+یکی از نکات جالب پیاده‌سازی این قابلیت، استفاده داخلی از `std::ranges::adjacent_view` است.
+
+در واقع، `adjacent_transform_view` از یک View داخلی برای مدیریت پنجره‌های مجاور استفاده می‌کند.
+
+به‌صورت مفهومی، ساختار پردازش چنین است:
+
+```
+Original Range
+      |
+      v
+adjacent_view<N>
+      |
+      v
+Adjacent Elements
+      |
+      v
+Transformation Function
+      |
+      v
+Result View
+```
+
+برای مثال، اگر ورودی شامل پنج عنصر و اندازه پنجره برابر با ۳ باشد، ابتدا پنجره‌های مجاور ایجاد می‌شوند و سپس تابع Transformation روی هر پنجره اجرا می‌شود.
+
+نکته مهم این است که این ساختار مفهومی نباید با ساخت یک Container شامل تمام پنجره‌ها اشتباه گرفته شود. Viewها برای ارائه دسترسی تنبل به داده‌ها طراحی شده‌اند.
+
+## **نحوه مدیریت Callable**
+
+تابع ورودی در `adjacent_transform` به‌عنوان بخشی از وضعیت View نگهداری می‌شود.
+
+این موضوع چند نکته مهم دارد.
+
+### **امکان استفاده از Lambda**
+
+یکی از رایج‌ترین روش‌های استفاده از این قابلیت، Lambda Expression است:
+
+```
+auto result = values
+    | std::views::adjacent_transform<2>(
+        [](int a, int b) {
+            return a * b;
         }
-    class zip_transform_view;
-
-}
-```
-
-This code is intended only as an educational representation of the template requirements and is not the complete standard definition.
-
-In the actual standard, the requirement that the result type be a valid referenceable type is also expressed using the internal `can-reference` concept.
-
-### **The move_constructible Requirement**
-
-The callable must satisfy the `std::move_constructible` concept.
-
-This means that the callable object must be capable of being moved into the view.
-
-For example:
-
-```
-auto callable = [](int value) {
-    return value * 2;
-};
-
-auto result = std::views::zip_transform(
-    std::move(callable),
-    values
-);
-```
-
-For ordinary Lambdas, moving the callable is generally straightforward.
-
-An important detail is that the standard does not require the callable to be Copyable. The primary requirement is that it be `move_constructible`.
-
-### **The input_range Requirement**
-
-Each input range must model the `std::ranges::input_range` concept.
-
-This concept specifies that a range provides at least the capabilities required for input iteration.
-
-Consequently, many different range types can be used, including:
-
-- `std::vector`
-- `std::list`
-- `std::array`
-- `std::span`
-- `std::ranges::subrange`
-- Various standard views
-- Custom ranges that satisfy the required constraints
-
-The input ranges do not have to be containers.
-
-### **The view Requirement**
-
-The internal view types must model the `std::ranges::view` concept.
-
-An important detail is that the public `std::views::zip_transform` adaptor can accept containers and other `viewable_range` types.
-
-When necessary, the standard library converts them into suitable views.
-
-For example:
-
-```
-std::vector<int> values{1, 2, 3};
-
-auto result = std::views::zip_transform(
-    [](int value) {
-        return value * 3;
-    },
-    values
-);
-```
-
-In this example, there is no need to convert `values` into a view manually.
-
-### **The regular_invocable Requirement**
-
-One of the most important callable requirements is `std::regular_invocable`.
-
-Structurally, this concept is similar to `std::invocable`, but it has additional semantic requirements.
-
-In particular, the invocation operation must be equality-preserving in the semantic sense.
-
-This matters for views that perform computations when their iterators are dereferenced.
-
-For example, the following function is syntactically a valid callable:
-
-```
-int counter = 0;
-
-auto callable = [&counter](int value) {
-    ++counter;
-    return value + counter;
-};
-```
-
-However, its behavior changes with every invocation.
-
-Such a callable does not satisfy the semantic requirements of `regular_invocable`.
-
-It is important to note that a compiler generally cannot automatically verify all the semantic requirements of this concept. Therefore, code like this may compile while still failing to satisfy the standard's requirements.
-
-As a result, callables used with `zip_transform` should ideally be Pure and free of side effects.
-
-### **The can-reference Requirement**
-
-The callable's return type must also satisfy specific requirements.
-
-The standard uses an internal concept called `can-reference`.
-
-In simplified terms, this concept checks whether a valid reference can be formed to the result type.
-
-For this reason, outputs such as `void` are not valid for `zip_transform`.
-
-For example:
-
-```
-auto invalid = std::views::zip_transform(
-    [](int value) {
-        std::cout << value;
-    },
-    values
-);
-```
-
-This code is invalid because the Lambda returns `void`.
-
-By contrast, the following code is valid:
-
-```
-auto valid = std::views::zip_transform(
-    [](int value) {
-        return value * 2;
-    },
-    values
-);
-```
-
-Therefore, `zip_transform` is designed to produce a range of results, not merely to execute side-effecting operations on elements.
-
-## **Iterator Behavior and Range Properties**
-
-### **Iterator Capabilities**
-
-The iterator type associated with `zip_transform_view` derives its capabilities from the internal `zip_view` iterator.
-
-In general, if the underlying composite view supports a particular range capability, `zip_transform_view` can provide that capability as well.
-
-The most important supported concepts include:
-
-- `input_range`
-- `forward_range`
-- `bidirectional_range`
-- `random_access_range`
-- `common_range`
-- `sized_range`
-
-For example, if all input ranges support random access, the resulting view can also be a `random_access_range`.
-
-Example:
-
-```
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{4, 5, 6};
-
-    auto result = std::views::zip_transform(
-        [](int x, int y) {
-            return x + y;
-        },
-        a,
-        b
     );
-
-    static_assert(
-        std::ranges::random_access_range<
-            decltype(result)
-        >
-    );
-
-    auto value = result[1];
-}
 ```
 
-In this example, both inputs are `std::vector` objects, so the resulting view also supports random access.
+### **استفاده از Function Object**
 
-### **Random Access to Elements**
-
-When random access is supported, the indexing operator can be used.
-
-```
-auto result = std::views::zip_transform(
-    std::plus<>{},
-    a,
-    b
-);
-
-int value = result[2];
-```
-
-In this case, the corresponding elements at the third position in both ranges are retrieved and passed to the addition function.
-
-This capability is useful for algorithms that require direct access to different positions.
-
-### **Reverse Iteration**
-
-If all the necessary conditions for a bidirectional range are satisfied, the output view can be traversed in reverse.
+در برنامه‌های بزرگ‌تر می‌توان منطق Transformation را در یک Function Object قرار داد:
 
 ```
 #include <iostream>
 #include <ranges>
 #include <vector>
 
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
-
-    for (auto it = result.rbegin();
-         it != result.rend();
-         ++it) {
-        std::cout << *it << ' ';
+struct Difference {
+    int operator()(int first, int second) const {
+        return second - first;
     }
-}
-```
-
-Output:
-
-```
-33 22 11
-```
-
-The availability of `rbegin` and `rend` follows from the range facilities and `view_interface`, subject to the capabilities of the underlying view.
-
-### **The Sized Range Property**
-
-If the underlying `zip_view` models `sized_range`, the resulting view also supports size calculation.
-
-For `zip_transform`, the output size is equal to the smallest size among the input ranges.
-
-\\[ Size(V) = \min(Size(R_1), Size(R_2), \ldots, Size(R_n)) \\]
-
-For example:
-
-```
-#include <iostream>
-#include <ranges>
-#include <vector>
+};
 
 int main() {
-    std::vector<int> a{1, 2, 3, 4, 5};
-    std::vector<int> b{10, 20, 30};
+    std::vector<int> values{10, 15, 25, 40, 60};
 
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
-
-    std::cout << std::ranges::size(result);
-}
-```
-
-Output:
-
-```
-3
-```
-
-In this example, the first range contains five elements, while the second contains three. Therefore, the resulting view contains only three elements.
-
-## **Handling Ranges with Different Sizes**
-
-### **Behavior When Sizes Differ**
-
-One important aspect of `zip_transform` is its behavior when given ranges of different sizes.
-
-Like `std::views::zip`, it follows the shortest-range rule.
-
-In other words, iteration ends when at least one of the input ranges reaches its end.
-
-For example:
-
-```
-#include <iostream>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3, 4, 5};
-    std::vector<int> b{10, 20, 30};
-
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
+    auto result = values
+        | std::views::adjacent_transform<2>(Difference{});
 
     for (int value : result) {
         std::cout << value << ' ';
@@ -776,61 +690,17 @@ int main() {
 }
 ```
 
-Output:
+خروجی:
 
 ```
-11 22 33
+5 10 15 20
 ```
 
-The fourth and fifth elements of the first range are not processed.
+استفاده از Function Object زمانی مناسب است که منطق پردازش پیچیده باشد یا قرار باشد در چند قسمت برنامه استفاده شود.
 
-This behavior is similar to the `zip` operation found in many programming languages.
+### **استفاده از Generic Lambda**
 
-### **Why Is the Shortest Range Used?**
-
-Suppose we have two arrays of different sizes and want to add their corresponding elements.
-
-If iteration continued until the larger range reached its end, we might attempt to access invalid elements in the smaller range.
-
-To avoid this situation, the standard defines the behavior so that iteration stops at the shortest range.
-
-### **Checking Whether Ranges Have Equal Sizes**
-
-An important detail is that `zip_transform` does not require all input ranges to have the same size.
-
-If the program's logic requires processing every element, their sizes should be checked separately.
-
-```
-#include <cassert>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    assert(std::ranges::size(a) ==
-           std::ranges::size(b));
-
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
-}
-```
-
-This is particularly important when processing financial, scientific, statistical, or tabular data, where different input sizes may indicate an error in the input data.
-
-## **Managing References and Value Categories**
-
-### **Accessing the Original Elements**
-
-An important characteristic of `zip_transform` is that the callable receives elements according to the reference types associated with their respective ranges.
-
-For example, when a `std::vector<int>` is passed to the view, its reference type is generally `int&`.
-
-Consequently, the original elements can be modified without copying them.
+در صورت نیاز به پشتیبانی از انواع مختلف داده‌ها، می‌توان از Generic Lambda استفاده کرد:
 
 ```
 #include <iostream>
@@ -838,111 +708,40 @@ Consequently, the original elements can be modified without copying them.
 #include <vector>
 
 int main() {
-    std::vector<int> values{1, 2, 3};
+    std::vector<double> values{
+        1.5, 2.5, 4.0, 7.0, 11.5
+    };
 
-    auto result = std::views::zip_transform(
-        [](int& value) -> int& {
-            return value;
-        },
-        values
-    );
+    auto result = values
+        | std::views::adjacent_transform<2>(
+            [](const auto& a, const auto& b) {
+                return b - a;
+            }
+        );
 
-    for (int& value : result) {
-        value *= 10;
-    }
-
-    for (int value : values) {
+    for (auto value : result) {
         std::cout << value << ' ';
     }
 }
 ```
 
-Output:
+خروجی:
 
 ```
-10 20 30
+1 1.5 3 4.5
 ```
 
-In this example, the Lambda returns a reference to the original element.
+این روش انعطاف بیشتری در طراحی Generic Code فراهم می‌کند.
 
-Therefore, modifying an element through the resulting view also modifies the original container.
+## **کاربردهای عملی adjacent_transform**
 
-### **Value Return Types Versus Reference Return Types**
+این قابلیت در بسیاری از الگوریتم‌هایی که به مقایسه یا پردازش عناصر مجاور نیاز دارند، مفید است.
 
-The callable's return type plays an important role in the behavior of the view.
+### **محاسبه اختلاف عناصر متوالی**
 
-If the callable returns a value, the output element represents the result of the computation.
+یکی از کاربردهای رایج، محاسبه تغییرات بین مقادیر متوالی است.
 
-```
-auto result = std::views::zip_transform(
-    [](int& value) {
-        return value * 2;
-    },
-    values
-);
-```
-
-However, if the callable returns a reference, the view can provide direct access to the original data.
-
-```
-auto result = std::views::zip_transform(
-    [](int& value) -> int& {
-        return value;
-    },
-    values
-);
-```
-
-This distinction is important for memory management, performance, and the ability to modify data.
-
-### **Using const References**
-
-If we do not intend to modify the data, it is generally preferable to use const references in the callable.
-
-```
-auto result = std::views::zip_transform(
-    [](const int& a, const int& b) {
-        return a + b;
-    },
-    first,
-    second
-);
-```
-
-This approach is suitable for read-only computations.
-
-It also avoids unnecessary copies when working with large elements.
-
-### **Using Proxy References**
-
-In C++, not all containers necessarily provide ordinary references to their elements.
-
-For example, `std::vector<bool>` has a specialized implementation in which element access is performed through proxy references.
-
-Therefore, we should not always assume that the reference type of a range is exactly `T&`.
-
-To write more generic callables, we can use `auto`:
-
-```
-auto result = std::views::zip_transform(
-    [](auto&& value) {
-        return !static_cast<bool>(value);
-    },
-    flags
-);
-```
-
-This approach is useful for supporting different reference types.
-
-However, using `auto&&` alone does not solve every issue associated with proxy references. The function's logic must still be compatible with the operations and conversions supported by the input type.
-
-## **Advanced Capabilities and Practical Techniques**
-
-### **Using Three or More Ranges**
-
-One of the main advantages of `zip_transform` is its ability to accept an arbitrary number of ranges.
-
-For example, suppose we want to calculate the areas of several rectangles.
+فرض کنید داده‌های مربوط به دمای یک محیط در اختیار داریم:
 
 ```
 #include <iostream>
@@ -950,48 +749,39 @@ For example, suppose we want to calculate the areas of several rectangles.
 #include <vector>
 
 int main() {
-    std::vector<double> widths{2.0, 3.0, 4.0};
-    std::vector<double> heights{5.0, 6.0, 7.0};
+    std::vector<double> temperatures{
+        18.5, 19.0, 20.5, 20.0, 22.5
+    };
 
-    std::vector<double> scales{1.0, 2.0, 0.5};
+    auto changes = temperatures
+        | std::views::pairwise_transform(
+            [](double previous, double current) {
+                return current - previous;
+            }
+        );
 
-    auto areas = std::views::zip_transform(
-        [](double width, double height, double scale) {
-            return width * height * scale;
-        },
-        widths,
-        heights,
-        scales
-    );
-
-    for (double area : areas) {
-        std::cout << area << ' ';
+    for (double change : changes) {
+        std::cout << change << '\n';
     }
 }
 ```
 
-Output:
+خروجی:
 
 ```
-10 36 14
+0.5
+1.5
+-0.5
+2.5
 ```
 
-In this example, each output element is calculated using three corresponding values.
+این روش برای تحلیل تغییرات زمانی، بررسی روند داده‌ها و محاسبه نرخ تغییر در فاصله‌های متوالی کاربرد دارد.
 
-This capability is useful in:
+### **محاسبه Moving Average**
 
-- Geometric calculations.
-- Multidimensional data processing.
-- Financial calculations.
-- Signal processing.
-- Matrix computations.
-- Combining multiple features from a dataset.
+یکی دیگر از کاربردهای مهم، محاسبه Moving Average با پنجره ثابت است.
 
-### **Combining with std::views::filter**
-
-`zip_transform` can be combined with other Range Adaptors.
-
-For example, suppose we want to calculate the sums of corresponding elements from two ranges and then retain only the results greater than a specified value.
+در مثال زیر، میانگین سه عنصر متوالی محاسبه می‌شود:
 
 ```
 #include <iostream>
@@ -999,20 +789,188 @@ For example, suppose we want to calculate the sums of corresponding elements fro
 #include <vector>
 
 int main() {
-    std::vector<int> a{1, 10, 20, 30, 40};
-    std::vector<int> b{2, 5, 10, 15, 20};
+    std::vector<double> values{
+        10, 20, 30, 40, 50, 60
+    };
 
-    auto result =
-        std::views::zip_transform(
-            [](int x, int y) {
-                return x + y;
-            },
-            a,
-            b
+    auto movingAverage = values
+        | std::views::adjacent_transform<3>(
+            [](double a, double b, double c) {
+                return (a + b + c) / 3.0;
+            }
+        );
+
+    for (double value : movingAverage) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+20 30 40 50
+```
+
+در این مثال، هر خروجی میانگین سه مقدار متوالی را نشان می‌دهد.
+
+البته اگر اندازه پنجره در زمان اجرا تغییر کند یا بخواهیم Moving Average را روی پنجره‌های بسیار بزرگ و متغیر محاسبه کنیم، ممکن است استفاده از الگوریتم اختصاصی با نگهداری مجموع لغزان کارآمدتر باشد.
+
+### **بررسی صعودی بودن عناصر متوالی**
+
+می‌توان از این قابلیت برای بررسی رابطه بین عناصر مجاور نیز استفاده کرد.
+
+برای مثال، بررسی می‌کنیم که آیا عنصر بعدی از عنصر قبلی بزرگ‌تر است یا خیر:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{
+        2, 5, 8, 4, 9
+    };
+
+    auto comparisons = values
+        | std::views::pairwise_transform(
+            [](int previous, int current) {
+                return previous < current;
+            }
+        );
+
+    for (bool result : comparisons) {
+        std::cout << std::boolalpha << result << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+true true false true
+```
+
+این روش برای شناسایی تغییر جهت روند، تشخیص نقاط نزولی و بررسی ترتیب نسبی داده‌ها مفید است.
+
+### **محاسبه مشتق تقریبی**
+
+در محاسبات عددی می‌توان از اختلاف مقادیر متوالی برای تقریب مشتق استفاده کرد.
+
+اگر دو مجموعه شامل مقادیر `x` و `y` داشته باشیم، می‌توان نرخ تغییر `y` نسبت به `x` را برای نقاط متوالی محاسبه کرد:
+
+\\[ \frac{\Delta y}{\Delta x} = \frac{y\_{i+1}-y_i}{x\_{i+1}-x_i} \\]
+
+برای مثال:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+struct Point {
+    double x;
+    double y;
+};
+
+int main() {
+    std::vector<Point> points{
+        {0.0, 0.0},
+        {1.0, 2.0},
+        {2.0, 5.0},
+        {4.0, 9.0}
+    };
+
+    auto slopes = points
+        | std::views::pairwise_transform(
+            [](const Point& first, const Point& second) {
+                return (second.y - first.y)
+                     / (second.x - first.x);
+            }
+        );
+
+    for (double slope : slopes) {
+        std::cout << slope << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+2 3 2
+```
+
+در این مثال، شیب بین نقاط متوالی محاسبه می‌شود.
+
+توجه داشته باشید که اگر مختصات `x` دو نقطه برابر باشند، تقسیم بر صفر رخ می‌دهد. در کاربردهای واقعی باید این حالت مدیریت شود.
+
+### **محاسبه حاصل‌ضرب چند عنصر متوالی**
+
+برای پردازش‌های عددی می‌توان از پنجره‌های بزرگ‌تر نیز استفاده کرد:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{
+        1, 2, 3, 4, 5
+    };
+
+    auto products = values
+        | std::views::adjacent_transform<3>(
+            [](int a, int b, int c) {
+                return a * b * c;
+            }
+        );
+
+    for (int value : products) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+6 24 60
+```
+
+این الگو برای محاسبات مبتنی بر گروه‌های متوالی با اندازه ثابت مناسب است.
+
+## **ترکیب adjacent_transform با سایر Views**
+
+یکی از مزایای مهم Ranges، قابلیت ترکیب Viewهای مختلف در یک Pipeline است.
+
+`adjacent_transform` نیز می‌تواند با Viewهای دیگر ترکیب شود.
+
+### **ترکیب با filter**
+
+فرض کنید فقط اختلاف‌های مثبت بین عناصر متوالی موردنیاز باشند.
+
+می‌توان ابتدا اختلاف‌ها را محاسبه کرد و سپس فقط مقادیر مثبت را نگه داشت:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{
+        10, 15, 12, 20, 18, 30
+    };
+
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return b - a;
+            }
         )
         | std::views::filter(
-            [](int value) {
-                return value >= 30;
+            [](int difference) {
+                return difference > 0;
             }
         );
 
@@ -1022,19 +980,60 @@ int main() {
 }
 ```
 
-Output:
+خروجی:
 
 ```
-30 45 60
+5 8 12
 ```
 
-In this example, the corresponding elements are added first, and the filter condition is then applied to each result.
+در این Pipeline ابتدا Transformation انجام می‌شود و سپس نتیجه‌ها براساس Predicate فیلتر می‌شوند.
 
-An important detail is that both operations are lazy. Creating the views does not process all elements immediately.
+### **ترکیب با transform**
 
-### **Combining with std::views::take**
+می‌توان نتیجه `adjacent_transform` را دوباره با `transform` پردازش کرد.
 
-We can use `std::views::take` to limit the number of elements processed.
+برای مثال، اختلاف مطلق بین عناصر متوالی را محاسبه می‌کنیم:
+
+```
+#include <cstdlib>
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{
+        10, 15, 12, 20
+    };
+
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return b - a;
+            }
+        )
+        | std::views::transform(
+            [](int difference) {
+                return std::abs(difference);
+            }
+        );
+
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+5 3 8
+```
+
+این روش امکان جداسازی مراحل مختلف پردازش را فراهم می‌کند.
+
+### **ترکیب با take**
+
+اگر فقط چند نتیجه اول موردنیاز باشند، می‌توان از `std::views::take` استفاده کرد:
 
 ```
 #include <iostream>
@@ -1042,14 +1041,15 @@ We can use `std::views::take` to limit the number of elements processed.
 #include <vector>
 
 int main() {
-    std::vector<int> a{1, 2, 3, 4, 5, 6};
-    std::vector<int> b{10, 20, 30, 40, 50, 60};
+    std::vector<int> values{
+        1, 3, 6, 10, 15, 21, 28
+    };
 
-    auto result =
-        std::views::zip_transform(
-            std::plus<>{},
-            a,
-            b
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return b - a;
+            }
         )
         | std::views::take(3);
 
@@ -1059,17 +1059,21 @@ int main() {
 }
 ```
 
-Output:
+خروجی:
 
 ```
-11 22 33
+2 3 4
 ```
 
-This approach is useful when we only need the initial portion of the data.
+به دلیل Lazy Evaluation، تنها نتایج موردنیاز برای پیمایش تولید می‌شوند.
 
-### **Combining with std::views::drop**
+البته این موضوع به معنای تضمین عدم اجرای مجدد تابع در صورت Dereference مجدد Iterator نیست.
 
-If we want to skip some initial elements, we can use `std::views::drop`.
+### **تبدیل نتیجه به Container**
+
+اگر به‌جای View به یک Container واقعی نیاز داشته باشیم، می‌توان نتیجه را Materialize کرد.
+
+در ++C23، قابلیت `std::ranges::to` برای تبدیل Range به Container در دسترس است:
 
 ```
 #include <iostream>
@@ -1077,16 +1081,180 @@ If we want to skip some initial elements, we can use `std::views::drop`.
 #include <vector>
 
 int main() {
-    std::vector<int> a{1, 2, 3, 4, 5};
-    std::vector<int> b{10, 20, 30, 40, 50};
+    std::vector<int> values{
+        10, 20, 30, 40, 50
+    };
 
-    auto result =
-        std::views::zip_transform(
-            std::plus<>{},
-            a,
-            b
-        )
-        | std::views::drop(2);
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return b - a;
+            }
+        );
+
+    auto output = std::ranges::to<std::vector>(result);
+
+    for (int value : output) {
+        std::cout << value << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+10 10 10 10
+```
+
+در این حالت، نتایج در یک `std::vector` ذخیره می‌شوند و دیگر وابسته به محاسبه Lazy در View نیستند.
+
+این روش زمانی مناسب است که قرار باشد خروجی چندین بار استفاده شود یا نیاز به نگهداری مستقل نتایج داشته باشیم.
+
+## **تفاوت adjacent_transform با قابلیت‌های مشابه**
+
+در کتابخانه Ranges چند قابلیت وجود دارند که از نظر ظاهری یا کاربردی به `adjacent_transform` نزدیک هستند؛ اما هرکدام هدف متفاوتی دارند.
+
+شناخت این تفاوت‌ها باعث می‌شود ابزار مناسب‌تری برای طراحی الگوریتم انتخاب کنیم.
+
+### **مقایسه با std::views::transform**
+
+قابلیت `std::views::transform` برای اعمال یک تابع روی تک‌تک عناصر Range طراحی شده است.
+
+در مقابل، `adjacent_transform` یک تابع را روی چند عنصر متوالی اجرا می‌کند.
+
+| ویژگی                       | `transform`   | `adjacent_transform` |
+| --------------------------- | ------------- | -------------------- |
+| تعداد عناصر ورودی تابع      | یک عنصر       | تعداد ثابت N         |
+| نیاز به Forward Range       | خیر           | بله                  |
+| پشتیبانی از Lazy Evaluation | بله           | بله                  |
+| پردازش عناصر مجاور          | خیر           | بله                  |
+| هم‌پوشانی پنجره‌ها          | موضوعیت ندارد | بله                  |
+
+برای مثال:
+
+```
+auto single = values
+    | std::views::transform(
+        [](int value) {
+            return value * 2;
+        }
+    );
+
+auto adjacent = values
+    | std::views::adjacent_transform<2>(
+        [](int first, int second) {
+            return first + second;
+        }
+    );
+```
+
+در View اول، هر عنصر به‌صورت مستقل پردازش می‌شود؛ اما در View دوم، هر بار دو عنصر متوالی در اختیار تابع قرار می‌گیرند.
+
+### **مقایسه با std::views::adjacent**
+
+قابلیت `std::views::adjacent` نیز برای استخراج گروه‌های متوالی از عناصر طراحی شده است.
+
+تفاوت اصلی این دو قابلیت در خروجی آن‌ها است.
+
+- `adjacent` پنجره‌های مجاور را به شکل Tuple از Referenceها ارائه می‌کند.
+- `adjacent_transform` تابعی را روی هر پنجره اجرا می‌کند و نتیجه آن تابع را ارائه می‌دهد.
+
+برای مثال:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{10, 20, 30, 40};
+
+    auto windows = values | std::views::adjacent<2>;
+
+    for (auto [first, second] : windows) {
+        std::cout << first + second << ' ';
+    }
+}
+```
+
+خروجی:
+
+```
+30 50 70
+```
+
+همین عملیات را می‌توان با `adjacent_transform` به شکل مستقیم‌تری انجام داد:
+
+```
+auto result = values
+    | std::views::adjacent_transform<2>(
+        [](int first, int second) {
+            return first + second;
+        }
+    );
+```
+
+بنابراین، اگر به خود پنجره‌ها و عناصر داخل آن‌ها نیاز داشته باشیم، `adjacent` انتخاب مناسب‌تری است.
+
+اما اگر فقط نتیجه یک محاسبه روی هر پنجره موردنیاز باشد، `adjacent_transform` انتخاب طبیعی‌تری خواهد بود.
+
+### **مقایسه با std::views::slide**
+
+قابلیت `std::views::slide` نیز پنجره‌های هم‌پوشان تولید می‌کند.
+
+تفاوت مهم این است که `slide` خود پنجره‌ها را به‌عنوان خروجی ارائه می‌دهد، در حالی که `adjacent_transform` نتیجه اجرای یک تابع روی پنجره‌ها را تولید می‌کند.
+
+برای مثال:
+
+```
+auto windows = values | std::views::slide(3);
+```
+
+در این حالت، هر عنصر خروجی یک View از سه عنصر متوالی است.
+
+اما در مثال زیر، میانگین هر پنجره محاسبه می‌شود:
+
+```
+auto averages = values
+    | std::views::adjacent_transform<3>(
+        [](int a, int b, int c) {
+            return (a + b + c) / 3.0;
+        }
+    );
+```
+
+به‌صورت خلاصه:
+
+| قابلیت               | عملکرد                                |
+| -------------------- | ------------------------------------- |
+| `adjacent`           | تولید Tuple از عناصر مجاور            |
+| `slide`              | تولید پنجره‌های مجاور به شکل Subrange |
+| `adjacent_transform` | محاسبه نتیجه روی عناصر مجاور          |
+
+اگر نیاز به پردازش دلخواه روی یک پنجره با اندازه مشخص دارید، `slide` نیز می‌تواند همراه با `transform` استفاده شود.
+
+### **مقایسه با std::views::zip_transform**
+
+قابلیت `std::views::zip_transform` برای پردازش عناصر متناظر از چند Range مختلف طراحی شده است.
+
+برای مثال:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> first{1, 2, 3};
+    std::vector<int> second{10, 20, 30};
+
+    auto result = std::views::zip_transform(
+        [](int a, int b) {
+            return a + b;
+        },
+        first,
+        second
+    );
 
     for (int value : result) {
         std::cout << value << ' ';
@@ -1094,112 +1262,40 @@ int main() {
 }
 ```
 
-Output:
+خروجی:
 
 ```
-33 44 55
+11 22 33
 ```
 
-In this example, the first two results are skipped.
+در این مثال، دو Range مختلف به‌صورت هم‌زمان پیمایش می‌شوند.
 
-### **Combining with std::views::enumerate**
+در مقابل، `adjacent_transform` چند عنصر متوالی را از یک Range واحد دریافت می‌کند.
 
-The `std::views::enumerate` facility was also introduced in C++23.
+این تفاوت از نظر طراحی الگوریتم اهمیت زیادی دارد:
 
-It provides a way to iterate over elements together with their indices.
+- برای پردازش عناصر متناظر چند Range، از `zip_transform` استفاده کنید.
+- برای پردازش عناصر متوالی یک Range، از `adjacent_transform` استفاده کنید.
 
-We can use it to process the results of `zip_transform` while also accessing each element's position.
+## **بررسی ویژگی‌های Iterator**
 
-```
-#include <iostream>
-#include <ranges>
-#include <vector>
+برای استفاده حرفه‌ای از این View، باید به ویژگی‌های Iterator آن نیز توجه داشته باشیم.
 
-int main() {
-    std::vector<int> a{10, 20, 30};
-    std::vector<int> b{1, 2, 3};
+### **نوع Iterator**
 
-    auto transformed = std::views::zip_transform(
-        std::minus<>{},
-        a,
-        b
-    );
+Iteratorهای `adjacent_transform_view` دسترسی به نتایج محاسبه‌شده توسط Callable را فراهم می‌کنند.
 
-    for (auto [index, value] :
-         std::views::enumerate(transformed)) {
-        std::cout << index << ": " << value << '\n';
-    }
-}
-```
+این Iteratorها برای پیمایش تنبل نتایج طراحی شده‌اند و رفتار آن‌ها از Iteratorهای View داخلی و الزامات Transformation تأثیر می‌گیرد.
 
-Output:
+نکته مهم این است که نباید بدون بررسی Constraintها و ویژگی‌های Iterator، فرض کنیم تمام قابلیت‌های Iterator مربوط به Container اصلی عیناً در View خروجی نیز وجود دارند.
 
-```
-0: 9
-1: 18
-2: 27
-```
+برای نمونه، Forward Range بودن ورودی به این معنا نیست که خروجی حتماً همان قابلیت‌های تمام دسته‌های Iterator ورودی را حفظ می‌کند.
 
-This combination is useful for:
+### **دسترسی به اندازه با size**
 
-- Processing indexed data.
-- Generating reports.
-- Identifying invalid elements and their positions.
-- Algorithms that require both an element's value and its position.
+اگر Range داخلی از نوع `sized_range` باشد، View خروجی نیز امکان دسترسی به اندازه خود را فراهم می‌کند.
 
-### **Converting the Result into a Container**
-
-Since `zip_transform` produces a view, we must convert it into a container if we need to store the results permanently.
-
-In C++23, we can use `std::ranges::to`.
-
-```
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    auto result = std::views::zip_transform(
-        std::plus<>{},
-        a,
-        b
-    );
-
-    auto output = result
-        | std::ranges::to<std::vector>();
-}
-```
-
-In this example, the view is converted into a `std::vector`.
-
-The difference between the following two approaches is important:
-
-```
-auto view = std::views::zip_transform(
-    std::plus<>{},
-    a,
-    b
-);
-```
-
-And:
-
-```
-auto container = view
-    | std::ranges::to<std::vector>();
-```
-
-In the first case, the results are provided lazily. In the second case, the results are stored in memory.
-
-## **Practical Applications in Professional Programming**
-
-### **Calculating the Sum of Two Data Sets**
-
-One of the primary applications of `zip_transform` is performing element-wise computations.
-
-For example, in a data processing system, we can add two collections of corresponding values.
+برای مثال:
 
 ```
 #include <iostream>
@@ -1207,874 +1303,446 @@ For example, in a data processing system, we can add two collections of correspo
 #include <vector>
 
 int main() {
-    std::vector<double> actual{10.5, 20.0, 30.5};
-    std::vector<double> adjustment{1.5, 2.0, 3.5};
+    std::vector<int> values{
+        10, 20, 30, 40, 50
+    };
 
-    auto adjusted = std::views::zip_transform(
-        std::plus<>{},
-        actual,
-        adjustment
-    );
+    auto result = values
+        | std::views::adjacent_transform<3>(
+            [](int a, int b, int c) {
+                return a + b + c;
+            }
+        );
 
-    for (double value : adjusted) {
+    std::cout << result.size();
+}
+```
+
+خروجی:
+
+```
+3
+```
+
+در این مثال، اندازه خروجی بدون پیمایش تمام عناصر قابل محاسبه است.
+
+البته وجود تابع `size()` در همه شرایط تضمین نشده است و به `sized_range` بودن Range داخلی بستگی دارد.
+
+### **دسترسی به Range اصلی با base**
+
+کلاس `adjacent_transform_view` تابع عضوی `base` را برای دسترسی به View اصلی ارائه می‌کند.
+
+این تابع در دو حالت قابل استفاده است:
+
+- روی شیء `const` یا Lvalue، در صورت Copy Constructible بودن View اصلی، یک کپی از آن برمی‌گرداند.
+- روی Rvalue، View اصلی را با Move استخراج می‌کند.
+
+برای مثال:
+
+```
+#include <iostream>
+#include <ranges>
+#include <vector>
+
+int main() {
+    std::vector<int> values{1, 2, 3, 4};
+
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return a + b;
+            }
+        );
+
+    auto originalView = result.base();
+
+    for (int value : originalView) {
         std::cout << value << ' ';
     }
 }
 ```
 
-Output:
+خروجی:
 
 ```
-12 22 34
+1 2 3 4
 ```
 
-This pattern is useful in statistical, financial, and scientific data processing.
+توجه داشته باشید که `base()` لزوماً یک Container مستقل برنمی‌گرداند؛ بلکه View پایه را ارائه می‌کند.
 
-### **Calculating the Difference Between Two Data Sets**
+## **نکات مربوط به Lifetime و مدیریت حافظه**
 
-To compare two collections of data, we can calculate the differences between corresponding elements.
+یکی از مهم‌ترین نکات در استفاده از Ranges، توجه به طول عمر Range اصلی است.
+
+در مثال زیر:
 
 ```
-#include <iostream>
-#include <ranges>
-#include <vector>
+std::vector<int> values{10, 20, 30, 40};
 
-int main() {
-    std::vector<double> expected{100, 200, 300};
-    std::vector<double> actual{95, 210, 290};
-
-    auto differences = std::views::zip_transform(
-        std::minus<>{},
-        actual,
-        expected
+auto result = values
+    | std::views::pairwise_transform(
+        [](int a, int b) {
+            return a + b;
+        }
     );
-
-    for (double difference : differences) {
-        std::cout << difference << ' ';
-    }
-}
 ```
 
-Output:
+View خروجی به Range اصلی وابسته است و عناصر را از همان Container می‌خواند.
 
-```
--5 10 -10
-```
+بنابراین، اگر Container اصلی از بین برود، استفاده از View می‌تواند باعث Undefined Behavior شود.
 
-This approach can be used to calculate prediction errors in data processing systems and prediction algorithms.
-
-### **Calculating the Dot Product**
-
-An important application of this facility is implementing part of vector computations.
-
-The dot product of two vectors is the sum of the products of their corresponding elements:
-
-\\[ A \cdot B = \sum\_{i=0}^{n-1} A_i B_i \\]
-
-We can implement this operation using `zip_transform` and `std::ranges::fold_left`.
-
-```
-#include <functional>
-#include <iostream>
-#include <numeric>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3, 4};
-    std::vector<int> b{5, 6, 7, 8};
-
-    auto products = std::views::zip_transform(
-        std::multiplies<>{},
-        a,
-        b
-    );
-
-    int dotProduct = std::ranges::fold_left(
-        products,
-        0,
-        std::plus<>{}
-    );
-
-    std::cout << dotProduct;
-}
-```
-
-Output:
-
-```
-70
-```
-
-In this example:
-
-- `zip_transform` produces the products of corresponding elements.
-- `fold_left` combines all the results using addition.
-
-This approach performs the operation lazily without creating an intermediate container for the products.
-
-However, numerical applications that require high precision must account for overflow, floating-point accuracy, and the selected data types.
-
-### **Calculating Euclidean Distance**
-
-For two vectors, we can calculate the sum of the squared differences between corresponding elements.
-
-The Euclidean distance formula is:
-
-\\[ d(A,B) = \sqrt{ \sum\_{i=0}^{n-1} (A_i-B_i)^2 } \\]
-
-Implementation:
-
-```
-#include <cmath>
-#include <functional>
-#include <iostream>
-#include <numeric>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<double> a{1.0, 2.0, 3.0};
-    std::vector<double> b{4.0, 6.0, 3.0};
-
-    auto squaredDifferences =
-        std::views::zip_transform(
-            [](double x, double y) {
-                const double difference = x - y;
-                return difference * difference;
-            },
-            a,
-            b
-        );
-
-    double sum = std::ranges::fold_left(
-        squaredDifferences,
-        0.0,
-        std::plus<>{}
-    );
-
-    double distance = std::sqrt(sum);
-
-    std::cout << distance;
-}
-```
-
-Output:
-
-```
-5
-```
-
-This pattern is useful in machine learning algorithms, signal processing, and geometric computations.
-
-### **Calculating Weighted Values**
-
-Suppose we have a collection of values and their corresponding weights.
-
-We can use `zip_transform` to calculate the product of each value and its corresponding weight.
-
-```
-#include <iostream>
-#include <numeric>
-#include <ranges>
-#include <vector>
-
-int main() {
-    std::vector<double> values{10, 20, 30};
-    std::vector<double> weights{0.2, 0.3, 0.5};
-
-    auto weightedValues =
-        std::views::zip_transform(
-            [](double value, double weight) {
-                return value * weight;
-            },
-            values,
-            weights
-        );
-
-    double result = std::ranges::fold_left(
-        weightedValues,
-        0.0,
-        std::plus<>{}
-    );
-
-    std::cout << result;
-}
-```
-
-Output:
-
-```
-23
-```
-
-This approach can be used in statistical calculations and scoring systems.
-
-### **Processing Structured Data Simultaneously**
-
-Suppose user information is stored in several separate containers.
-
-```
-std::vector<std::string> names;
-std::vector<int> ages;
-std::vector<double> scores;
-```
-
-With `zip_transform`, we can combine corresponding data without creating an intermediate container.
-
-```
-#include <iostream>
-#include <ranges>
-#include <string>
-#include <vector>
-
-int main() {
-    std::vector<std::string> names{
-        "Alice", "Bob", "Charlie"
-    };
-
-    std::vector<int> ages{
-        25, 30, 35
-    };
-
-    std::vector<double> scores{
-        85.5, 90.0, 78.5
-    };
-
-    auto descriptions =
-        std::views::zip_transform(
-            [](const std::string& name,
-               int age,
-               double score) {
-                return name + " (" +
-                    std::to_string(age) +
-                    "): " +
-                    std::to_string(score);
-            },
-            names,
-            ages,
-            scores
-        );
-
-    for (const auto& description : descriptions) {
-        std::cout << description << '\n';
-    }
-}
-```
-
-Output:
-
-```
-Alice (25): 85.500000
-Bob (30): 90.000000
-Charlie (35): 78.500000
-```
-
-This pattern is useful when data is stored in separate containers for architectural or performance reasons.
-
-However, if these values conceptually always form a single entity, using a container of structs may be a better design.
-
-## **Comparison with Older Approaches**
-
-### **Comparison with a Traditional for Loop**
-
-Before `zip_transform` was introduced, the most common approach for processing multiple collections was to use manually written loops.
-
-```
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    std::vector<int> result;
-
-    result.reserve(a.size());
-
-    for (std::size_t i = 0;
-         i < a.size();
-         ++i) {
-        result.push_back(a[i] + b[i]);
-    }
-}
-```
-
-This approach is completely valid, but it differs from `zip_transform` in several ways.
-
-| Feature                              | Manual Loop                 | zip_transform |
-| ------------------------------------ | --------------------------- | ------------- |
-| Manual index management              | Yes                         | No            |
-| Creates an output container          | Usually                     | No            |
-| Lazy evaluation                      | No                          | Yes           |
-| Composition with views               | More limited                | Very suitable |
-| Direct control over execution flow   | Greater                     | More limited  |
-| Support for non-random-access ranges | Requires suitable iterators | Yes           |
-
-Manual loops are more suitable when the processing logic involves complex execution-flow control, error handling, conditional termination, or multiple state-dependent stages.
-
-By contrast, `zip_transform` is a good choice for direct and independent computations on corresponding elements.
-
-### **Comparison with std::transform**
-
-`std::transform` has been available in the standard library since earlier C++ versions and can transform elements from one or more ranges.
-
-For example, its multi-input overload can perform an operation similar to the following:
-
-```
-#include <algorithm>
-#include <functional>
-#include <vector>
-
-int main() {
-    std::vector<int> a{1, 2, 3};
-    std::vector<int> b{10, 20, 30};
-
-    std::vector<int> result(a.size());
-
-    std::transform(
-        a.begin(),
-        a.end(),
-        b.begin(),
-        result.begin(),
-        std::plus<>{}
-    );
-}
-```
-
-This approach can be perfectly suitable in terms of performance.
-
-However, an important difference is that `std::transform` writes its output into a destination range. Therefore, suitable storage must be provided for the results.
-
-By contrast, `zip_transform` creates a lazy view and defers computation until its elements are accessed.
-
-Consequently:
-
-- For immediately producing results in a container, `std::transform` is a suitable option.
-- For building pipelines based on Ranges, `zip_transform` is generally a better choice.
-- For lazy processing and composition with other adaptors, `zip_transform` offers additional advantages.
-
-### **Comparison with std::views::transform**
-
-The `std::views::transform` facility accepts a single range and invokes a callable on each of its elements.
-
-By contrast, `zip_transform` accepts multiple ranges.
-
-Example using `transform`:
-
-```
-auto result = values | std::views::transform(
-    [](int value) {
-        return value * 2;
-    }
-);
-```
-
-Example using `zip_transform`:
-
-```
-auto result = std::views::zip_transform(
-    std::multiplies<>{},
-    values,
-    multipliers
-);
-```
-
-In summary:
-
-- `transform` is suitable for transforming elements of a single range.
-- `zip_transform` is suitable for simultaneously transforming elements from multiple ranges.
-
-### **Comparison with Range-v3**
-
-Before the Zip facilities were standardized in C++23, the Range-v3 library provided similar functionality.
-
-This library was one of the major influences on the design of Ranges in the standard library.
-
-With the introduction of `std::views::zip_transform`, developers can use this functionality without depending on an external library.
-
-However, different versions of Range-v3 may differ from the standard implementation in API details, output types, or additional capabilities.
-
-Therefore, we should not assume that every implementation detail or behavior is identical between the two libraries.
-
-## **Performance Considerations and Time Complexity**
-
-### **Computational Cost**
-
-In the typical case, if \\(n\\) represents the number of elements in the output view, fully traversing it requires \\(n\\) invocations of the callable.
-
-Therefore, the overall time complexity is:
-
-\\[ O(n) \\]
-
-This complexity accounts only for iteration and callable invocation.
-
-If the function itself performs complex operations, its cost must also be included.
-
-For example, if each callable invocation has a complexity of \\(O(k)\\), the overall complexity is approximately:
-
-\\[ O(nk) \\]
-
-### **Memory Cost**
-
-Since `zip_transform` does not automatically store its results, it generally does not require additional memory proportional to the number of elements.
-
-The view itself typically requires constant storage relative to the number of elements and storage proportional to the number of input ranges.
-
-Conceptually:
-
-\\[ O(m) \\]
-
-where \\(m\\) is the number of input ranges.
-
-This represents the memory required to maintain the view's state and associated iterators. It does not include the memory consumed by the original containers.
-
-### **The Importance of Side Effects**
-
-Because computation takes place during dereferencing, we should not assume that each element is calculated exactly once.
-
-For example:
-
-```
-auto result = std::views::zip_transform(
-    [](int value) {
-        std::cout << "Called\n";
-        return value * 2;
-    },
-    values
-);
-
-auto it = result.begin();
-
-int first = *it;
-int second = *it;
-```
-
-In this example, the `Called` message may be displayed twice.
-
-This happens because repeated dereferencing does not necessarily reuse a previously calculated result.
-
-Therefore, when designing a suitable callable, it is preferable to:
-
-- Avoid modifying external state.
-- Avoid unnecessary input/output operations.
-- Keep computations deterministic whenever possible.
-- Materialize the view into a container when result caching is required.
-
-### **The Effect of Caching and Repeated Computations**
-
-In some scenarios, repeatedly using a view may cause computations to be performed again.
-
-For example:
-
-```
-auto result = std::views::zip_transform(
-    expensiveCalculation,
-    a,
-    b
-);
-```
-
-If several different algorithms operate on `result`, `expensiveCalculation` may be executed multiple times.
-
-In such cases, if the computations are expensive, materializing the result may provide better performance.
-
-```
-auto cached = result
-    | std::ranges::to<std::vector>();
-```
-
-After this operation, subsequent operations use the stored data instead of invoking the callable again.
-
-## **Limitations and Important Considerations**
-
-### **Lifetime of the Input Ranges**
-
-One of the most important considerations when using views is lifetime management.
-
-When a view is created from an existing container, it generally refers to the container's data instead of copying all its elements.
-
-Therefore, the container must remain valid for as long as the view is used.
-
-Dangerous example:
+برای مثال، الگوی زیر خطرناک است:
 
 ```
 #include <ranges>
 #include <vector>
 
 auto createView() {
-    std::vector<int> values{1, 2, 3};
+    std::vector<int> values{1, 2, 3, 4};
 
-    return std::views::zip_transform(
-        [](int value) {
-            return value * 2;
-        },
-        values
-    );
+    return values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return a + b;
+            }
+        );
+}
+
+int main() {
+    auto result = createView();
+
+    // The underlying vector has already been destroyed.
+    // Iterating over result causes undefined behavior.
 }
 ```
 
-In this example, the local container is destroyed when the function returns.
+علت این مشکل آن است که View معمولاً مالک داده‌های Range اصلی نیست.
 
-The returned view must no longer be used to access that container's elements.
+در مقابل، اگر Range ورودی یک Rvalue باشد، مکانیزم `views::all` می‌تواند آن را در یک Owning View نگهداری کند؛ در نتیجه طول عمر داده‌ها با طول عمر View مرتبط خواهد شد.
 
-A more appropriate example is:
+با این حال، باید توجه داشت که Viewهای پایه و Referenceهای خارجی همچنان می‌توانند محدودیت‌های Lifetime خود را داشته باشند.
 
-```
-#include <ranges>
-#include <vector>
+### **نکته مربوط به تغییر داده‌های اصلی**
 
-auto createView(std::vector<int>& values) {
-    return std::views::zip_transform(
-        [](int value) {
-            return value * 2;
-        },
-        values
-    );
-}
-```
+اگر عناصر Container اصلی تغییر کنند، View ممکن است نتایج متفاوتی تولید کند.
 
-In this case, responsibility for the lifetime of the original data belongs to the caller.
-
-### **Using Temporary Ranges**
-
-The standard Ranges library uses the `viewable_range` concept to manage temporary ranges.
-
-For example, under certain conditions, passing a temporary container to a view is permitted. However, how its lifetime is managed depends on the range type and its ownership characteristics.
-
-An important detail is that a resulting view does not necessarily copy the original data. It may preserve ownership of a temporary range through an owning view such as `owning_view`.
-
-However, if a non-owning or reference-based range is provided, its lifetime remains important.
-
-In complex applications, the ownership and lifetime of all input ranges should be designed explicitly.
-
-### **Limitations Regarding Parallel Processing**
-
-`zip_transform` does not guarantee that elements will be processed in parallel.
-
-It is a view that provides lazy results and should not be confused with parallel algorithms.
-
-If parallel processing is required, suitable facilities such as Parallel Algorithms or specialized libraries should be used.
-
-Additionally, side effects in the callable can introduce Thread Safety problems.
-
-### **No Guarantee That the Callable Runs Only Once**
-
-As explained earlier, each dereference may invoke the callable again.
-
-Therefore, using a callable with expensive operations or side effects can lead to behavior and performance that differ from initial expectations.
-
-### **Input Range Restrictions**
-
-Not every range is suitable for use with `zip_transform`.
-
-Each range must satisfy the `input_range` requirements and be convertible into an appropriate view.
-
-Additionally, if capabilities such as random access are required, all input ranges must have iterators with the necessary properties.
-
-For example, combining a `std::vector` with an input-only range does not make the output a random-access range.
-
-### **Return Type Restrictions**
-
-The callable must produce a valid return type.
-
-A `void` result is not permitted.
-
-Additionally, if the output is a reference, the lifetime of the object it refers to must remain valid.
-
-For example, returning a reference to a local variable is incorrect:
-
-```
-auto result = std::views::zip_transform(
-    [](int value) -> const int& {
-        int temporary = value * 2;
-        return temporary;
-    },
-    values
-);
-```
-
-This function returns a reference to a local variable that is destroyed when the Lambda finishes executing.
-
-Consequently, accessing such a reference results in undefined behavior.
-
-### **Const Considerations**
-
-Whether a view can be used in a `const` context depends on the callable and the underlying views.
-
-In general, using the `const` version requires:
-
-- The underlying view to be a range when const-qualified.
-- The callable to be invocable when const-qualified.
-- The relevant `regular_invocable` requirements to be satisfied for the const version.
-
-For example:
-
-```
-auto result = std::views::zip_transform(
-    [](int value) {
-        return value * 2;
-    },
-    values
-);
-```
-
-This ordinary Lambda has a `const` call operator and, under suitable conditions, allows the view to be used in a const context.
-
-However, callables with mutable internal state or types that can only be invoked in a non-const context may restrict this capability.
-
-## **Special Behavior When Called Without a Range**
-
-One lesser-known detail of the standard is that `std::views::zip_transform` can be invoked with only a callable.
-
-For example:
-
-```
-auto empty = std::views::zip_transform(
-    [] {
-        return 42;
-    }
-);
-```
-
-In this case, instead of creating an ordinary `zip_transform_view`, an appropriate empty view is produced.
-
-The requirements for this case are:
-
-- The callable must be `move_constructible`.
-- The callable must be `regular_invocable`.
-- Its return type must be a valid Object Type.
-
-Since no input ranges are provided, the resulting view contains no elements.
-
-This behavior is part of the standard specification, although it has limited applications in everyday programming.
-
-## **Comparison with Related C++23 Facilities**
-
-The `zip_transform` facility is part of the broader set of new Ranges capabilities introduced in C++23.
-
-Understanding related facilities helps us select the appropriate tool for each scenario.
-
-| Facility                         | Purpose                                                           |
-| -------------------------------- | ----------------------------------------------------------------- |
-| `std::views::zip`                | Combines corresponding elements from multiple ranges              |
-| `std::views::zip_transform`      | Invokes a callable on corresponding elements from multiple ranges |
-| `std::views::adjacent`           | Produces groups of adjacent elements from a single range          |
-| `std::views::adjacent_transform` | Invokes a callable on groups of adjacent elements                 |
-| `std::views::transform`          | Transforms elements of a single range                             |
-| `std::views::filter`             | Filters elements of a range                                       |
-| `std::views::enumerate`          | Iterates over elements together with their indices                |
-
-For example, if the goal is to calculate the average of two adjacent elements in a range, `adjacent_transform` is a more appropriate tool.
-
-However, if the goal is to add elements from two independent ranges, `zip_transform` is the natural choice.
-
-## **Compiler Support and Compatibility**
-
-### **Standardization Status**
-
-`std::views::zip_transform` is part of the C++23 standard library.
-
-It was introduced through the following standardization proposal:
-
-`P2321R2 - zip`
-
-To use it, the compiler and its associated standard library must provide a suitable implementation of the C++23 Ranges facilities.
-
-### **Checking the Feature Test Macro**
-
-The following Feature Test Macro can be used to check library support:
-
-```
-__cpp_lib_ranges_zip
-```
-
-Example:
+برای مثال:
 
 ```
 #include <iostream>
 #include <ranges>
+#include <vector>
 
 int main() {
-#ifdef __cpp_lib_ranges_zip
-    std::cout << "Zip ranges are supported\n";
-#else
-    std::cout << "Zip ranges are not supported\n";
-#endif
+    std::vector<int> values{10, 20, 30};
+
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return a + b;
+            }
+        );
+
+    values[1] = 100;
+
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
 }
 ```
 
-The Feature Test Macro value introduced for this set of facilities is:
+خروجی:
 
 ```
-202110L
+110 130
 ```
 
-A more precise check can therefore be performed:
+این رفتار یکی از نتایج مستقیم Lazy Evaluation است.
+
+View داده‌ها را به‌صورت مستقل کپی نکرده است و هنگام محاسبه نتایج، مقادیر فعلی عناصر Range اصلی را می‌خواند.
+
+البته تغییر اندازه Container یا عملیاتی که Iteratorهای آن را نامعتبر می‌کنند، می‌تواند باعث Invalid شدن View شود.
+
+## **بررسی کارایی و پیچیدگی زمانی**
+
+از نظر کارایی، `adjacent_transform` برای بسیاری از عملیات مبتنی بر پنجره‌های هم‌پوشان گزینه مناسبی است.
+
+اگر تعداد عناصر ورودی برابر با `S` و اندازه پنجره برابر با `N` باشد، تعداد پنجره‌های قابل پردازش حداکثر برابر با `S - N + 1` خواهد بود.
+
+در نتیجه، اگر اجرای تابع Transformation دارای پیچیدگی ثابت باشد، پیمایش کامل View دارای پیچیدگی زمانی خطی نسبت به اندازه ورودی است:
+
+\\[ O(S) \\]
+
+البته پیچیدگی واقعی به تابع Transformation نیز وابسته است.
+
+### **آیا حافظه اضافی تخصیص داده می‌شود؟**
+
+خود `adjacent_transform` برای نگهداری تمام نتایج خروجی به Container جدیدی نیاز ندارد.
+
+این View معمولاً وضعیت مربوط به Callable و View پایه را نگهداری می‌کند و نتایج را هنگام Dereference تولید می‌کند.
+
+بنابراین، در مقایسه با ساخت یک `std::vector` جدید، از تخصیص حافظه برای کل خروجی جلوگیری می‌شود.
+
+با این حال، اگر Callable خودش حافظه تخصیص دهد یا نتیجه به Container تبدیل شود، هزینه‌های مربوط به آن عملیات همچنان وجود خواهند داشت.
+
+### **آیا عناصر مجاور دوباره خوانده می‌شوند؟**
+
+در پنجره‌های هم‌پوشان، برخی عناصر در چند مرحله مورد استفاده قرار می‌گیرند.
+
+برای مثال:
 
 ```
+(A, B, C)
+(B, C, D)
+(C, D, E)
+```
+
+عناصر `B` و `C` در چند پنجره حضور دارند.
+
+این موضوع به معنای آن نیست که تمام عناصر ورودی در هر مرحله کپی می‌شوند. پیاده‌سازی از Iteratorها و Referenceهای مربوط به عناصر Range استفاده می‌کند.
+
+با این حال، تابع Transformation در هر Dereference می‌تواند دوباره اجرا شود و بنابراین هزینه آن باید در تحلیل کارایی لحاظ شود.
+
+### **اهمیت هزینه Callable**
+
+فرض کنید تابع Transformation یک محاسبه سنگین انجام می‌دهد.
+
+در چنین شرایطی، اگر یک Iterator چندین بار Dereference شود، احتمال تکرار محاسبه وجود دارد.
+
+برای جلوگیری از محاسبه‌های غیرضروری می‌توان نتایج را در یک Container ذخیره کرد:
+
+```
+auto result = values
+    | std::views::adjacent_transform<3>(
+        [](int a, int b, int c) {
+            return a + b + c;
+        }
+    );
+
+auto cachedResults = std::ranges::to<std::vector>(result);
+```
+
+در این حالت، Transformation هنگام ساخت Container اجرا می‌شود و نتایج برای استفاده‌های بعدی ذخیره خواهند شد.
+
+## **نکات مهم و خطاهای رایج**
+
+در استفاده از `adjacent_transform` چند اشتباه متداول وجود دارد که بهتر است از ابتدا به آن‌ها توجه شود.
+
+### **اشتباه در تعداد پارامترهای Lambda**
+
+تعداد پارامترهای تابع باید با اندازه پنجره مطابقت داشته باشد.
+
+برای مثال، کد زیر معتبر نیست:
+
+```
+auto result = values
+    | std::views::adjacent_transform<3>(
+        [](int a, int b) {
+            return a + b;
+        }
+    );
+```
+
+زیرا اندازه پنجره ۳ است، اما تابع تنها دو آرگومان دریافت می‌کند.
+
+برای رفع مشکل:
+
+```
+auto result = values
+    | std::views::adjacent_transform<3>(
+        [](int a, int b, int c) {
+            return a + b + c;
+        }
+    );
+```
+
+### **استفاده از Input Range**
+
+همان‌طور که توضیح داده شد، ورودی باید `forward_range` باشد.
+
+بنابراین، استفاده مستقیم از Rangeهایی که فقط قابلیت Input Iterator دارند، امکان‌پذیر نیست.
+
+در چنین شرایطی باید داده‌ها ابتدا به یک ساختار مناسب منتقل شوند.
+
+### **فرض اجرای یک‌باره Callable**
+
+نباید فرض کنیم که تابع Transformation فقط یک‌بار برای هر پنجره اجرا می‌شود.
+
+به دلیل Lazy Evaluation، ممکن است با Dereference مجدد یک Iterator، محاسبه دوباره انجام شود.
+
+بنابراین، از توابع دارای Side Effect غیرضروری اجتناب کنید.
+
+### **نادیده گرفتن Lifetime**
+
+View معمولاً مالک Container اصلی نیست.
+
+اگر Container از بین برود یا Iteratorهای آن نامعتبر شوند، استفاده از View ممکن است باعث Undefined Behavior شود.
+
+### **استفاده نامناسب از پنجره‌های بزرگ**
+
+اگر اندازه پنجره بسیار بزرگ باشد، ممکن است نوشتن Lambda با تعداد زیادی پارامتر خوانایی کد را کاهش دهد.
+
+در چنین شرایطی می‌توان از `std::views::slide` همراه با `std::views::transform` استفاده کرد تا پنجره به‌صورت یک Range در اختیار تابع قرار بگیرد.
+
+این روش برای الگوریتم‌هایی که نیاز دارند روی عناصر پنجره با Iterator یا Range کار کنند، انعطاف بیشتری دارد.
+
+### **نادیده گرفتن محدودیت‌های نوع خروجی**
+
+نوع خروجی Callable باید قابل استفاده باشد.
+
+برای مثال، تابعی که `void` برمی‌گرداند، برای این View مناسب نیست:
+
+```
+auto result = values
+    | std::views::pairwise_transform(
+        [](int a, int b) {
+            std::cout << a + b;
+        }
+    );
+```
+
+به‌جای آن، مقدار موردنظر را برگردانید:
+
+```
+auto result = values
+    | std::views::pairwise_transform(
+        [](int a, int b) {
+            return a + b;
+        }
+    );
+```
+
+## **نکات پیشرفته در طراحی**
+
+### **انتخاب بین View و Container**
+
+یکی از تصمیم‌های مهم در طراحی برنامه این است که آیا خروجی باید به‌صورت View باقی بماند یا به Container تبدیل شود.
+
+استفاده از View مناسب است اگر:
+
+- داده‌ها فقط برای پیمایش موردنیاز باشند.
+- بخواهیم چند Transformation را ترکیب کنیم.
+- نیازی به نگهداری مستقل نتایج نداشته باشیم.
+- بخواهیم از تخصیص حافظه برای خروجی جلوگیری کنیم.
+
+استفاده از Container مناسب است اگر:
+
+- خروجی چندین بار استفاده می‌شود.
+- هزینه Transformation زیاد است.
+- نتایج باید مستقل از Range اصلی باشند.
+- نیاز به ذخیره‌سازی، تغییر یا انتقال نتایج وجود دارد.
+
+### **انتخاب اندازه پنجره**
+
+اندازه پنجره باید براساس ماهیت مسئله انتخاب شود.
+
+برای مثال:
+
+| اندازه پنجره | کاربرد معمول                                     |
+| ------------ | ------------------------------------------------ |
+| 1            | تبدیل تک‌عنصری؛ معمولاً `transform` مناسب‌تر است |
+| 2            | مقایسه دو عنصر متوالی و محاسبه اختلاف            |
+| 3            | Moving Average سه‌عنصری و محاسبات محلی           |
+| 4 یا بیشتر   | پردازش الگوهای متوالی با اندازه ثابت             |
+
+نکته مهم این است که اندازه پنجره در زمان کامپایل تعیین می‌شود.
+
+اگر الگوریتم به پنجره‌ای با اندازه متغیر در زمان اجرا نیاز داشته باشد، باید از روش دیگری مانند `slide` یا پیاده‌سازی اختصاصی استفاده کرد.
+
+### **استفاده از const View**
+
+کلاس `adjacent_transform_view` امکان ارائه `begin()` و `end()` برای حالت `const` را نیز دارد؛ اما این قابلیت به شرایط خاصی وابسته است.
+
+از جمله:
+
+- View داخلی باید بتواند در حالت `const` به‌عنوان Range استفاده شود.
+- Callable باید برای Referenceهای عناصر در حالت `const` قابل فراخوانی باشد.
+
+بنابراین، نباید تصور کرد که هر View قابل پیمایش در حالت غیر `const`، الزاماً در حالت `const` نیز قابل پیمایش است.
+
+در طراحی Callableهای قابل استفاده مجدد، بهتر است رفتار `const` نیز در نظر گرفته شود.
+
+## **پشتیبانی Compilerها**
+
+از آنجا که `std::views::adjacent_transform` بخشی از ++C23 است، برای استفاده از آن باید Compiler و Standard Library مورد استفاده از این قابلیت پشتیبانی کنند.
+
+نکته مهم این است که پشتیبانی از ++C23 در سطح Compiler و Library دو موضوع مرتبط اما متمایز هستند.
+
+برای مثال، فعال کردن Standard زیر به‌تنهایی تضمین‌کننده پیاده‌سازی تمام امکانات موردنیاز نیست:
+
+```
+-std=c++23
+```
+
+در پروژه‌های مختلف بهتر است پشتیبانی قابلیت موردنظر را با یک برنامه آزمایشی بررسی کنید.
+
+### **بررسی قابلیت با یک برنامه ساده**
+
+```
+#include <iostream>
 #include <ranges>
+#include <vector>
 
-#if defined(__cpp_lib_ranges_zip) && \
-    __cpp_lib_ranges_zip >= 202110L
+int main() {
+    std::vector<int> values{1, 2, 3, 4};
 
-// Zip-related C++23 facilities are available.
+    auto result = values
+        | std::views::pairwise_transform(
+            [](int a, int b) {
+                return a + b;
+            }
+        );
 
-#else
-
-#error "The standard library does not provide the required zip facilities."
-
-#endif
+    for (int value : result) {
+        std::cout << value << ' ';
+    }
+}
 ```
 
-An important detail is that this Feature Test Macro belongs to the standard library, not the language itself.
-
-Consequently, simply enabling `-std=c++23` or `/std:c++23` does not guarantee that all `zip_transform` facilities have been implemented in the standard library version being used.
-
-### **Configuring the Standard in GCC and Clang**
-
-To use C++23 with GCC, the following command can be used:
+خروجی موردانتظار:
 
 ```
-g++ -std=c++23 -O2 -Wall -Wextra main.cpp -o main
+3 5 7
 ```
 
-With Clang, the following command can be used:
+در صورت بروز خطای Compilation، ابتدا نسخه Compiler، نسخه Standard Library و میزان پشتیبانی آن‌ها از Ranges در ++C23 را بررسی کنید.
 
-```
-clang++ -std=c++23 -O2 -Wall -Wextra main.cpp -o main
-```
+## **جمع‌بندی**
 
-Actual support depends on the compiler version and the associated standard library implementation.
+قابلیت `std::views::adjacent_transform` یکی از امکانات کاربردی Ranges در ++C23 است که پردازش عناصر متوالی و مجاور را ساده‌تر می‌کند.
 
-### **Configuring the Standard in MSVC**
+این قابلیت به توسعه‌دهندگان اجازه می‌دهد بدون مدیریت دستی چند Iterator، عملیات مبتنی بر Sliding Window را به شکل Declarative پیاده‌سازی کنند.
 
-With Microsoft Visual C++, the following option can be used:
+مهم‌ترین ویژگی‌های آن عبارت‌اند از:
 
-```
-cl /std:c++latest /EHsc main.cpp
-```
+- دریافت تعداد ثابتی از عناصر مجاور در هر مرحله.
+- اجرای یک Callable روی هر پنجره.
+- تولید Lazy View به‌جای Container جدید.
+- پشتیبانی از Pipelineهای مبتنی بر Ranges.
+- امکان استفاده از پنجره‌های با اندازه متفاوت در زمان کامپایل.
+- ارائه نام مستعار `std::views::pairwise_transform` برای پردازش دو عنصر مجاور.
+- نیاز به `forward_range` برای Range ورودی.
+- امکان ترکیب با Viewهایی مانند `filter`، `transform` و `take`.
 
-Alternatively, on versions that provide the required standard-mode option, the appropriate C++23 setting can be selected.
+از نظر انتخاب ابزار نیز باید به تفاوت قابلیت‌های مشابه توجه داشت:
 
-It is important to remember that MSVC language support and STL support are related but separate matters.
+- برای تبدیل مستقل هر عنصر، `std::views::transform` مناسب است.
+- برای استخراج پنجره‌های مجاور به شکل Tuple، از `std::views::adjacent` استفاده کنید.
+- برای دریافت پنجره‌های هم‌پوشان به شکل Subrange، `std::views::slide` انتخاب مناسبی است.
+- برای پردازش عناصر متناظر چند Range، از `std::views::zip_transform` استفاده کنید.
+- برای محاسبه مستقیم روی عناصر متوالی یک Range، `std::views::adjacent_transform` انتخاب مناسبی است.
 
-Therefore, in addition to selecting the language standard, it is advisable to check the Feature Test Macro.
+در مجموع، `adjacent_transform` ابزاری مناسب برای نوشتن الگوریتم‌های مدرن، خوانا و قابل ترکیب در ++C23 است؛ به‌خصوص زمانی که منطق پردازش به رابطه میان عناصر متوالی وابسته باشد.
 
-## **Common Mistakes When Using zip_transform**
+## **منابع و مراجع**
 
-### **Assuming the Result Is a Container**
+برای مطالعه جزئیات استاندارد، Constraintها، ساختار Iteratorها و نمونه‌های بیشتر می‌توانید از منابع زیر استفاده کنید:
 
-A common mistake is treating the output of `zip_transform` as equivalent to a `std::vector`.
-
-```
-auto result = std::views::zip_transform(
-    std::plus<>{},
-    a,
-    b
-);
-```
-
-In this example, `result` is a view, not a container.
-
-Therefore, if the results need to be stored permanently, we must explicitly convert the view into a container.
-
-### **Assuming Input Ranges Have Equal Sizes**
-
-Some developers assume that all input ranges must have identical sizes.
-
-This assumption is incorrect.
-
-If the input ranges have different sizes, the resulting view contains as many elements as the shortest range.
-
-If equal sizes are required by the program's logic, they must be checked separately.
-
-### **Using a Callable with Side Effects**
-
-Since the function may be invoked multiple times for the same element, using callables that modify external state can cause problems.
-
-It is preferable to keep callables used with this view as Pure as possible.
-
-### **Returning an Invalid Reference**
-
-If the callable returns a reference to a local variable or an object with a short lifetime, accessing the output can result in undefined behavior.
-
-When necessary, it is better to return a value or provide a reference to data with a sufficiently long lifetime.
-
-### **Expecting Parallel Execution**
-
-`zip_transform` performs lazy evaluation, but this does not mean that it processes elements in parallel.
-
-Parallel execution requires other facilities.
-
-### **Forgetting the Lifetime of Input Data**
-
-Views based on external containers generally do not own the data in those containers.
-
-If a container is destroyed, the view that depends on it may become invalid.
-
-This is particularly important when returning views from functions or storing them as class members.
-
-### **Using std::views::transform Instead of zip_transform**
-
-Developers sometimes first create a `zip` view and then apply `transform` to its tuple-like elements.
-
-This approach is valid, but when the goal is simply to pass corresponding elements to a function, `zip_transform` is generally simpler and more direct.
-
-## **Design Considerations and Choosing the Right Tool**
-
-The choice of `zip_transform` should depend on the actual requirements of the application.
-
-It is a suitable choice when:
-
-- We have multiple independent ranges.
-- Elements at corresponding positions must be processed together.
-- Each output element is a computed value.
-- We do not need to store all results immediately.
-- We want to build pipelines using Range Adaptors.
-- The transformation logic can be expressed as an independent callable.
-
-However, another tool may be more appropriate in the following situations:
-
-- We need precise control over execution flow.
-- Each element depends on complex shared state.
-- Essential side effects are part of the computation.
-- We need to calculate and store each result exactly once.
-- Parallel processing is required.
-- Different input sizes must produce an error rather than terminate iteration early.
-
-In such situations, we can use traditional loops, `std::transform`, parallel algorithms, or a combined pipeline with materialization.
-
-## **Final Summary**
-
-The `std::views::zip_transform` facility is a useful addition to the Ranges library in C++23 that simplifies the simultaneous processing of multiple ranges.
-
-By accepting a callable and multiple ranges, it produces a lazy view in which each element is the result of invoking the callable on the corresponding elements of the input ranges.
-
-Its most important characteristics and considerations include:
-
-- **Lazy Evaluation:** Results are calculated when elements are accessed.
-- **No Intermediate Container Required:** Results are not automatically stored in memory.
-- **Multiple Range Support:** An arbitrary number of ranges can be provided for simultaneous processing.
-- **Reference Support:** Original elements can be modified when a valid reference is returned.
-- **Composability:** It can be combined with facilities such as `filter`, `take`, `drop`, `enumerate`, and `fold_left`.
-- **Shortest-Range Termination:** The output contains as many elements as the shortest input range.
-- **Dependence on Input Iterators:** Capabilities such as random access and bidirectional iteration depend on the properties of the underlying ranges.
-- **No Guarantee of Single Execution:** Each dereference may invoke the callable again.
-- **Lifetime Management:** The original data must remain valid while the view is being used.
-
-Overall, `std::views::zip_transform` is an excellent choice for building data-processing pipelines and performing element-wise computations in modern C++ applications.
-
-When used correctly, it can eliminate many repetitive loops and intermediate containers, allowing data-processing logic to be expressed in a declarative, readable, and composable manner.
-
-## **References and Further Reading**
-
-- [cppreference - std::ranges::views::zip_transform](https://en.cppreference.com/w/cpp/ranges/zip_transform_view?utm_source=chatgpt.com)
-- [WG21 P2321R2 - zip, zip_transform, adjacent and adjacent_transform](https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2021/p2321r2.html?utm_source=chatgpt.com)
-- [C++23 Working Draft - Zip Transform View](https://timsong-cpp.github.io/cppwp/std23/ranges?utm_source=chatgpt.com)
-- [cppreference - C++23 Compiler Support](https://en.cppreference.com/w/cpp/compiler_support/23?utm_source=chatgpt.com)
-- [cppreference - std::ranges::views::zip](https://en.cppreference.com/w/cpp/ranges/zip_view?utm_source=chatgpt.com)
-- [cppreference - std::ranges::views::transform](https://en.cppreference.com/w/cpp/ranges/transform_view?utm_source=chatgpt.com)
-- [cppreference - std::ranges::fold_left](https://en.cppreference.com/w/cpp/algorithm/ranges/fold_left?utm_source=chatgpt.com)
+- [cppreference – std::views::adjacent_transform](https://en.cppreference.com/w/cpp/ranges/adjacent_transform_view?utm_source=chatgpt.com)
+- [C++ Working Draft – Adjacent Transform View](https://eel.is/c++draft/range.adjacent.transform?utm_source=chatgpt.com)
+- [C++ Working Draft – Adjacent View](https://eel.is/c++draft/range.adjacent?utm_source=chatgpt.com)
+- [C++ Working Draft – Slide View](https://eel.is/c++draft/range.slide?utm_source=chatgpt.com)
+- [cppreference – C++ Ranges Library](https://en.cppreference.com/w/cpp/ranges?utm_source=chatgpt.com)
 
 ---
 
