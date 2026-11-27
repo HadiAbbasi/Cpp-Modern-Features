@@ -34,7 +34,9 @@
 | [`to_underlying`](./to_underlying.md) |
 | [`std::views::adjacent_transform`](./std_views_adjacent_transform.md) |
 | [`std::views::pairwise`](./std_views_pairwise.md) |
-
+| [`std::ranges::find_last`](./range_find_last.md.md) |
+| [`std::ranges::to`](./ranges_to.md.md) |
+| [`std::views::repeat`](./views_repeat.md.md) |
 </div>
 
 ---
